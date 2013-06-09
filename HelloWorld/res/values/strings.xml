@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HelloWorld</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="second_activity">The Second Activity</string>
+    <string name="third_activity">The Third Activity</string>
+    
+    <!--  saveFile  -->
+    <string name="putInFileName">请输入文件名</string>
+    <string name="fileName">文件名</string>    
+    <string name="putInFileContent">请输入文件内容</string>
+    <string name="fileContent">文件内容</string>       
+    <string name="saveSuccess">保存成功</string>
+    <string name="saveFail">保存失败</string>
+
+</resources>
