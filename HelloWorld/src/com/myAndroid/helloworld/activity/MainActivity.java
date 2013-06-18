@@ -3,6 +3,9 @@ package com.myAndroid.helloworld.activity;
 import com.myAndroid.helloworld.R;
 import com.myAndroid.helloworld.service.SaveFileService;
 
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -23,6 +26,9 @@ import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
+  // public static final HttpTransport HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
+  // public static final JsonFactory JSON_FACTORY = new JacksonFactory();
+
   private EditText fileName;
   private EditText fileContent;
   private Button button;
@@ -73,11 +79,33 @@ public class MainActivity extends Activity {
     super.onOptionsItemSelected(item);
     if (item.getItemId() == android.R.id.home) {
       Toast.makeText(this, "应用选项home：" + item.getItemId(), Toast.LENGTH_SHORT).show();
+
+      /**
+       * 为程序图片添加返回主界面的功能; FLAG_ACTIVITY_CLEAR_TOP是为了清除back stack中的其他一系列活动,如此一来如果用户单击Back键,应用程序的其他活动将不再显示
+       */
+      Intent i = new Intent(this, MainActivity.class);
+      i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+      startActivity(i);
+
     } else {
       Toast.makeText(this, "" + item.getItemId(), Toast.LENGTH_SHORT).show();
     }
 
     return true;
+  }
+
+  public void onSaveFile(View view) {
+    fileContent = (EditText) findViewById(R.id.fileContent);
+    String content = fileContent.getText().toString();
+    try {
+      FileOutputStream fos = this.openFileOutput("dev_test.txt", MODE_PRIVATE);
+      OutputStreamWriter osw = new OutputStreamWriter(fos);
+      osw.write(content);
+      osw.flush();
+      osw.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -92,7 +120,7 @@ public class MainActivity extends Activity {
     setContentView(R.layout.activity_main);
 
     ActionBar aBar = getActionBar();
-    aBar.setDisplayHomeAsUpEnabled(true);
+    aBar.setDisplayHomeAsUpEnabled(true);// 使action bar可以被点击
 
     fileName = (EditText) findViewById(R.id.fileName);
     fileContent = (EditText) findViewById(R.id.fileContent);
