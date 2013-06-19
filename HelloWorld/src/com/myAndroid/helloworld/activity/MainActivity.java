@@ -40,6 +40,15 @@ public class MainActivity extends Activity {
   private SharedPreferences spf;
   private Editor editor;
 
+  public void IntentManager(View view) {
+    try {
+      Intent i = new Intent(this, Class.forName(view.getTag().toString()));
+      startActivity(i);
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
   /*
    * (non-Javadoc)
    * 
