@@ -1,6 +1,9 @@
 package com.myAndroid.helloworld.activity;
 
 import com.myAndroid.helloworld.R;
+import com.myAndroid.helloworld.adapter.MyExpandableListAdapter;
+
+import android.widget.ExpandableListView;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,24 +12,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class DataListActivity extends Activity {
-  public static final String[] DATALIST = { "iteme1", "iteme2" };
-  ListView listView;
-  ArrayAdapter<String> adapter;
-
-  public void doChangeList(View view) {
-    DATALIST[0] = "123";
-    // adapter.addAll(DATALIST);
-    adapter.notifyDataSetChanged();
-  }
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_datalist);
-    listView = (ListView) findViewById(R.id.listView_);
 
-    adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, DATALIST);
+    String[] title = { "动物", "水果", "英雄" };
+    String[] content1 = { "老鼠", "豹子", "老陈" };
+    String[] content2 = { "苹果", "香蕉" };
+    String[] content3 = { "盖伦", "斧王", "翟江" };
+    String[][] contents = { content1, content2, content3 };
 
-    listView.setAdapter(adapter);
+    MyExpandableListAdapter adapter = new MyExpandableListAdapter(this, contents, title);
+
+    ExpandableListView exListView = (ExpandableListView) findViewById(R.id.exListView);
+
+    exListView.setAdapter(adapter);
   }
 }

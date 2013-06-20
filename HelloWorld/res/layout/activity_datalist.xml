@@ -7,17 +7,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <ListView
-            android:id="@+id/listView_"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="doChangeList"
-            android:text="ChangeList" />
+    <ExpandableListView 
+        android:id="@+id/exListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
 
     <LinearLayout
         android:layout_width="fill_parent"
