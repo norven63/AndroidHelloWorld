@@ -35,7 +35,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ThirdActivity" />
-        <activity android:name=".activity.DataListActivity"></activity>
+        <activity android:name=".activity.DataListActivity"/>
+        <activity android:name=".activity.PopupwindowOnLeftActivity"/>
     </application>
 
 </manifest>

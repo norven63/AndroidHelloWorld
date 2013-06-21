@@ -1,78 +1,90 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/putInFileName" />
-
-    <EditText
-        android:id="@+id/fileName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="text" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/putInFileContent" />
-
-    <EditText
-        android:id="@+id/fileContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:minLines="3" />
+    android:layout_height="fill_parent" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/button"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="doSaveFile" />
+            android:text="@string/putInFileName" />
 
-        <Button
-            android:id="@+id/button2"
+        <EditText
+            android:id="@+id/fileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="doSavePre" />
+            android:inputType="text" />
 
-        <Button
-            android:id="@+id/button3"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rest" />
-    </LinearLayout>
+            android:text="@string/putInFileContent" />
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to Second" />
+        <EditText
+            android:id="@+id/fileContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:minLines="3" />
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:id="@+id/spinner"/>
-    
-    <Button
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="doSaveFile" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="doSavePre" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rest" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go to Second" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
             android:id="@+id/button5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SaveFile" 
-            android:onClick="onSaveFile"/>
-    
-    <Button
+            android:onClick="onSaveFile"
+            android:text="SaveFile" />
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ListView" 
+            android:onClick="IntentManager"
             android:tag="com.myAndroid.helloworld.activity.DataListActivity"
-            android:onClick="IntentManager"/>
+            android:text="ListView" />
 
-</LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="IntentManager"
+            android:tag="com.myAndroid.helloworld.activity.PopupwindowOnLeftActivity"
+            android:text="popupwindow" />
+    </LinearLayout>
+
+</ScrollView>

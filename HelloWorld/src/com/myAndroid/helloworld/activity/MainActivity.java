@@ -77,11 +77,6 @@ public class MainActivity extends Activity {
 
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-   */
   @Override
   // 点击bar中的选项时触发的事件
   public boolean onOptionsItemSelected(MenuItem item) {
