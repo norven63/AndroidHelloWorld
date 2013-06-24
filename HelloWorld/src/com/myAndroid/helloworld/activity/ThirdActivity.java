@@ -11,28 +11,28 @@ import android.widget.TextView;
 import com.myAndroid.helloworld.R;
 
 public class ThirdActivity extends Activity {
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.thirdactivity);
-		
-		Intent intent = this.getIntent();
-		String name = intent.getStringExtra("name");
-		int age = intent.getIntExtra("age", 24);//Ã»ÓÐÖµÊ±£¬Ä¬ÈÏ24
-		
-		TextView text = (TextView)findViewById(R.id.thirdT);
-		text.setText("Name is "+name+" ,age is "+age);
-		
-		Button button = (Button)findViewById(R.id.thirdB);
-		button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//ÒþÊ½ÒâÍ¼
-				Intent intent_ = new Intent();
-				intent_.setAction("com.myAndroid.helloworld.second");
-				intent_.setDataAndType(Uri.parse("thehead://www.itcast.cn"), "image/gif");
-				startActivity(intent_);
-			}
-		});
-	}
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.thirdactivity);
+
+    Intent intent = this.getIntent();
+    String name = intent.getStringExtra("name");
+    int[] age = intent.getIntArrayExtra("age");// ("age", 24);//Ã»ï¿½ï¿½ÖµÊ±ï¿½ï¿½Ä¬ï¿½ï¿½24
+
+    TextView text = (TextView) findViewById(R.id.thirdT);
+    text.setText("Name is " + name + " ,age is " + age[0]);
+
+    Button button = (Button) findViewById(R.id.thirdB);
+    button.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // ï¿½ï¿½Ê½ï¿½ï¿½Í¼
+        Intent intent_ = new Intent();
+        intent_.setAction("com.myAndroid.helloworld.second");
+        intent_.setDataAndType(Uri.parse("thehead://www.itcast.cn"), "image/gif");
+        startActivity(intent_);
+      }
+    });
+  }
 }

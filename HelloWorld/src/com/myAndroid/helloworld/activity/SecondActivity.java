@@ -34,7 +34,9 @@ public class SecondActivity extends Activity {
       public void onClick(View v) {
         Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
         intent.putExtra("name", "Luke");
-        intent.putExtra("age", 26);
+        int[]i=new int[1];
+        i[0]=1;
+        intent.putExtra("age", i);
         startActivity(intent);
       }
     });
