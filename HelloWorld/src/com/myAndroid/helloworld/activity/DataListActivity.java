@@ -3,15 +3,24 @@ package com.myAndroid.helloworld.activity;
 import com.myAndroid.helloworld.R;
 import com.myAndroid.helloworld.adapter.MyExpandableListAdapter;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.widget.ExpandableListView;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
 public class DataListActivity extends Activity {
+  @SuppressLint("NewApi")
+  // 新增一个碎片,并覆盖当前页面
+  public void addFragment() {
+    FragmentTransaction ft = this.getFragmentManager().beginTransaction();
+    Fragment1 df = new Fragment1();
+    ft.replace(android.R.id.content, df);
+
+    ft.addToBackStack(null);// 可以被BACK键返回
+    ft.commit();
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

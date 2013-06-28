@@ -6,6 +6,8 @@ import com.myAndroid.helloworld.service.SaveFileService;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
+import android.view.KeyEvent;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -75,6 +77,17 @@ public class MainActivity extends Activity {
 
     return true;
 
+  }
+
+  @Override
+  // 重写返回键
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_BACK) {
+      // TODO
+      return true;// 当按键为BACK时就会被return掉
+    }
+
+    return super.onKeyDown(keyCode, event);
   }
 
   @Override
