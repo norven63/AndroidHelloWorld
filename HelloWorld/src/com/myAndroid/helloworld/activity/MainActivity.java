@@ -79,16 +79,16 @@ public class MainActivity extends Activity {
 
   }
 
-  @Override
-  // 重写返回键
-  public boolean onKeyDown(int keyCode, KeyEvent event) {
-    if (keyCode == KeyEvent.KEYCODE_BACK) {
-      // TODO
-      return true;// 当按键为BACK时就会被return掉
-    }
-
-    return super.onKeyDown(keyCode, event);
-  }
+  // @Override
+  // // 重写返回键
+  // public boolean onKeyDown(int keyCode, KeyEvent event) {
+  // if (keyCode == KeyEvent.KEYCODE_BACK) {
+  // // TODO
+  // return true;// 当按键为BACK时就会被return掉
+  // }
+  //
+  // return super.onKeyDown(keyCode, event);
+  // }
 
   @Override
   // 点击bar中的选项时触发的事件
