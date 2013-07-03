@@ -60,12 +60,12 @@ public class MainActivity extends Activity {
   // Action Bar
   public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
-    MenuItem mi1 = menu.add(0, 0, 0, "Item1");
+    MenuItem mi1 = menu.add(0, 0, 1, "Item1");// 第三个参数用来指定按钮的排列顺序
     mi1.setIcon(R.drawable.ic_launcher);
     // 同时以title显示
     mi1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
-    MenuItem mi2 = menu.add(0, 1, 1, "Item2");
+    MenuItem mi2 = menu.add(0, 1, 0, "Item2");
     mi2.setIcon(R.drawable.ic_launcher);
     mi2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
