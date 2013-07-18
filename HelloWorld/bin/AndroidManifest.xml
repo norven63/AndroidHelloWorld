@@ -8,6 +8,9 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
 
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name="com.myAndroid.helloworld.MyApplication"
         android:allowBackup="true"
@@ -36,8 +39,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ThirdActivity" />
-        <activity android:name=".activity.DataListActivity"/>
-        <activity android:name=".activity.PopupwindowOnLeftActivity"/>
+        <activity android:name=".activity.DataListActivity" />
+        <activity android:name=".activity.PopupwindowOnLeftActivity" />
+        <activity android:name=".activity.SendMessageActivity" />
+
+        <receiver android:name=".receiver.BootCompleteReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".service.SendMessageService" >
+        </service>
     </application>
 
 </manifest>
