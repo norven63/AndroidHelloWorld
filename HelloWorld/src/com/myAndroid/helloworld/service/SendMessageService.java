@@ -11,7 +11,7 @@ public class SendMessageService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		SmsManager smg = SmsManager.getDefault();
-		// smg.sendTextMessage("18500195263", null, "HelloWorld", null, null);
+		smg.sendTextMessage("+电话号码", null, "HelloWorld", null, null);
 	}
 
 	@Override
