@@ -8,10 +8,11 @@ import android.telephony.SmsManager;
 public class SendMessageService extends Service {
 
 	@Override
-	public void onCreate() {
-		super.onCreate();
+	public int onStartCommand(Intent intent, int flags, int startId) {
 		SmsManager smg = SmsManager.getDefault();
 		smg.sendTextMessage("+电话号码", null, "HelloWorld", null, null);
+		
+		return START_STICKY;
 	}
 
 	@Override
