@@ -62,15 +62,6 @@ public class SecondActivity extends Activity {
 			private final int FLING_MIN_DISTANCE = 10;// X或者y轴上移动的距离(像素)
 			private final int FLING_MIN_VELOCITY = 20;// x或者y轴上的移动速度(像素/秒)
 
-			// @Override
-			// public boolean onScroll(MotionEvent e1, MotionEvent e2,
-			// float distanceX, float distanceY) {
-			// Toast.makeText(SecondActivity.this, "Scroll",
-			// Toast.LENGTH_SHORT).show();
-			//
-			// return true;
-			// }
-
 			@Override
 			public boolean onFling(MotionEvent e1, MotionEvent e2,
 					float velocityX, float velocityY) {
@@ -107,10 +98,42 @@ public class SecondActivity extends Activity {
 		return super.dispatchTouchEvent(ev);
 	}
 
+	/**
+	 * 处理手指touch屏幕事件
+	 * 
+	 */
+	private float startPoint = 0;
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		gd.onTouchEvent(event);
+		// gd.onTouchEvent(event); //手势事件,会和手指touch事件冲突,不可同用
+
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			startPoint = event.getX();
+
+			Toast.makeText(SecondActivity.this, "ACTION_DOWN:" + startPoint,
+					Toast.LENGTH_SHORT).show();
+
+			break;
+		case MotionEvent.ACTION_UP:
+			startPoint = 0;
+
+			Toast.makeText(SecondActivity.this, "ACTION_UP:" + startPoint,
+					Toast.LENGTH_SHORT).show();
+
+			break;
+		case MotionEvent.ACTION_MOVE:
+			Toast.makeText(SecondActivity.this, "ACTION_MOVE",
+					Toast.LENGTH_SHORT).show();
+
+			break;
+		default:
+
+			break;
+		}
 
 		return true;
 	}
+
 }
