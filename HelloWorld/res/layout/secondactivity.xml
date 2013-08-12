@@ -5,24 +5,31 @@
     android:orientation="vertical" >
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/text"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="SecondActivity" />
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="SecondActivity1 SecondActivity2 SecondActivity3 SecondActivity4" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/secondB2main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Go to main" />
+
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/secondB2third"
-        android:text="Go to Third" />
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Go to Third" />
+
+    <Button
         android:id="@+id/secondBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Back to main" />
 
 </LinearLayout>
