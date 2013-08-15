@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
   // // 重写返回键
   // public boolean onKeyDown(int keyCode, KeyEvent event) {
   // if (keyCode == KeyEvent.KEYCODE_BACK) {
-  // // TODO
+  // 
   // return true;// 当按键为BACK时就会被return掉
   // }
   //
@@ -126,7 +126,9 @@ public class MainActivity extends Activity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    Toast.makeText(this, data.getStringExtra("back"), Toast.LENGTH_SHORT).show();
+    if (null != data) {
+      Toast.makeText(this, data.getStringExtra("back"), Toast.LENGTH_SHORT).show();
+    }
   }
 
   @Override
