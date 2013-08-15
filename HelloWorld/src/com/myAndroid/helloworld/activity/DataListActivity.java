@@ -25,7 +25,7 @@ public class DataListActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_datalist);
-
+    
     String[] title = { "动物", "水果", "英雄" };
     String[] content1 = { "老鼠", "豹子", "老陈" };
     String[] content2 = { "苹果", "香蕉" };
