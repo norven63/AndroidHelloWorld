@@ -42,6 +42,7 @@
         <activity android:name=".activity.DataListActivity" />
         <activity android:name=".activity.PopupwindowOnLeftActivity" />
         <activity android:name=".activity.SendMessageActivity" />
+        <activity android:name=".activity.SlidingDrawerActivity" />
 
         <receiver android:name=".receiver.BootCompleteReceiver" >
             <intent-filter>

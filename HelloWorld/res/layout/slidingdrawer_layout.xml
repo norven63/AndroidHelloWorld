@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <SlidingDrawer
+        android:id="@+id/slidingdrawer"
+        android:layout_width="400dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:content="@+id/content"
+        android:handle="@+id/handle"
+        android:orientation="horizontal" >
+
+        <!-- 自定义按钮的图片的handle -->
+
+        <TextView
+            android:id="@+id/handle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icn_slidingdraw"
+            android:gravity="center"
+            android:textColor="@android:color/transparent" />
+        <!-- 抽屉里的内容content -->
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@android:color/darker_gray"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </SlidingDrawer>
+
+</RelativeLayout>
