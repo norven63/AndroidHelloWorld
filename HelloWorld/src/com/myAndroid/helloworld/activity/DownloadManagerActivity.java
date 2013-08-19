@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -41,6 +42,10 @@ public class DownloadManagerActivity extends Activity {
         DownloadManager.Request request = new Request(uri);
         referenceID = downloadManager.enqueue(request);
 
+        // 设置下载存放路径
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, "test_downloadmanager.zip");
+
+        // 自定义Notification
         request.setTitle("testdownload");
         request.setDescription("Test");
       }

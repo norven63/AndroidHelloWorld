@@ -1,16 +1,18 @@
 package com.myAndroid.helloworld.activity;
 
-import com.myAndroid.helloworld.R;
-import com.myAndroid.helloworld.service.SaveFileService;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,12 +23,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import com.myAndroid.helloworld.R;
+import com.myAndroid.helloworld.service.SaveFileService;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
   // public static final HttpTransport HTTP_TRANSPORT =
   // AndroidHttp.newCompatibleTransport();
   // public static final JsonFactory JSON_FACTORY = new JacksonFactory();
+
+  private final int ID = 1;
+  private Notification notification;
+  private NotificationManager notificationManager;
 
   private EditText fileName;
   private EditText fileContent;
@@ -48,11 +56,6 @@ public class MainActivity extends Activity {
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-   */
   @Override
   // Action Bar
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,16 +79,16 @@ public class MainActivity extends Activity {
 
   }
 
-  // @Override
-  // // 重写返回键
-  // public boolean onKeyDown(int keyCode, KeyEvent event) {
-  // if (keyCode == KeyEvent.KEYCODE_BACK) {
-  // 
-  // return true;// 当按键为BACK时就会被return掉
-  // }
-  //
-  // return super.onKeyDown(keyCode, event);
-  // }
+  @Override
+  // 重写返回键
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+      // return true;// 当按键为BACK时就会被return掉
+    }
+
+    return super.onKeyDown(keyCode, event);
+  }
 
   @Override
   // 点击bar中的选项时触发的事件
@@ -219,12 +222,32 @@ public class MainActivity extends Activity {
 
       @Override
       public void onNothingSelected(AdapterView<?> parent) {
-        // TODO Auto-generated method stub
+        //
 
       }
 
     });
 
+    // 强行在UI线程上运行
+    this.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        // TODO Auto-generated method stub
+
+      }
+    });
+
+    // handler.post(Runnable());
   }
 
+  public void notification(View view) {
+    Intent intent = new Intent(this, ThirdActivity.class);
+    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+    notification = new Notification.Builder(this).setContentText("Hello World!").setContentTitle("Hello").setSmallIcon(R.drawable.ic_launcher).setContentIntent(pendingIntent)
+        .setDefaults(Notification.DEFAULT_SOUND).build();
+    notification.flags |= Notification.FLAG_AUTO_CANCEL;
+    
+    notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    notificationManager.notify(ID, notification);
+  }
 }

@@ -21,7 +21,9 @@ public class ThirdActivity extends Activity {
     int[] age = intent.getIntArrayExtra("age");// ("age", 24);//û��ֵʱ��Ĭ��24
 
     TextView text = (TextView) findViewById(R.id.thirdT);
-    text.setText("Name is " + name + " ,age is " + age[0]);
+    if (age != null) {
+      text.setText("Name is " + name + " ,age is " + age[0]);
+    }
 
     Button button = (Button) findViewById(R.id.thirdB);
     button.setOnClickListener(new View.OnClickListener() {
