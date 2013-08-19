@@ -10,6 +10,8 @@
 
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="com.myAndroid.helloworld.MyApplication"
@@ -43,6 +45,7 @@
         <activity android:name=".activity.PopupwindowOnLeftActivity" />
         <activity android:name=".activity.SendMessageActivity" />
         <activity android:name=".activity.SlidingDrawerActivity" />
+        <activity android:name=".activity.DownloadManagerActivity" />
 
         <receiver android:name=".receiver.BootCompleteReceiver" >
             <intent-filter>
