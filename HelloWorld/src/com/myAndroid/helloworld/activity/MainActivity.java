@@ -240,7 +240,7 @@ public class MainActivity extends Activity {
     // handler.post(Runnable());
   }
 
-  public void notification(View view) {
+  public void notification(View view) { 
     Intent intent = new Intent(this, ThirdActivity.class);
     PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
     notification = new Notification.Builder(this).setContentText("Hello World!").setContentTitle("Hello").setSmallIcon(R.drawable.ic_launcher).setContentIntent(pendingIntent)
