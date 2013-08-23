@@ -55,6 +55,8 @@
 
         <service android:name=".service.SendMessageService" >
         </service>
+        <service android:name=".service.TestService" >
+        </service>
     </application>
 
 </manifest>

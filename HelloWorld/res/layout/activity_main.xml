@@ -16,6 +16,7 @@
             android:id="@+id/fileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:imeOptions="actionGo"
             android:inputType="text" />
 
         <TextView
@@ -59,7 +60,7 @@
             android:layout_height="wrap_content"
             android:onClick="notification"
             android:text="Notification" />
-        
+
         <Button
             android:id="@+id/button4"
             android:layout_width="wrap_content"
@@ -105,7 +106,7 @@
             android:onClick="IntentManager"
             android:tag="com.myAndroid.helloworld.activity.SlidingDrawerActivity"
             android:text="slidingDrawer" />
-        
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
