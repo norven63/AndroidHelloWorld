@@ -2,9 +2,13 @@ package com.myAndroid.helloworld.activity;
 
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -28,6 +32,7 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.myAndroid.helloworld.R;
 import com.myAndroid.helloworld.service.SaveFileService;
 
@@ -61,12 +66,13 @@ public class MainActivity extends Activity {
   // Action Bar
   public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
-    MenuItem mi1 = menu.add(0, 0, 1, "Item1");// 第三个参数用来指定按钮的排列顺序
-    mi1.setIcon(R.drawable.ic_launcher);
+    MenuItem mi1 = menu.add(0, 0, 0, "Item1");// 第三个参数用来指定按钮的排列顺序
+    mi1.setIcon(R.drawable.ic_001);
     // 同时以title显示
-    mi1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+    mi1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+    mi1.setActionView(R.layout.actionbar_view);
 
-    MenuItem mi2 = menu.add(0, 1, 0, "Item2");
+    MenuItem mi2 = menu.add(0, 1, 1, "Item2");
     mi2.setIcon(R.drawable.ic_launcher);
     mi2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
@@ -159,8 +165,38 @@ public class MainActivity extends Activity {
       }
     });
 
-    ActionBar aBar = getActionBar();
-    aBar.setDisplayHomeAsUpEnabled(true);// 使action bar可以被点击
+    ActionBar bar = getActionBar();
+    bar.setDisplayHomeAsUpEnabled(true);// 使action bar可以被点击
+    bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+    for (int i = 0; i < 4; i++) {
+      final int ii = i;
+      Tab tab = bar.newTab();
+      tab.setText("Tab" + i);
+      tab.setTabListener(new TabListener() {
+
+        @Override
+        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+          Toast.makeText(MainActivity.this, "onTabUnselected-" + ii, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onTabSelected(Tab tab, FragmentTransaction ft) {
+          Toast.makeText(MainActivity.this, "onTabSelected-" + ii, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onTabReselected(Tab tab, FragmentTransaction ft) {
+          Toast.makeText(MainActivity.this, "onTabReselected-" + ii, Toast.LENGTH_SHORT).show();
+        }
+      });
+      if (0 == i) {
+        bar.addTab(tab, true);
+      } else {
+        bar.addTab(tab);
+      }
+
+    }
 
     fileName = (EditText) findViewById(R.id.fileName);
     fileContent = (EditText) findViewById(R.id.fileContent);
