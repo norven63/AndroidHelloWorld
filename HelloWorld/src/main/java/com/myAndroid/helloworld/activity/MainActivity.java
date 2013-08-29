@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -15,12 +16,16 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import com.myAndroid.helloworld.R;
@@ -28,10 +33,6 @@ import com.myAndroid.helloworld.service.SaveFileService;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
-  // public static final HttpTransport HTTP_TRANSPORT =
-  // AndroidHttp.newCompatibleTransport();
-  // public static final JsonFactory JSON_FACTORY = new JacksonFactory();
-
   private final int ID = 1;
   private Notification notification;
   private NotificationManager notificationManager;
@@ -139,6 +140,25 @@ public class MainActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    // ScrollView会拦截Activity的onTouch事件,所以为ScorllView的事件添加监听逻辑
+    ScrollView scrollView = (ScrollView) findViewById(R.id.main_scrollView);
+    scrollView.setOnTouchListener(new OnTouchListener() {
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+        case MotionEvent.ACTION_DOWN:
+          InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+          inputMethodManager.hideSoftInputFromWindow(fileName.getWindowToken(), 0);
+
+          break;
+        default:
+          break;
+        }
+
+        return false;// 若返回为true则丧失ScrollView原生的滑动效果
+      }
+    });
+
     ActionBar aBar = getActionBar();
     aBar.setDisplayHomeAsUpEnabled(true);// 使action bar可以被点击
 
@@ -240,13 +260,13 @@ public class MainActivity extends Activity {
     // handler.post(Runnable());
   }
 
-  public void notification(View view) { 
+  public void notification(View view) {
     Intent intent = new Intent(this, ThirdActivity.class);
     PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
     notification = new Notification.Builder(this).setContentText("Hello World!").setContentTitle("Hello").setSmallIcon(R.drawable.ic_launcher).setContentIntent(pendingIntent)
         .setDefaults(Notification.DEFAULT_SOUND).build();
     notification.flags |= Notification.FLAG_AUTO_CANCEL;
-    
+
     notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     notificationManager.notify(ID, notification);
   }

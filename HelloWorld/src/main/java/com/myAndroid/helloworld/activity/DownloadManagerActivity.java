@@ -36,6 +36,7 @@ public class DownloadManagerActivity extends Activity {
     downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
     Button startButton = (Button) findViewById(R.id.startdownload);
+    // 开始下载
     startButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View arg0) {

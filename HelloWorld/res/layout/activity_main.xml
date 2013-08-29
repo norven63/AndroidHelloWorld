@@ -1,7 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_scrollView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -113,6 +113,20 @@
             android:onClick="IntentManager"
             android:tag="com.myAndroid.helloworld.activity.DownloadManagerActivity"
             android:text="downloadmanageractivity" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="IntentManager"
+            android:tag="com.myAndroid.helloworld.activity.ImageViewActivity"
+            android:text="ImageViewActivity" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="IntentManager"
+            android:tag="com.myAndroid.helloworld.activity.WebViewActivity"
+            android:text="WebViewActivity" />
     </LinearLayout>
 
 </ScrollView>
