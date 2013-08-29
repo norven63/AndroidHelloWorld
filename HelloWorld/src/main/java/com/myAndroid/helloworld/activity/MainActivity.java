@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -29,8 +30,10 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myAndroid.helloworld.R;
@@ -71,6 +74,14 @@ public class MainActivity extends Activity {
     // 同时以title显示
     mi1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
     mi1.setActionView(R.layout.actionbar_view);
+    // LayoutInflater layoutInflater = LayoutInflater.from(this);
+    // View view = layoutInflater.inflate(R.layout.actionbar_view, null);
+    // RelativeLayout relativeLayout = (RelativeLayout)
+    // view.findViewById(R.id.actionBarLayout);
+    // TextView textView = (TextView) view.findViewById(R.id.firstText);
+    // TextView newTextView = new TextView(this);
+    // newTextView.setText("2222");
+    // relativeLayout.addView(newTextView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
     MenuItem mi2 = menu.add(0, 1, 1, "Item2");
     mi2.setIcon(R.drawable.ic_launcher);
