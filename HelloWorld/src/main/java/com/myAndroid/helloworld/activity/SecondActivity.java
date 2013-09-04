@@ -19,8 +19,8 @@ public class SecondActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.secondactivity);
 
-    TextView textView = (TextView) findViewById(R.id.text);
-    textView.setSelected(true);// 使其文字可滚动
+     TextView textView = (TextView) findViewById(R.id.text);
+     textView.setSelected(true);// 使其文字可滚动
 
     Intent intent = this.getIntent();
     Toast.makeText(this, intent.getStringExtra("success"), Toast.LENGTH_SHORT).show();

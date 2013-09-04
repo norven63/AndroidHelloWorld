@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -30,6 +32,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -69,19 +72,37 @@ public class MainActivity extends Activity {
   // Action Bar
   public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
-    MenuItem mi1 = menu.add(0, 0, 0, "Item1");// 第三个参数用来指定按钮的排列顺序
+
+    /**
+     * mi1使用编码方式填充其布局显示
+     */
+    // begin
+    MenuItem mi1 = menu.add(0, 0, 0, "Item1");// 第三个int参数用来指定按钮的排列顺序,具体可以看其源码的参数命名
     mi1.setIcon(R.drawable.ic_001);
-    // 同时以title显示
     mi1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-    mi1.setActionView(R.layout.actionbar_view);
-    // LayoutInflater layoutInflater = LayoutInflater.from(this);
-    // View view = layoutInflater.inflate(R.layout.actionbar_view, null);
-    // RelativeLayout relativeLayout = (RelativeLayout)
-    // view.findViewById(R.id.actionBarLayout);
-    // TextView textView = (TextView) view.findViewById(R.id.firstText);
-    // TextView newTextView = new TextView(this);
-    // newTextView.setText("2222");
-    // relativeLayout.addView(newTextView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+    LayoutInflater layoutInflater = LayoutInflater.from(this);
+    View view = layoutInflater.inflate(R.layout.actionbar_item_view, null);
+    RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.actionBarItemLayout);
+
+    relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+    final TextView newTextView = new TextView(this);
+    ColorStateList colorStateList = getResources().getColorStateList(R.color.white);
+    newTextView.setText("M1-ActionView");
+    newTextView.setTextColor(colorStateList);
+    newTextView.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Toast.makeText(MainActivity.this, "ActionBar item", Toast.LENGTH_SHORT).show();
+      }
+    });
+
+    RelativeLayout.LayoutParams rLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    // rLayoutParams.addRule(RelativeLayout.RIGHT_OF, textView.getId());
+    relativeLayout.addView(newTextView, rLayoutParams);
+
+    mi1.setActionView(relativeLayout);
+    // end
 
     MenuItem mi2 = menu.add(0, 1, 1, "Item2");
     mi2.setIcon(R.drawable.ic_launcher);
@@ -112,7 +133,8 @@ public class MainActivity extends Activity {
   // 点击bar中的选项时触发的事件
   public boolean onOptionsItemSelected(MenuItem item) {
     super.onOptionsItemSelected(item);
-    if (item.getItemId() == android.R.id.home) {
+    switch (item.getItemId()) {
+    case android.R.id.home:
       Toast.makeText(this, "应用选项home：" + item.getItemId(), Toast.LENGTH_SHORT).show();
 
       /**
@@ -123,8 +145,16 @@ public class MainActivity extends Activity {
       i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
       startActivity(i);
 
-    } else {
+      break;
+    case 1:
+      ActionBar bar = getActionBar();
+      bar.setDisplayHomeAsUpEnabled(false);
+
+      break;
+    default:
       Toast.makeText(this, "" + item.getItemId(), Toast.LENGTH_SHORT).show();
+
+      break;
     }
 
     return true;
@@ -178,8 +208,44 @@ public class MainActivity extends Activity {
 
     ActionBar bar = getActionBar();
     bar.setDisplayHomeAsUpEnabled(true);// 使action bar可以被点击
-    bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+    LayoutInflater layoutInflater = LayoutInflater.from(this);
+    View view = layoutInflater.inflate(R.layout.actionbar_view, null);
+    LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.actionBarLayout);
+
+    linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+    final TextView newTextView1 = new TextView(this);
+    newTextView1.setId(1);
+    ColorStateList colorStateList = getResources().getColorStateList(R.color.white);
+    newTextView1.setText("ActionBar1");
+    newTextView1.setTextColor(colorStateList);
+    newTextView1.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        newTextView1.setBackground(getResources().getDrawable(R.color.blue));
+      }
+    });
+
+    LinearLayout.LayoutParams rLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    linearLayout.addView(newTextView1, rLayoutParams);
+
+    final TextView newTextView = new TextView(this);
+    newTextView.setText("ActionBar2");
+    newTextView.setTextColor(colorStateList);
+    newTextView.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        newTextView.setBackground(getResources().getDrawable(R.color.blue));
+      }
+    });
+
+    linearLayout.addView(newTextView, rLayoutParams);
+
+    bar.setDisplayShowCustomEnabled(true);
+    bar.setCustomView(view);
+
+    bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);// 标签模式ActionBar
     for (int i = 0; i < 4; i++) {
       final int ii = i;
       Tab tab = bar.newTab();
@@ -206,7 +272,6 @@ public class MainActivity extends Activity {
       } else {
         bar.addTab(tab);
       }
-
     }
 
     fileName = (EditText) findViewById(R.id.fileName);

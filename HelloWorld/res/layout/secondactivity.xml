@@ -6,13 +6,12 @@
 
     <TextView
         android:id="@+id/text"
-        android:layout_width="fill_parent"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="SecondActivity1 SecondActivity2 SecondActivity3 SecondActivity4" />
+        android:text="SecondActivity1                                   " />
 
     <Button
         android:id="@+id/secondB2main"
