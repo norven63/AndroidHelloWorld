@@ -37,7 +37,7 @@ public class WebViewActivity extends Activity {
     webSettings.setUseWideViewPort(true);
     webSettings.setLoadWithOverviewMode(true);
 
-    webView.loadUrl("http://server.drive.goodow.com/serve?id=c5kzd3ek7nlshol1cwj3tfjdcana4cvu1cl1e7hu491wc72i7le9cvrlgcmhzb2rky8cdq6c0xwbqze9j3xr95bfmi6propkdlsq7n9z42l5h5qlrjs");
+    webView.loadUrl("http://server.drive.goodow.com/serve?id=f6iose8sw77zscz7jo1xxy60ndq5m62s8qwja9ib3pj5etaa1lwiefl8qcibo9nu4i5suormb773znn7wgodiy46wr428jqur2hlsotdv3fhmjzgkae");
 
     webView.setWebChromeClient(new WebChromeClient() {
       @Override
