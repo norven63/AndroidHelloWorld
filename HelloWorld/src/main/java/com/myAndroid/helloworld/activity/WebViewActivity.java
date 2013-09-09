@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.webkit.WebSettings.PluginState;
+import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.myAndroid.helloworld.R;
@@ -31,6 +31,7 @@ public class WebViewActivity extends Activity {
     webSettings.setJavaScriptEnabled(true);
     webSettings.setPluginState(PluginState.ON);
     webSettings.setSupportZoom(true);
+
     webSettings.setBuiltInZoomControls(true);
 
     // 设置WebView屏幕对齐
