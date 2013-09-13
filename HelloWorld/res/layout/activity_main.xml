@@ -2,6 +2,7 @@
     android:id="@+id/main_scrollView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -16,11 +17,12 @@
             android:id="@+id/fileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:hint="fileName"
             android:imeOptions="actionGo"
             android:inputType="text" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/putInFileContent" />
 
@@ -28,12 +30,24 @@
             android:id="@+id/fileContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:minLines="3" />
+            android:hint="fileContent" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/url_"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="http://www.baidu.com" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <GridLayout
+            android:id="@+id/gridlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
             android:orientation="horizontal" >
 
             <Button
@@ -53,80 +67,81 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rest" />
-        </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="notification"
-            android:text="Notification" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="notification"
+                android:text="Notification" />
 
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go to Second" />
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Go to Second" />
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSaveFile"
+                android:text="SaveFile" />
 
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onSaveFile"
-            android:text="SaveFile" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="IntentManager"
+                android:tag="com.myAndroid.helloworld.activity.DataListActivity"
+                android:text="ListView" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="IntentManager"
-            android:tag="com.myAndroid.helloworld.activity.DataListActivity"
-            android:text="ListView" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="IntentManager"
+                android:tag="com.myAndroid.helloworld.activity.PopupwindowOnLeftActivity"
+                android:text="popupwindow" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="IntentManager"
-            android:tag="com.myAndroid.helloworld.activity.PopupwindowOnLeftActivity"
-            android:text="popupwindow" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="IntentManager"
+                android:tag="com.myAndroid.helloworld.activity.SendMessageActivity"
+                android:text="sendMessage" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="IntentManager"
-            android:tag="com.myAndroid.helloworld.activity.SendMessageActivity"
-            android:text="sendMessage" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="IntentManager"
+                android:tag="com.myAndroid.helloworld.activity.SlidingDrawerActivity"
+                android:text="slidingDrawer" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="IntentManager"
-            android:tag="com.myAndroid.helloworld.activity.SlidingDrawerActivity"
-            android:text="slidingDrawer" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="IntentManager"
+                android:tag="com.myAndroid.helloworld.activity.DownloadManagerActivity"
+                android:text="downloadmanager" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="IntentManager"
-            android:tag="com.myAndroid.helloworld.activity.DownloadManagerActivity"
-            android:text="downloadmanageractivity" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="IntentManager"
+                android:tag="com.myAndroid.helloworld.activity.ImageViewActivity"
+                android:text="ImageViewActivity" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="IntentManager"
-            android:tag="com.myAndroid.helloworld.activity.ImageViewActivity"
-            android:text="ImageViewActivity" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="IntentManager"
-            android:tag="com.myAndroid.helloworld.activity.WebViewActivity"
-            android:text="WebViewActivity" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="IntentManager"
+                android:tag="com.myAndroid.helloworld.activity.WebViewActivity"
+                android:text="WebViewActivity" />
+            
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="openLink"
+                android:text="OpenLink" />
+        </GridLayout>
     </LinearLayout>
 
 </ScrollView>

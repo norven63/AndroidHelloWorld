@@ -3,6 +3,10 @@ package com.myAndroid.helloworld.activity;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
+import android.text.util.Linkify;
+
+import android.widget.GridLayout;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -68,6 +72,18 @@ public class MainActivity extends Activity {
     }
   }
 
+  public void notification(View view) {
+    Intent intent = new Intent(this, ThirdActivity.class);
+    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+    notification =
+        new Notification.Builder(this).setContentText("Hello World!").setContentTitle("Hello").setSmallIcon(R.drawable.ic_launcher)
+            .setContentIntent(pendingIntent).setDefaults(Notification.DEFAULT_SOUND).build();
+    notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+    notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    notificationManager.notify(ID, notification);
+  }
+
   @Override
   // Action Bar
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,10 +98,12 @@ public class MainActivity extends Activity {
     mi1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
     LayoutInflater layoutInflater = LayoutInflater.from(this);
+    // LayoutInflater layoutInflater = getLayoutInflater();这种方式也可以
     View view = layoutInflater.inflate(R.layout.actionbar_item_view, null);
     RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.actionBarItemLayout);
 
-    relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+    relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+        RelativeLayout.LayoutParams.WRAP_CONTENT));
     final TextView newTextView = new TextView(this);
     ColorStateList colorStateList = getResources().getColorStateList(R.color.white);
     newTextView.setText("M1-ActionView");
@@ -97,7 +115,8 @@ public class MainActivity extends Activity {
       }
     });
 
-    RelativeLayout.LayoutParams rLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    RelativeLayout.LayoutParams rLayoutParams =
+        new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     // rLayoutParams.addRule(RelativeLayout.RIGHT_OF, textView.getId());
     relativeLayout.addView(newTextView, rLayoutParams);
 
@@ -174,6 +193,11 @@ public class MainActivity extends Activity {
     }
   }
 
+  @SuppressLint("ResourceAsColor")
+  public void openLink(View view) {
+    Linkify.addLinks((TextView) findViewById(R.id.url_), Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
+  }
+
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -209,16 +233,18 @@ public class MainActivity extends Activity {
     ActionBar bar = getActionBar();
     bar.setDisplayHomeAsUpEnabled(true);// 使action bar可以被点击
 
+    // 硬编码绘制ActionBar的内容-begin
     LayoutInflater layoutInflater = LayoutInflater.from(this);
     View view = layoutInflater.inflate(R.layout.actionbar_view, null);
     LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.actionBarLayout);
 
-    linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+    linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT));
 
     final TextView newTextView1 = new TextView(this);
     newTextView1.setId(1);
     ColorStateList colorStateList = getResources().getColorStateList(R.color.white);
-    newTextView1.setText("ActionBar1");
+    newTextView1.setText("/ActionBar1");
     newTextView1.setTextColor(colorStateList);
     newTextView1.setOnClickListener(new OnClickListener() {
       @Override
@@ -227,11 +253,12 @@ public class MainActivity extends Activity {
       }
     });
 
-    LinearLayout.LayoutParams rLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    LinearLayout.LayoutParams rLayoutParams =
+        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     linearLayout.addView(newTextView1, rLayoutParams);
 
     final TextView newTextView = new TextView(this);
-    newTextView.setText("ActionBar2");
+    newTextView.setText("/ActionBar2");
     newTextView.setTextColor(colorStateList);
     newTextView.setOnClickListener(new OnClickListener() {
       @Override
@@ -242,8 +269,9 @@ public class MainActivity extends Activity {
 
     linearLayout.addView(newTextView, rLayoutParams);
 
-    bar.setDisplayShowCustomEnabled(true);
+    bar.setDisplayShowCustomEnabled(true);// 使ActionBar可以显示自定义的界面
     bar.setCustomView(view);
+    // 硬编码绘制ActionBar的内容-end
 
     bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);// 标签模式ActionBar
     for (int i = 0; i < 4; i++) {
@@ -253,8 +281,8 @@ public class MainActivity extends Activity {
       tab.setTabListener(new TabListener() {
 
         @Override
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-          Toast.makeText(MainActivity.this, "onTabUnselected-" + ii, Toast.LENGTH_SHORT).show();
+        public void onTabReselected(Tab tab, FragmentTransaction ft) {
+          Toast.makeText(MainActivity.this, "onTabReselected-" + ii, Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -263,8 +291,8 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
-          Toast.makeText(MainActivity.this, "onTabReselected-" + ii, Toast.LENGTH_SHORT).show();
+        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+          Toast.makeText(MainActivity.this, "onTabUnselected-" + ii, Toast.LENGTH_SHORT).show();
         }
       });
       if (0 == i) {
@@ -321,6 +349,9 @@ public class MainActivity extends Activity {
 
     button2.setVisibility(View.GONE);// VISIBLE:位置留白. GONE:位置补上.
 
+    // GridLayout gridLayout = (GridLayout) findViewById(R.id.gridlayout);
+    // gridLayout.removeView(button2);// GridLayout的字View即使设置GONE也不会补位,需要硬编码将其删除
+
     // 回填perferences值到页面上
     button3.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -369,17 +400,7 @@ public class MainActivity extends Activity {
       }
     });
 
-    // handler.post(Runnable());
-  }
-
-  public void notification(View view) {
-    Intent intent = new Intent(this, ThirdActivity.class);
-    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-    notification = new Notification.Builder(this).setContentText("Hello World!").setContentTitle("Hello").setSmallIcon(R.drawable.ic_launcher).setContentIntent(pendingIntent)
-        .setDefaults(Notification.DEFAULT_SOUND).build();
-    notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-    notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-    notificationManager.notify(ID, notification);
+    TextView urlTextView = (TextView) findViewById(R.id.url_);
+    // Linkify.addLinks(urlTextView, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
   }
 }
