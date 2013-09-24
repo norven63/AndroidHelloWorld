@@ -1,11 +1,10 @@
 package com.myAndroid.helloworld.activity;
 
+import com.myAndroid.helloworld.R;
+import com.myAndroid.helloworld.service.SaveFileService;
+
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-
-import android.text.util.Linkify;
-
-import android.widget.GridLayout;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -22,6 +21,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,6 +35,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -42,9 +44,7 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.myAndroid.helloworld.R;
-import com.myAndroid.helloworld.service.SaveFileService;
+import android.widget.ToggleButton;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
@@ -402,5 +402,17 @@ public class MainActivity extends Activity {
 
     TextView urlTextView = (TextView) findViewById(R.id.url_);
     // Linkify.addLinks(urlTextView, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
+
+    ToggleButton toggleButton = (ToggleButton) findViewById(R.id.togglebutton);
+    toggleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (true == isChecked) {
+          Toast.makeText(MainActivity.this, "Checked!-下载", Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(MainActivity.this, "UnChecked!-删除", Toast.LENGTH_SHORT).show();
+        }
+      }
+    });
   }
 }

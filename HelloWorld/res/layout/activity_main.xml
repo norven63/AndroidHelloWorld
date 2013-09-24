@@ -8,9 +8,25 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+        <ToggleButton
+            android:id="@+id/togglebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:textOff="删除"
+            android:textOn="下载" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:textOff="删除"
+            android:textOn="下载" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:text="@string/putInFileName" />
 
         <EditText
@@ -135,7 +151,7 @@
                 android:onClick="IntentManager"
                 android:tag="com.myAndroid.helloworld.activity.WebViewActivity"
                 android:text="WebViewActivity" />
-            
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
