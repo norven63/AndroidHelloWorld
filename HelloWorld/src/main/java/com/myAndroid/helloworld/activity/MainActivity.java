@@ -117,7 +117,7 @@ public class MainActivity extends Activity {
 
     RelativeLayout.LayoutParams rLayoutParams =
         new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-    // rLayoutParams.addRule(RelativeLayout.RIGHT_OF, textView.getId());
+    // rLayoutParams.addRule(RelativeLayout.RIGHT_OF, textView.getId());//设置rgithOf属性,其他的可举一反三
     relativeLayout.addView(newTextView, rLayoutParams);
 
     mi1.setActionView(relativeLayout);
