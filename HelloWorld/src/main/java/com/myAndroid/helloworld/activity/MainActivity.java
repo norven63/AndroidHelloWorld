@@ -48,7 +48,7 @@ import android.widget.ToggleButton;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
-  private final int ID = 1;
+  private final static int NOTIFICATION_ID = 1;
   private Notification notification;
   private NotificationManager notificationManager;
 
@@ -81,7 +81,7 @@ public class MainActivity extends Activity {
     notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
     notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-    notificationManager.notify(ID, notification);
+    notificationManager.notify(NOTIFICATION_ID, notification);
   }
 
   @Override
