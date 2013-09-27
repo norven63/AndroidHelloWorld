@@ -80,7 +80,8 @@
                 <action android:name="com.myAndroid.helloworld.second" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-
+                
+                <!-- 隐式意图启动时,不可以缺少一个匹配,建议使用setDataAndType() -->
                 <data android:scheme="thehead" />
                 <data android:mimeType="image/gif" />
             </intent-filter>

@@ -35,10 +35,16 @@ public class ThirdActivity extends Activity {
     button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        // ��ʽ��ͼ
+        // 隐式意图
         Intent intent_ = new Intent();
         intent_.setAction("com.myAndroid.helloworld.second");
+        // Data和Type不要分开来写,否则报错,原因不明
         intent_.setDataAndType(Uri.parse("thehead://www.itcast.cn"), "image/gif");
+        // intent_.setData(Uri.parse("thehead://www.itcast.cn"));
+        // intent_.setType("image/gif");
+
+        intent_.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         startActivity(intent_);
       }
     });
@@ -51,13 +57,13 @@ public class ThirdActivity extends Activity {
     // 此类绑定会同生共死
     bindService(serviceIntent, new ServiceConnection() {
       @Override
-      public void onServiceDisconnected(ComponentName name) {
+      public void onServiceConnected(ComponentName name, IBinder service) {
         // TODO Auto-generated method stub
 
       }
 
       @Override
-      public void onServiceConnected(ComponentName name, IBinder service) {
+      public void onServiceDisconnected(ComponentName name) {
         // TODO Auto-generated method stub
 
       }
