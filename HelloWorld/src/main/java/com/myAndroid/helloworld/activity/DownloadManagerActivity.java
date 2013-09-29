@@ -20,12 +20,13 @@ import android.widget.Toast;
 
 import com.myAndroid.helloworld.R;
 
+import java.io.File;
+
 public class DownloadManagerActivity extends Activity {
   private DownloadManager downloadManager;
   private long referenceID;
   private BroadcastReceiver broadcastReceiver;
-  private Uri uri = Uri
-      .parse("http://dl3.c8.sendfile.vip.xunlei.com:8000/3DMGAME-DuckTales.Remastered.CHS.Patch.v1.0-3DM.rar?key=64e447f90642e944f947db154ea92b8c&file_url=%2Fgdrive%2Fresource%2F02%2FA8%2F0279899DDD2BC8489D9C39EC55E1A29FA1D3B0A8&file_type=1&authkey=E7DBE0BDC135569BA4DAA4BEBB0F8D45B3D5C117BFA2AA94DAC3B849FC29AEAD&exp_time=1378583209&from_uid=232777&task_id=5912202781390639106&get_uid=1001782575&f=lixian.vip.xunlei.com&reduce_cdn=1&fid=uoa9VBUGmZa6Ge1W1O83tUfMB8TN508DAAAAAAJ5iZ3dK8hInZw57FXhop+h07Co&mid=666&threshold=150&tid=C3011028D270E157BAF4739FC1A04E8A&srcid=7&verno=1");
+  private final Uri uri = Uri.parse("http://www.trinea.cn/wp-content/uploads/2013/05/downloadDemo2.gif");
 
   @SuppressLint("NewApi")
   @Override
@@ -36,19 +37,20 @@ public class DownloadManagerActivity extends Activity {
     downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
     Button startButton = (Button) findViewById(R.id.startdownload);
-    // 开始下载
+    // 启动下载
     startButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View arg0) {
         DownloadManager.Request request = new Request(uri);
-        referenceID = downloadManager.enqueue(request);
-
         // 设置下载存放路径
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, "test_downloadmanager.zip");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "xxxxx2.gif");
 
         // 自定义Notification
         request.setTitle("testdownload");
         request.setDescription("Test");
+
+        // 开始下载
+        referenceID = downloadManager.enqueue(request);
       }
     });
 
@@ -78,6 +80,8 @@ public class DownloadManagerActivity extends Activity {
       @Override
       public void onReceive(Context arg0, Intent arg1) {
         Toast.makeText(DownloadManagerActivity.this, "Clicke Notification!", Toast.LENGTH_SHORT).show();
+
+        // 获得被点击notification的id
         long ids[] = arg1.getLongArrayExtra(DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS);
         for (long id : ids) {
           downloadManager.remove(id);

@@ -2,6 +2,10 @@ package com.myAndroid.helloworld.activity;
 
 import com.myAndroid.helloworld.R;
 
+import android.content.Context;
+
+import android.os.Environment;
+
 import android.util.Log;
 
 import android.content.Intent;
@@ -20,9 +24,8 @@ public class SendOrderReceiverActivity extends Activity {
 
   public void sendOrderReceiver(View view) {
     Intent intent = new Intent(RECEIVER_ACTIVITION);
-    intent.putExtra(DATA, "Data from activity.");
+    intent.putExtra(DATA, "Data from activity!");
     sendOrderedBroadcast(intent, RECEIVER_PERMISSION);
-    // sendBroadcast(intent);
 
     Log.i("ORDER_RECEIVER", "Receiver has been sent!");
   }

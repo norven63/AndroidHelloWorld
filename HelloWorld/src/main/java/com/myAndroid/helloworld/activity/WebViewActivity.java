@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 
 import com.myAndroid.helloworld.R;
 
+import android.webkit.WebViewClient;
+
 public class WebViewActivity extends Activity {
   private ProgressBar progressBar;
   private WebView webView;
@@ -38,18 +40,27 @@ public class WebViewActivity extends Activity {
     webSettings.setUseWideViewPort(true);
     webSettings.setLoadWithOverviewMode(true);
 
-    webView.loadUrl("http://server.drive.goodow.com/serve?id=f6iose8sw77zscz7jo1xxy60ndq5m62s8qwja9ib3pj5etaa1lwiefl8qcibo9nu4i5suormb773znn7wgodiy46wr428jqur2hlsotdv3fhmjzgkae");
+    webView.loadUrl("http://www.baidu.com");
 
     webView.setWebChromeClient(new WebChromeClient() {
       @Override
       public void onProgressChanged(WebView view, final int newProgress) {
         super.onProgressChanged(view, newProgress);
+        // 根据加载进度,动态更新进度条
         progressBar.setProgress(newProgress);
 
         if (newProgress == 100) {
           progressBar.setVisibility(View.GONE);
           webView.setVisibility(View.VISIBLE);
         }
+      }
+    });
+
+    webView.setWebViewClient(new WebViewClient() {
+      @Override
+      public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        view.loadUrl(url);// 页面中的跳转行为在webView中执行,而不是打开一个浏览器执行
+        return true;
       }
     });
   }
