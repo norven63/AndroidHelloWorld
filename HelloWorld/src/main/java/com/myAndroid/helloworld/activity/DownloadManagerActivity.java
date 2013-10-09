@@ -84,6 +84,18 @@ public class DownloadManagerActivity extends Activity {
         // 获得被点击notification的id
         long ids[] = arg1.getLongArrayExtra(DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS);
         for (long id : ids) {
+          // 查询本次点击的对象
+          Query query = new Query();
+          query.setFilterById(id);
+
+          Cursor cursor = downloadManager.query(query);
+
+          int fileNameIndex = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME);
+          String fileName = cursor.getString(fileNameIndex);
+
+          Toast.makeText(DownloadManagerActivity.this, fileName, Toast.LENGTH_SHORT).show();
+
+          // 删除本次点击的对象
           downloadManager.remove(id);
         }
       }

@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="notification"
-                android:text="Notification" />
+                android:text="消息栏" />
 
             <Button
                 android:id="@+id/button4"
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="IntentManager"
                 android:tag="com.myAndroid.helloworld.activity.PopupwindowOnLeftActivity"
-                android:text="popupwindow" />
+                android:text="弹出框" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="IntentManager"
                 android:tag="com.myAndroid.helloworld.activity.SlidingDrawerActivity"
-                android:text="slidingDrawer" />
+                android:text="滑动效果" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -156,14 +156,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="openLink"
-                android:text="OpenLink" />
-            
+                android:text="超链接" />
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="IntentManager"
                 android:tag="com.myAndroid.helloworld.activity.SendOrderReceiverActivity"
-                android:text="OrderReciver" />
+                android:text="有序广播" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="IntentManager"
+                android:tag="com.myAndroid.helloworld.activity.SearchActivity"
+                android:text="搜索栏" />
         </GridLayout>
     </LinearLayout>
 
