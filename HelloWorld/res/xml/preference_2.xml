@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="Title-II" >
+        <ListPreference
+            android:entries="@array/preference_key"
+            android:entryValues="@array/preference_value"
+            android:key="list"
+            android:summary="Choose one."
+            android:title="列表"
+            android:dialogTitle="请选择:"/>
+        
+        <RingtonePreference android:key="list"
+            android:summary="设置铃声"
+            android:title="铃声"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

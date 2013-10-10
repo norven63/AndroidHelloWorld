@@ -43,7 +43,8 @@ public class DownloadManagerActivity extends Activity {
       public void onClick(View arg0) {
         DownloadManager.Request request = new Request(uri);
         // 设置下载存放路径
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "xxxxx2.gif");
+        // request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "xxxxx2.gif");
+        request.setDestinationInExternalFilesDir(DownloadManagerActivity.this, Environment.DIRECTORY_DOWNLOADS, "xxxxx2.gif");
 
         // 自定义Notification
         request.setTitle("testdownload");

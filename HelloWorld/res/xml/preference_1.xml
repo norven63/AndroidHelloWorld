@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="Title-I" >
+        <CheckBoxPreference
+            android:key="checkBox"
+            android:summaryOff="It is OFF!"
+            android:summaryOn="It is ON!"
+            android:title="CheckBox" />
+
+        <EditTextPreference
+            android:key="editText"
+            android:summary="Edit something."
+            android:title="EditText" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Title-II" >
+        <CheckBoxPreference
+            android:key="checkBox_2"
+            android:summaryOff="It is OFF!"
+            android:summaryOn="It is ON!"
+            android:title="CheckBox-2" />
+
+        <EditTextPreference
+            android:key="editText_2"
+            android:summary="Edit something."
+            android:title="EditText-2" />
+    </PreferenceCategory>
+
+    <PreferenceScreen android:title="子首选项" >
+        <PreferenceCategory android:title="子首选项界面" >
+            <CheckBoxPreference
+                android:key="checkBox_3"
+                android:summaryOff="It is OFF!"
+                android:summaryOn="It is ON!"
+                android:title="CheckBox-3" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+
+</PreferenceScreen>

@@ -6,13 +6,30 @@
     <string name="hello_world">Hello world!</string>
     <string name="second_activity">The Second Activity</string>
     <string name="third_activity">The Third Activity</string>
-    
-    <!--  saveFile  -->
+
+    <!-- saveFile -->
     <string name="putInFileName">请输入文件名</string>
-    <string name="fileName">文件名</string>    
+    <string name="fileName">文件名</string>
     <string name="putInFileContent">请输入文件内容</string>
-    <string name="fileContent">文件内容</string>       
+    <string name="fileContent">文件内容</string>
     <string name="saveSuccess">保存成功</string>
     <string name="saveFail">保存失败</string>
 
+    <string-array name="spinner_key">
+        <item>选项一</item>
+        <item>选项二</item>
+        <item>选项三</item>
+    </string-array>
+
+    <string-array name="preference_key">
+        <item>选项一</item>
+        <item>选项二</item>
+        <item>选项三</item>
+    </string-array>
+    
+    <string-array name="preference_value">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

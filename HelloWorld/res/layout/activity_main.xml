@@ -3,175 +3,183 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <LinearLayout
+    <HorizontalScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content" >
 
-        <ToggleButton
-            android:id="@+id/togglebutton"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:textOff="删除"
-            android:textOn="下载" />
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical" >
 
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:textOff="删除"
-            android:textOn="下载" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="@string/putInFileName" />
-
-        <EditText
-            android:id="@+id/fileName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="fileName"
-            android:imeOptions="actionGo"
-            android:inputType="text" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/putInFileContent" />
-
-        <EditText
-            android:id="@+id/fileContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="fileContent" />
-
-        <TextView
-            android:id="@+id/url_"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="http://www.baidu.com" />
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <GridLayout
-            android:id="@+id/gridlayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/button"
+            <ToggleButton
+                android:id="@+id/togglebutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="doSaveFile" />
+                android:layout_marginBottom="20dp"
+                android:textOff="删除"
+                android:textOn="下载" />
 
-            <Button
-                android:id="@+id/button2"
+            <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="doSavePre" />
+                android:layout_marginBottom="20dp"
+                android:textOff="删除"
+                android:textOn="下载" />
 
-            <Button
-                android:id="@+id/button3"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rest" />
+                android:text="@string/putInFileName" />
 
-            <Button
+            <EditText
+                android:id="@+id/fileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="notification"
-                android:text="消息栏" />
+                android:hint="fileName"
+                android:imeOptions="actionGo"
+                android:inputType="text" />
 
-            <Button
-                android:id="@+id/button4"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/putInFileContent" />
+
+            <EditText
+                android:id="@+id/fileContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Go to Second" />
+                android:hint="fileContent" />
 
-            <Button
-                android:id="@+id/button5"
+            <TextView
+                android:id="@+id/url_"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onSaveFile"
-                android:text="SaveFile" />
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:text="http://www.baidu.com" />
 
-            <Button
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <GridLayout
+                android:id="@+id/gridlayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="IntentManager"
-                android:tag="com.myAndroid.helloworld.activity.DataListActivity"
-                android:text="ListView" />
+                android:columnCount="2"
+                android:orientation="horizontal" >
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="IntentManager"
-                android:tag="com.myAndroid.helloworld.activity.PopupwindowOnLeftActivity"
-                android:text="弹出框" />
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="doSaveFile" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="IntentManager"
-                android:tag="com.myAndroid.helloworld.activity.SendMessageActivity"
-                android:text="sendMessage" />
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="doSavePre" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="IntentManager"
-                android:tag="com.myAndroid.helloworld.activity.SlidingDrawerActivity"
-                android:text="滑动效果" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="notification"
+                    android:text="消息栏" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="IntentManager"
-                android:tag="com.myAndroid.helloworld.activity.DownloadManagerActivity"
-                android:text="downloadmanager" />
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Go to Second" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="IntentManager"
-                android:tag="com.myAndroid.helloworld.activity.ImageViewActivity"
-                android:text="ImageViewActivity" />
+                <Button
+                    android:id="@+id/button5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onSaveFile"
+                    android:text="SaveFile" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="IntentManager"
-                android:tag="com.myAndroid.helloworld.activity.WebViewActivity"
-                android:text="WebViewActivity" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.DataListActivity"
+                    android:text="ListView" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="openLink"
-                android:text="超链接" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.PopupwindowOnLeftActivity"
+                    android:text="弹出框" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="IntentManager"
-                android:tag="com.myAndroid.helloworld.activity.SendOrderReceiverActivity"
-                android:text="有序广播" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.SendMessageActivity"
+                    android:text="sendMessage" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="IntentManager"
-                android:tag="com.myAndroid.helloworld.activity.SearchActivity"
-                android:text="搜索栏" />
-        </GridLayout>
-    </LinearLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.SlidingDrawerActivity"
+                    android:text="滑动效果" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.DownloadManagerActivity"
+                    android:text="downloadmanager" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.ImageViewActivity"
+                    android:text="ImageViewActivity" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.WebViewActivity"
+                    android:text="WebViewActivity" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="openLink"
+                    android:text="超链接" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.SendOrderReceiverActivity"
+                    android:text="有序广播" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.SearchActivity"
+                    android:text="搜索栏" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.MyPreferenceActivity"
+                    android:text="首选项示例" />
+            </GridLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </ScrollView>

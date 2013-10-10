@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+    <header
+        android:fragment="com.myAndroid.helloworld.fragment.PreferenceFragment_1"
+        android:title="首选项1"
+        android:summary="点击进行设置" />
+    
+    <header 
+        android:fragment="com.myAndroid.helloworld.fragment.PreferenceFragment_2"
+        android:title="首选项2"
+        android:summary="点击进行设置" />
+</preference-headers>

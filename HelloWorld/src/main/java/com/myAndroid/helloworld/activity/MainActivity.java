@@ -56,7 +56,6 @@ public class MainActivity extends Activity {
   private EditText fileContent;
   private Button button;
   private Button button2;
-  private Button button3;
   private Button button4;
   private Spinner spinner;
   private SaveFileService service;
@@ -307,7 +306,6 @@ public class MainActivity extends Activity {
     service = new SaveFileService(this);
     button = (Button) findViewById(R.id.button);
     button2 = (Button) findViewById(R.id.button2);
-    button3 = (Button) findViewById(R.id.button3);
     button4 = (Button) findViewById(R.id.button4);
     spinner = (Spinner) findViewById(R.id.spinner);
     // 建立perference文件并开启编辑
@@ -347,19 +345,10 @@ public class MainActivity extends Activity {
       }
     });
 
-    button2.setVisibility(View.GONE);// VISIBLE:位置留白. GONE:位置补上.
+    button2.setVisibility(View.GONE);// VISIBLE:位置留白;GONE:位置补上. 但是GridLayout情况特殊,如下代码所示:
 
     // GridLayout gridLayout = (GridLayout) findViewById(R.id.gridlayout);
-    // gridLayout.removeView(button2);// GridLayout的字View即使设置GONE也不会补位,需要硬编码将其删除
-
-    // 回填perferences值到页面上
-    button3.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        fileName.setText(spf.getString("fileName", ""));
-        fileContent.setText(spf.getString("fileContent", ""));
-      }
-    });
+    // gridLayout.removeView(button2);// GridLayout的字View即使设置GONE也不会补位,需要调用removeView()方法将其删除
 
     // 显示意图,并等待回值
     button4.setOnClickListener(new View.OnClickListener() {
