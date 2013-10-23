@@ -9,12 +9,12 @@ import android.app.Activity;
 
 public class SendOrderReceiverActivity extends Activity {
   public static final String RECEIVER_PERMISSION = "com.myAndroid.hellorld.orderReceiver.permission";
-  public static final String RECEIVER_ACTIVITION = "com.myAndroid.hellorld.orderReceiver.action";
+  public static final String RECEIVER_ACTION = "com.myAndroid.hellorld.orderReceiver.action";
 
   public static final String DATA = "data";
 
   public void sendOrderReceiver(View view) {
-    Intent intent = new Intent(RECEIVER_ACTIVITION);
+    Intent intent = new Intent(RECEIVER_ACTION);
     intent.putExtra(DATA, "Data from activity!");
     sendOrderedBroadcast(intent, RECEIVER_PERMISSION);
 

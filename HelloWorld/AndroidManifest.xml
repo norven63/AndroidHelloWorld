@@ -66,16 +66,23 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="myAndroid.helloworld.receiver.MYWIDGET_BORADCAST_ic001" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="myAndroid.helloworld.receiver.MYWIDGET_BORADCAST_ic_launcher" />
+            </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/mywidget_provider" />
         </receiver>
 
-        <service android:name=".service.SendMessageService" >
-        </service>
-        <service android:name=".service.TestService" >
-        </service>
+        <service android:name=".service.SendMessageService" />
+        <service android:name=".service.TestService" />
+        <service
+            android:name=".service.MyRemoteViewService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <activity
             android:name=".activity.MainActivity"

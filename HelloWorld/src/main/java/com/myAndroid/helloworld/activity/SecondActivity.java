@@ -14,16 +14,73 @@ import android.widget.Toast;
 import com.myAndroid.helloworld.R;
 
 public class SecondActivity extends Activity {
+  private GestureDetector gd;
+
+  /**
+   * 处理手指touch屏幕事件
+   * 
+   */
+  private float startPoint = 0;
+
+  @Override
+  public boolean dispatchTouchEvent(MotionEvent ev) {
+    // 请记住这段代码,为了消除事件捕获冲突,使onFling()能够正常执行
+    if (gd.onTouchEvent(ev)) {
+      ev.setAction(MotionEvent.ACTION_CANCEL);
+
+    }
+
+    return super.dispatchTouchEvent(ev);
+  }
+
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    // gd.onTouchEvent(event); //手势事件,会和手指touch事件冲突,不可同用
+
+    switch (event.getAction()) {
+    case MotionEvent.ACTION_DOWN:
+      startPoint = event.getX();
+
+      Toast.makeText(SecondActivity.this, "ACTION_DOWN:" + startPoint, Toast.LENGTH_SHORT).show();
+
+      break;
+    case MotionEvent.ACTION_UP:
+      startPoint = 0;
+
+      Toast.makeText(SecondActivity.this, "ACTION_UP:" + startPoint, Toast.LENGTH_SHORT).show();
+
+      break;
+    case MotionEvent.ACTION_MOVE:
+      Toast.makeText(SecondActivity.this, "ACTION_MOVE", Toast.LENGTH_SHORT).show();
+
+      break;
+    default:
+
+      break;
+    }
+
+    return true;
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.secondactivity);
 
-     TextView textView = (TextView) findViewById(R.id.text);
-     textView.setSelected(true);// 使其文字可滚动
+    TextView textView = (TextView) findViewById(R.id.text);
+    textView.setSelected(true);// 使其文字可滚动
 
     Intent intent = this.getIntent();
-    Toast.makeText(this, intent.getStringExtra("success"), Toast.LENGTH_SHORT).show();
+
+    String fromWidget = intent.getStringExtra("widget");
+    if (null != fromWidget) {
+      Toast.makeText(this, fromWidget, Toast.LENGTH_SHORT).show();
+    }
+
+    String success = intent.getStringExtra("success");
+    if (null != success) {
+      Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
+    }
 
     Button button2main = (Button) findViewById(R.id.secondB2main);
     button2main.setOnClickListener(new View.OnClickListener() {
@@ -79,53 +136,4 @@ public class SecondActivity extends Activity {
       }
     });
   }
-
-  private GestureDetector gd;
-
-  @Override
-  public boolean dispatchTouchEvent(MotionEvent ev) {
-    // 请记住这段代码,为了消除事件捕获冲突,使onFling()能够正常执行
-    if (gd.onTouchEvent(ev)) {
-      ev.setAction(MotionEvent.ACTION_CANCEL);
-
-    }
-
-    return super.dispatchTouchEvent(ev);
-  }
-
-  /**
-   * 处理手指touch屏幕事件
-   * 
-   */
-  private float startPoint = 0;
-
-  @Override
-  public boolean onTouchEvent(MotionEvent event) {
-    // gd.onTouchEvent(event); //手势事件,会和手指touch事件冲突,不可同用
-
-    switch (event.getAction()) {
-    case MotionEvent.ACTION_DOWN:
-      startPoint = event.getX();
-
-      Toast.makeText(SecondActivity.this, "ACTION_DOWN:" + startPoint, Toast.LENGTH_SHORT).show();
-
-      break;
-    case MotionEvent.ACTION_UP:
-      startPoint = 0;
-
-      Toast.makeText(SecondActivity.this, "ACTION_UP:" + startPoint, Toast.LENGTH_SHORT).show();
-
-      break;
-    case MotionEvent.ACTION_MOVE:
-      Toast.makeText(SecondActivity.this, "ACTION_MOVE", Toast.LENGTH_SHORT).show();
-
-      break;
-    default:
-
-      break;
-    }
-
-    return true;
-  }
-
 }
