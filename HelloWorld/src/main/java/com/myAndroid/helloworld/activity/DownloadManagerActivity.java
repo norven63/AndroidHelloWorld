@@ -1,8 +1,5 @@
 package com.myAndroid.helloworld.activity;
 
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.http.HttpTransport;
-
 import com.myAndroid.helloworld.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,8 +20,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class DownloadManagerActivity extends Activity {
-  private final HttpTransport HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
-
   private DownloadManager downloadManager;
   private long referenceID;
   private BroadcastReceiver broadcastReceiver;

@@ -26,6 +26,21 @@
           </exclusion>
         </exclusions>
       </dependency>
+      <dependency>
+        <groupId>com.google.http-client</groupId>
+        <artifactId>google-http-client-jackson2</artifactId>
+        <version>${google.apis.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>xpp3</groupId>
+            <artifactId>xpp3</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
@@ -50,6 +65,10 @@
     <dependency>
       <groupId>com.google.api-client</groupId>
       <artifactId>google-api-client-android</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.http-client</groupId>
+      <artifactId>google-http-client-jackson2</artifactId>
     </dependency>
     <!-- guice -->
     <dependency>
