@@ -13,6 +13,21 @@
     <guice.version>3.0</guice.version>
     <google.apis.version>1.15.0-rc</google.apis.version>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.google.api-client</groupId>
+        <artifactId>google-api-client-android</artifactId>
+        <version>${google.apis.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.google.android.google-play-services</groupId>
+            <artifactId>google-play-services</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <!-- android sdk -->
     <dependency>
@@ -31,9 +46,11 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <!-- <dependency> <groupId>com.google.api-client</groupId> <artifactId>google-api-client</artifactId> <version>${google.apis.version}</version> 
-      </dependency> <dependency> <groupId>com.google.http-client</groupId> <artifactId>google-http-client</artifactId> <version>${google.apis.version}</version> 
-      </dependency> -->
+    <!-- com.google.api-client -->
+    <dependency>
+      <groupId>com.google.api-client</groupId>
+      <artifactId>google-api-client-android</artifactId>
+    </dependency>
     <!-- guice -->
     <dependency>
       <groupId>com.google.inject</groupId>
@@ -46,6 +63,7 @@
       <artifactId>roboguice</artifactId>
       <version>2.0</version>
     </dependency>
+    <!-- android-support-v4 -->
     <dependency>
       <groupId>com.github.rchugunov</groupId>
       <artifactId>android-support-v4</artifactId>
