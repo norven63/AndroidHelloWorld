@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -62,6 +63,8 @@ public class MainActivity extends Activity {
   private SharedPreferences spf;
   private Editor editor;
 
+  private Menu barMenu;
+
   public void IntentManager(View view) {
     try {
       Intent i = new Intent(this, Class.forName(view.getTag().toString()));
@@ -88,11 +91,17 @@ public class MainActivity extends Activity {
   public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
 
+    if (null == barMenu) {
+      barMenu = menu;// 第一次加载时,为barMenu赋值
+    }
+
+    barMenu.clear();
+
     /**
      * mi1使用编码方式填充其布局显示
      */
     // begin
-    MenuItem mi1 = menu.add(0, 0, 0, "Item1");// 第三个int参数用来指定按钮的排列顺序,具体可以看其源码的参数命名
+    MenuItem mi1 = barMenu.add(0, 0, 0, "Item1");// 第三个int参数用来指定按钮的排列顺序,具体可以看其源码的参数命名
     mi1.setIcon(R.drawable.ic_001);
     mi1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
@@ -122,14 +131,14 @@ public class MainActivity extends Activity {
     mi1.setActionView(relativeLayout);
     // end
 
-    MenuItem mi2 = menu.add(0, 1, 1, "Item2");
+    MenuItem mi2 = barMenu.add(0, 1, 1, "Item2");
     mi2.setIcon(R.drawable.ic_launcher);
     mi2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-    MenuItem mi3 = menu.add(0, 2, 2, "Item3");
+    MenuItem mi3 = barMenu.add(0, 2, 2, "Item3");
     mi3.setIcon(R.drawable.ic_launcher);
 
-    MenuItem mi4 = menu.add(0, 3, 3, "Item4");
+    MenuItem mi4 = barMenu.add(0, 3, 3, "Item4");
     mi4.setIcon(R.drawable.ic_launcher);
 
     return true;
@@ -401,6 +410,25 @@ public class MainActivity extends Activity {
         } else {
           Toast.makeText(MainActivity.this, "UnChecked!-删除", Toast.LENGTH_SHORT).show();
         }
+      }
+    });
+
+    View changeBar = findViewById(R.id.changeBar);
+    changeBar.setOnLongClickListener(new OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View v) {
+        barMenu.clear();
+        MenuItem menuItem = barMenu.add(0, 0, 0, "new MenuItem");
+        menuItem.setIcon(R.drawable.icn_slidingdraw);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        return true;
+      }
+    });
+
+    changeBar.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onCreateOptionsMenu(barMenu);
       }
     });
   }

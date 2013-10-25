@@ -13,11 +13,17 @@
             android:layout_marginLeft="15dp"
             android:orientation="vertical" >
 
+            <Button
+                android:id="@+id/changeBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="长按以更改ActionBar" />
+
             <ToggleButton
                 android:id="@+id/togglebutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:textOff="删除"
                 android:textOn="下载" />
 
@@ -178,7 +184,7 @@
                     android:onClick="IntentManager"
                     android:tag="com.myAndroid.helloworld.activity.MyPreferenceActivity"
                     android:text="首选项示例" />
-                
+
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
