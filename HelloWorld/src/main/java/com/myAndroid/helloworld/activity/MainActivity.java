@@ -2,10 +2,10 @@ package com.myAndroid.helloworld.activity;
 
 import com.myAndroid.helloworld.R;
 import com.myAndroid.helloworld.service.SaveFileService;
-
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-
+import android.graphics.BitmapFactory;
+import android.widget.RemoteViews;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -77,9 +77,14 @@ public class MainActivity extends Activity {
   public void notification(View view) {
     Intent intent = new Intent(this, ThirdActivity.class);
     PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+    // 注意这里Builder的用法,设定了很多Notification的属性,而其中setContent(RemoteView)可以使你用一个自定义的布局来填充Notification(此方法并未例句出来,因为会覆盖这之前所有的显示设置)
+    RemoteViews remoteViews = new RemoteViews(MainActivity.this.getPackageName(), R.layout.mynotification_layout);
+
     notification =
         new Notification.Builder(this).setContentText("Hello World!").setContentTitle("Hello").setSmallIcon(R.drawable.ic_launcher)
-            .setContentIntent(pendingIntent).setDefaults(Notification.DEFAULT_SOUND).build();
+            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.image_view2)).setContentIntent(pendingIntent)
+            .setDefaults(Notification.DEFAULT_SOUND).setTicker("Come on!Baby!").build();
     notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
     notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
