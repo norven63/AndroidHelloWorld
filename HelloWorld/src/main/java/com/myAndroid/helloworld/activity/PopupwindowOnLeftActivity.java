@@ -2,16 +2,20 @@ package com.myAndroid.helloworld.activity;
 
 import com.myAndroid.helloworld.R;
 
-import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.PopupWindow;
 
 public class PopupwindowOnLeftActivity extends Activity {
@@ -22,6 +26,21 @@ public class PopupwindowOnLeftActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.popupwindow);
+
+    PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.popBtn2));
+    popupMenu.inflate(R.menu.menu_test);
+    popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+      @Override
+      public boolean onMenuItemClick(MenuItem item) {
+        Toast.makeText(PopupwindowOnLeftActivity.this, item.getItemId(), Toast.LENGTH_SHORT).show();
+        return true;
+      }
+    });
+
+    popupMenu.show();
+    // TODO
+
     // 点击按钮弹出菜单
     Button button = (Button) findViewById(R.id.popBtn);
 
@@ -50,7 +69,7 @@ public class PopupwindowOnLeftActivity extends Activity {
     popupWindow = new PopupWindow(popupWindow_view, 100, 220, true);
 
     ListView listView = (ListView) popupWindow_view.findViewById(R.id.menuList);
-    String[] menus = { "1", "2", "3" };
+    String[] menus = {"1", "2", "3"};
     listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, menus));
 
     // 点击其他地方消失

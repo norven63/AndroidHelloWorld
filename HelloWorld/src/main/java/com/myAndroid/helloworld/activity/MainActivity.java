@@ -4,6 +4,11 @@ import com.myAndroid.helloworld.R;
 import com.myAndroid.helloworld.service.SaveFileService;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+
+import android.view.SubMenu;
+
+import android.view.Window;
+
 import android.graphics.BitmapFactory;
 import android.widget.RemoteViews;
 import android.annotation.SuppressLint;
@@ -97,7 +102,7 @@ public class MainActivity extends Activity {
     super.onCreateOptionsMenu(menu);
 
     if (null == barMenu) {
-      barMenu = menu;// 第一次加载时,为barMenu赋值
+      barMenu = menu;// 第一次加载时,为barMenu赋值,保存此menu的引用
     }
 
     barMenu.clear();
@@ -139,12 +144,26 @@ public class MainActivity extends Activity {
     MenuItem mi2 = barMenu.add(0, 1, 1, "Item2");
     mi2.setIcon(R.drawable.ic_launcher);
     mi2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+    mi2.setTitleCondensed("Short Title");// ????
+    mi2.setShortcut('0', 'b');// 快捷键
 
     MenuItem mi3 = barMenu.add(0, 2, 2, "Item3");
     mi3.setIcon(R.drawable.ic_launcher);
+    mi3.setChecked(true);
 
     MenuItem mi4 = barMenu.add(0, 3, 3, "Item4");
     mi4.setIcon(R.drawable.ic_launcher);
+
+    menu.setGroupCheckable(0, true, true);// 单选框模式
+
+    MenuItem mi5 = barMenu.add(1, 4, 4, "Item5");
+    mi5.setIcon(R.drawable.image_view2);
+
+    // 添加子菜单
+    SubMenu subMenu = barMenu.addSubMenu(1, 5, 5, "SubMenu-1");
+    subMenu.setIcon(R.drawable.ic_launcher);
+    subMenu.add(0, 66, 0, "SubMenu_Item-1");// 子菜单里每个MenuItem的itemId在onOptionsItemSelected()方法中依然适用
+    subMenu.add(0, 88, 1, "SubMenu_Item-2");
 
     return true;
 
@@ -166,27 +185,25 @@ public class MainActivity extends Activity {
   public boolean onOptionsItemSelected(MenuItem item) {
     super.onOptionsItemSelected(item);
     switch (item.getItemId()) {
-    case android.R.id.home:
-      Toast.makeText(this, "应用选项home：" + item.getItemId(), Toast.LENGTH_SHORT).show();
+      case android.R.id.home:
+        /**
+         * 为程序图片添加返回主界面的功能; FLAG_ACTIVITY_CLEAR_TOP是为了清除back
+         * stack中的其他一系列活动,如此一来如果用户单击Back键,应用程序的其他活动将不再显示
+         */
+        Intent i = new Intent(this, MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
 
-      /**
-       * 为程序图片添加返回主界面的功能; FLAG_ACTIVITY_CLEAR_TOP是为了清除back
-       * stack中的其他一系列活动,如此一来如果用户单击Back键,应用程序的其他活动将不再显示
-       */
-      Intent i = new Intent(this, MainActivity.class);
-      i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-      startActivity(i);
+        break;
+      case 1:
+        ActionBar bar = getActionBar();
+        bar.setDisplayHomeAsUpEnabled(false);
 
-      break;
-    case 1:
-      ActionBar bar = getActionBar();
-      bar.setDisplayHomeAsUpEnabled(false);
+        break;
+      default:
+        Toast.makeText(this, "" + item.getItemId(), Toast.LENGTH_SHORT).show();
 
-      break;
-    default:
-      Toast.makeText(this, "" + item.getItemId(), Toast.LENGTH_SHORT).show();
-
-      break;
+        break;
     }
 
     return true;
@@ -222,6 +239,10 @@ public class MainActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    // 此选项使得ActionBar悬浮于Activity之上,致使其可能遮盖Activity部分内容
+    // getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+
     setContentView(R.layout.activity_main);
 
     // ScrollView会拦截Activity的onTouch事件,所以为ScorllView的事件添加监听逻辑
@@ -230,13 +251,13 @@ public class MainActivity extends Activity {
       @Override
       public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN:
-          InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-          inputMethodManager.hideSoftInputFromWindow(fileName.getWindowToken(), 0);
+          case MotionEvent.ACTION_DOWN:
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(fileName.getWindowToken(), 0);
 
-          break;
-        default:
-          break;
+            break;
+          default:
+            break;
         }
 
         return false;// 若返回为true则丧失ScrollView原生的滑动效果
@@ -244,6 +265,8 @@ public class MainActivity extends Activity {
     });
 
     ActionBar bar = getActionBar();
+
+    // bar.setDisplayUseLogoEnabled(false);???
     bar.setDisplayHomeAsUpEnabled(true);// 使action bar可以被点击
 
     // 硬编码绘制ActionBar的内容-begin
@@ -286,11 +309,13 @@ public class MainActivity extends Activity {
     bar.setCustomView(view);
     // 硬编码绘制ActionBar的内容-end
 
-    bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);// 标签模式ActionBar
+    bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);// 标签(Tab)模式ActionBar
     for (int i = 0; i < 4; i++) {
       final int ii = i;
       Tab tab = bar.newTab();
-      tab.setText("Tab" + i);
+      tab.setIcon(R.drawable.ic_launcher);
+      tab.setText("Tab-" + i);
+      tab.setContentDescription("标签:" + i);
       tab.setTabListener(new TabListener() {
 
         @Override
@@ -315,6 +340,8 @@ public class MainActivity extends Activity {
       }
     }
 
+    // bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST); // 下拉框模式ActionBar
+
     fileName = (EditText) findViewById(R.id.fileName);
     fileContent = (EditText) findViewById(R.id.fileContent);
     service = new SaveFileService(this);
@@ -322,6 +349,7 @@ public class MainActivity extends Activity {
     button2 = (Button) findViewById(R.id.button2);
     button4 = (Button) findViewById(R.id.button4);
     spinner = (Spinner) findViewById(R.id.spinner);
+
     // 建立perference文件并开启编辑
     spf = getSharedPreferences("helloworld", MODE_PRIVATE);
     editor = spf.edit();
@@ -375,7 +403,7 @@ public class MainActivity extends Activity {
     });
 
     // 下拉框
-    String[] names = { "abc", "efg", "hig" };
+    String[] names = {"abc", "efg", "hig"};
     spinner.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_selectable_list_item, names));
 
     spinner.setOnItemSelectedListener(new OnItemSelectedListener() {

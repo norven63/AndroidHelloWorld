@@ -9,4 +9,11 @@
         android:layout_height="wrap_content"
         android:text="Clicke" />
 
+    <Button
+        android:id="@+id/popBtn2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Clicke" />
+
 </LinearLayout>
