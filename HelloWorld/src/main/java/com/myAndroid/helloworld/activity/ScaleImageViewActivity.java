@@ -58,7 +58,7 @@ public class ScaleImageViewActivity extends Activity {
         } else if (1 > currentScale) {
           scale -= currentScale / 23;// 比width少除以3个百分比,是因为感觉缩小的时候比较难错
         }
-
+        
         matrix.setScale(scale, scale);
 
         Canvas canvas = surfaceHolder.lockCanvas();

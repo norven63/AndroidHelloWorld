@@ -24,6 +24,7 @@ public class MyPreferenceActivity extends PreferenceActivity {
     super.onCreate(savedInstanceState);
 
     // 为SharedPreferences注册监听,注意该对象的获得方式,并且需要写在onCreate()方法里
+    // 所有偏好设置的值都是和这个SharedPreferences绑定保存的
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
     String editText = sharedPreferences.getString("editText", "");
