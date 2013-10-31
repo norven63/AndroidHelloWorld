@@ -27,19 +27,34 @@ public class PopupwindowOnLeftActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.popupwindow);
 
-    PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.popBtn2));
+    View button_popBtn2 = findViewById(R.id.popBtn2);
+    final PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.popMenu));
     popupMenu.inflate(R.menu.menu_test);
     popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
       @Override
       public boolean onMenuItemClick(MenuItem item) {
-        Toast.makeText(PopupwindowOnLeftActivity.this, item.getItemId(), Toast.LENGTH_SHORT).show();
+        switch (item.getItemId()) {
+          case R.id.menuItem1:
+            Toast.makeText(PopupwindowOnLeftActivity.this, "menuItem1被点击了", Toast.LENGTH_SHORT).show();
+            break;
+          case R.id.menuItem2:
+            Toast.makeText(PopupwindowOnLeftActivity.this, "menuItem2被点击了", Toast.LENGTH_SHORT).show();
+            break;
+          default:
+            break;
+        }
+
         return true;
       }
     });
 
-    popupMenu.show();
-    // TODO
+    button_popBtn2.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        popupMenu.show();
+      }
+    });
 
     // 点击按钮弹出菜单
     Button button = (Button) findViewById(R.id.popBtn);
@@ -49,8 +64,8 @@ public class PopupwindowOnLeftActivity extends Activity {
       @Override
       public void onClick(View v) {
         getPopupWindow();
-        // 这里是位置显示方式,在按钮的左下角
-        popupWindow.showAsDropDown(v);
+        // 这里选择在哪个View下方显示
+        popupWindow.showAsDropDown(findViewById(R.id.popWindow));
         // 这里可以尝试其它效果方式,如popupWindow.showAsDropDown(v,
         // (screenWidth-dialgoWidth)/2, 0);
         // popupWindow.showAtLocation(findViewById(R.id.layout),
@@ -65,12 +80,9 @@ public class PopupwindowOnLeftActivity extends Activity {
   protected void initPopuptWindow() {
     // 获取自定义布局文件pop.xml的视图
     View popupWindow_view = getLayoutInflater().inflate(R.layout.popupmenu, null, false);
-    // 创建PopupWindow实例,100,220分别是宽度和高度
-    popupWindow = new PopupWindow(popupWindow_view, 100, 220, true);
 
-    ListView listView = (ListView) popupWindow_view.findViewById(R.id.menuList);
-    String[] menus = {"1", "2", "3"};
-    listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, menus));
+    // 创建PopupWindow实例,100,220分别是宽度和高度,并将视图放入
+    popupWindow = new PopupWindow(popupWindow_view, 220, 220, true);
 
     // 点击其他地方消失
     popupWindow_view.setOnTouchListener(new OnTouchListener() {
@@ -80,6 +92,7 @@ public class PopupwindowOnLeftActivity extends Activity {
           popupWindow.dismiss();
           popupWindow = null;
         }
+
         return false;
       }
     });

@@ -7,13 +7,36 @@
         android:id="@+id/popBtn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Clicke" />
+        android:text="显示弹出窗口" />
 
     <Button
         android:id="@+id/popBtn2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Clicke" />
+        android:text="显示弹出菜单" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/popWindow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:text="此处下方显示弹出窗口" />
+
+        <TextView
+            android:id="@+id/popMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:text="此处下方显示弹出菜单" />
+    </RelativeLayout>
 
 </LinearLayout>
