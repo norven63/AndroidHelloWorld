@@ -123,6 +123,9 @@
         <activity android:name=".activity.MyPreferenceActivity" />
         <activity android:name=".activity.ViewPagerActivity" />
         <activity android:name=".activity.ScaleImageViewActivity" />
+        <activity
+            android:name=".activity.ViewMoveActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>
