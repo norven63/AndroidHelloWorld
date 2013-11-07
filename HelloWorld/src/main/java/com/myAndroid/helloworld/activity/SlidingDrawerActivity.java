@@ -10,7 +10,6 @@ import android.widget.SlidingDrawer.OnDrawerScrollListener;
 
 import com.myAndroid.helloworld.R;
 
-@SuppressWarnings("deprecation")
 public class SlidingDrawerActivity extends Activity {
 
   @Override
@@ -35,13 +34,13 @@ public class SlidingDrawerActivity extends Activity {
 
     slidingDrawer.setOnDrawerScrollListener(new OnDrawerScrollListener() {
       @Override
-      public void onScrollStarted() {
-        Toast.makeText(SlidingDrawerActivity.this, "onScrollStarted()", Toast.LENGTH_SHORT).show();
+      public void onScrollEnded() {
+        Toast.makeText(SlidingDrawerActivity.this, "onScrollEnded()", Toast.LENGTH_SHORT).show();
       }
 
       @Override
-      public void onScrollEnded() {
-        Toast.makeText(SlidingDrawerActivity.this, "onScrollEnded()", Toast.LENGTH_SHORT).show();
+      public void onScrollStarted() {
+        Toast.makeText(SlidingDrawerActivity.this, "onScrollStarted()", Toast.LENGTH_SHORT).show();
       }
     });
   }

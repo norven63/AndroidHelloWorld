@@ -2,8 +2,6 @@ package com.myAndroid.helloworld.activity;
 
 import com.myAndroid.helloworld.R;
 
-import android.widget.Toast;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,12 +9,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 public class PopupwindowOnLeftActivity extends Activity {
   // 声明PopupWindow对象的引用
