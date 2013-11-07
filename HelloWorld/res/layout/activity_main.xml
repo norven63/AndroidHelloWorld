@@ -204,6 +204,13 @@
                     android:onClick="IntentManager"
                     android:tag="com.myAndroid.helloworld.activity.ViewMoveActivity"
                     android:text="移动图片" />
+                
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.luncher_demo.WindowManagerTest"
+                    android:text="Luncher仿真" />
             </GridLayout>
         </LinearLayout>
     </HorizontalScrollView>

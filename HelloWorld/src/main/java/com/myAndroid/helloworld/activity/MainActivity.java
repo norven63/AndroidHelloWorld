@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
     notification =
         new Notification.Builder(this).setContentText("Hello World!").setContentTitle("Hello").setSmallIcon(R.drawable.ic_launcher)
             .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.image_view2)).setContentIntent(pendingIntent)
-            .setDefaults(Notification.DEFAULT_SOUND).setTicker("Come on!Baby!").build();
+            .setDefaults(Notification.DEFAULT_SOUND).setTicker("Come on!Baby!").getNotification();
     notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
     notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -285,7 +285,7 @@ public class MainActivity extends Activity {
     newTextView1.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        newTextView1.setBackground(getResources().getDrawable(R.color.blue));
+        newTextView1.setBackgroundDrawable(getResources().getDrawable(R.color.blue));
       }
     });
 
@@ -299,7 +299,7 @@ public class MainActivity extends Activity {
     newTextView.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        newTextView.setBackground(getResources().getDrawable(R.color.blue));
+        newTextView.setBackgroundDrawable(getResources().getDrawable(R.color.blue));
       }
     });
 

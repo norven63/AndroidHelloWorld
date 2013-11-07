@@ -48,13 +48,15 @@ public class ViewMoveActivity extends RoboActivity {
 
       @Override
       public boolean onTouch(View v, MotionEvent event) {
+        // 注意算法
+        int vx = v.getWidth() / 2;
+        int vy = v.getHeight() / 2;
+
+        int dx = (int) (event.getX() - vx);
+        int dy = (int) (event.getY() - vy);
 
         switch (event.getAction()) {
           case MotionEvent.ACTION_MOVE:
-            // 注意算法
-            int dx = (int) (event.getX() - v.getWidth() / 2);
-            int dy = (int) (event.getY() - v.getHeight() / 2);
-
             if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
               int top = v.getTop() + dy;
               int bottom = v.getBottom() + dy;
