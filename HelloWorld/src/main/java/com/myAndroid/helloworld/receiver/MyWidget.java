@@ -48,9 +48,9 @@ public class MyWidget extends AppWidgetProvider {
       remoteViews.setOnClickPendingIntent(R.id.widget_textview, pendingIntent);
 
       Intent intent3 = new Intent(context, MyRemoteViewService.class);
-      remoteViews.setRemoteAdapter(R.id.widget_stackview, intent3);
+      remoteViews.setRemoteAdapter(R.id.widget_stackview, intent3);// 这会触发RemoteViewsServiced的onGetViewFactory方法,而这个intent3可以用来传递参数
 
-      Intent intent5 = new Intent(context, SecondActivity.class);
+      Intent intent5 = new Intent(context, SecondActivity.class);// 这个intent5是无法传参数的
       PendingIntent pendingIntentTemplate = PendingIntent.getActivity(context, 0, intent5, 0);
       remoteViews.setPendingIntentTemplate(R.id.widget_stackview, pendingIntentTemplate);
 

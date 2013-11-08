@@ -44,7 +44,8 @@ public class MyRemoteViewService extends RemoteViewsService {
       remoteViews.setTextViewText(R.id.widget_item_textview, content[position]);
 
       /**
-       * 该Intent用于填充在Provider里RemoteViews调用setOnClickPendingIntent()时指定的PendingIntent.它可以传送参数
+       * 该Intent用于填充在AppWidgetProvider里RemoteViews调用setOnClickPendingIntent()时指定的PendingIntent.
+       * 它可以传送参数
        */
       Intent fillIntent = new Intent();
       fillIntent.putExtra("widget", "Come from widget");// 传送参数
@@ -68,7 +69,7 @@ public class MyRemoteViewService extends RemoteViewsService {
      */
     @Override
     public void onCreate() {
-      content = new String[] { "aaa", "bbb", "ccc" };
+      content = new String[] {"aaa", "bbb", "ccc"};
     }
 
     /**
