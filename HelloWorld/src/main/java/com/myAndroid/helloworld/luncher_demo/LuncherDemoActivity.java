@@ -5,15 +5,11 @@ import com.myAndroid.helloworld.R;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.widget.Toast;
-
-import android.os.Message;
-
-import android.os.Handler;
-
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.View.DragShadowBuilder;
@@ -145,16 +141,9 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
       @Override
       public boolean onDrag(View v, DragEvent event) {
         View dragView = (View) event.getLocalState();
-        ViewGroup dragViewGroup = ((ViewGroup) dragView.getParent());
 
         switch (event.getAction()) {
-          case DragEvent.ACTION_DRAG_ENTERED:
-            Toast.makeText(LuncherDemoActivity.this, "ViewGroup - ENTERED", Toast.LENGTH_SHORT).show();
-            break;
-
           case DragEvent.ACTION_DROP:
-            Toast.makeText(LuncherDemoActivity.this, "ViewGroup - DROP", Toast.LENGTH_SHORT).show();
-
             if (isItemOnDragListener) {
               dragView.setAlpha((float) 1.0);
 
@@ -167,12 +156,6 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
               dragView.animate().x(x).y(y);
 
-            } else {
-              // // 先从原来的ViewGroup中删除
-              // dragViewGroup.removeView(dragView);
-              //
-              // // 再加入到新的ViewGroup
-              // ((ViewGroup) v).addView(dragView);
             }
 
           default:
