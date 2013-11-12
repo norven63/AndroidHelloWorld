@@ -123,7 +123,8 @@
         <activity android:name=".activity.MyPreferenceActivity" />
         <activity android:name=".activity.ViewPagerActivity" />
         <activity android:name=".activity.ScaleImageViewActivity" />
-        <activity android:name=".luncher_demo.WindowManagerTest" />
+        <activity android:name=".luncher_demo.LuncherDemoActivity" />
+        <activity android:name=".activity.WindowManagerActivity" />
         <activity
             android:name=".activity.ViewMoveActivity"
             android:screenOrientation="landscape" />
