@@ -6,19 +6,10 @@
     android:alpha="0.6"
     android:background="@drawable/test_image"
     android:columnCount="3"
-    android:orientation="horizontal"
-    android:rowCount="4" >
+    android:animateLayoutChanges="true"
+    android:orientation="horizontal" >
 
-    <GridLayout
-        android:id="@+id/luncherLayout_1"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:animateLayoutChanges="true"
-        android:background="@drawable/shape_normal"
-        android:columnCount="3"
-        android:orientation="horizontal" >
-
-        <ImageView
+    <ImageView
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginBottom="5dp"
@@ -80,7 +71,6 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/test_button3" />
-    </GridLayout>
 
     <ImageView
         android:id="@+id/luncherImage_5"

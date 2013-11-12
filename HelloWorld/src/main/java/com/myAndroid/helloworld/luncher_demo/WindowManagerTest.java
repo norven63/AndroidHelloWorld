@@ -2,12 +2,12 @@ package com.myAndroid.helloworld.luncher_demo;
 
 import com.myAndroid.helloworld.R;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -37,51 +37,59 @@ public class WindowManagerTest extends RoboActivity implements OnLongClickListen
   private OnDragListener viewGroupDragListener;
   private OnDragListener viewDragListener;
 
-  // 为了防止ViewGroup和View同时监听drap而起冲突:true-ViewGroup可监听;false-View监听
+  // 为了防止ViewGroup和View同时监听drag事件而起冲突:true-ViewGroup可监听;false-View监听
   private boolean isItemOnDragListener;
 
-  @InjectView(R.id.luncherLayout_1)
-  private ViewGroup luncherLayout_1;
+  @InjectView(R.id.luncherParent)
+  private ViewGroup luncherParent;
 
+  @SuppressLint("NewApi")
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.luncher_test);
+    setContentView(R.layout.luncher_demo);
 
     mWindowManager = (WindowManager) this.getSystemService("window");
     bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_button1);
-    addViewToWindowManage(bitmap, 200, 200, 80, 80);
+    addViewToWindowManage(bitmap, null, 200, 200, 80, 80);
 
+    // 每个单独View的拖动监听
     viewDragListener = new OnDragListener() {
       @Override
-      public boolean onDrag(View view, DragEvent event) {
-        View dragView = (View) event.getLocalState();
-        dragView.setAlpha((float) 0.3);
-        GridLayout newViewGroup = (GridLayout) view.getParent();
+      public boolean onDrag(final View view, DragEvent event) {
+        final View dragView = (View) event.getLocalState();
+
+        final GridLayout newViewGroup = (GridLayout) view.getParent();
+
+        final float x = view.getX();
+        final float y = view.getY();
 
         switch (event.getAction()) {
-        // 拖入事件
           case DragEvent.ACTION_DRAG_ENTERED:
-            if (view.equals(dragView)) {
-              return true;
-            }
-
-            newViewGroup.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_enter));
-
-            int index = newViewGroup.indexOfChild(view);
-            ((ViewGroup) dragView.getParent()).removeView(dragView);
-
-            newViewGroup.addView(dragView, index);
 
             break;
-
           case DragEvent.ACTION_DROP:
-            // 此处只为修正GridLayout位置错乱问题
-            int index2 = newViewGroup.indexOfChild(dragView);
-            newViewGroup.removeView(dragView);
-            newViewGroup.addView(dragView, index2);
+            if (!view.equals(dragView)) {
+              final int index = newViewGroup.indexOfChild(view);
 
+              int l = dragView.getLeft();
+              int t = dragView.getTop();
+              int r = dragView.getRight();
+              int b = dragView.getBottom();
+
+              ((ViewGroup) dragView.getParent()).removeView(dragView);
+              newViewGroup.addView(dragView, index);
+
+              // 在ViewGroup操作完毕后,将本尊重新布局至原先位置,然后开启动画
+              dragView.layout(l, t, r, b);
+            } else {
+              dragView.setX(event.getX());
+              dragView.setY(event.getY());
+            }
+
+            dragView.animate().x(x).y(y);
+            dragView.setAlpha((float) 1.0);
             break;
           default:
             break;
@@ -95,42 +103,41 @@ public class WindowManagerTest extends RoboActivity implements OnLongClickListen
     };
 
     // 为图片设置长按事件,长按后即会启动拖动效果;为图片设置拖动监听,当被其他图片拖动遮挡时,触发换位效果
-    for (int i = 0; i < luncherLayout_1.getChildCount(); i++) {
-      View view = luncherLayout_1.getChildAt(i);
+    for (int i = 0; i < luncherParent.getChildCount(); i++) {
+      View view = luncherParent.getChildAt(i);
       view.setOnDragListener(viewDragListener);
       view.setOnLongClickListener(this);
     }
 
-    // 你懂的
+    // ViewGroup的拖动监听
     viewGroupDragListener = new OnDragListener() {
       @Override
       public boolean onDrag(View v, DragEvent event) {
         View dragView = (View) event.getLocalState();
+        ViewGroup dragViewGroup = ((ViewGroup) dragView.getParent());
 
         switch (event.getAction()) {
-        // 拖入事件
-          case DragEvent.ACTION_DRAG_ENTERED:
-            v.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_enter));
-
-            break;
-          // 拖出事件
-          case DragEvent.ACTION_DRAG_EXITED:
-            v.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_normal));
-
-            break;
-          // 放入事件
           case DragEvent.ACTION_DROP:
-            v.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_normal));
-
             if (isItemOnDragListener) {
-              // 先把原来的给删除
-              ((ViewGroup) dragView.getParent()).removeView(dragView);
+              // 先从原来的ViewGroup中删除
+              dragViewGroup.removeView(dragView);
 
-              // 再加入到新的地方
+              // 再加入到新的ViewGroup
               ((ViewGroup) v).addView(dragView);
+
+            } else {
+              dragView.setAlpha((float) 1.0);
+
+              // 从拖动点移动回原位的动画
+              float x = dragView.getX();
+              float y = dragView.getY();
+
+              dragView.setX(event.getX() - dragView.getWidth() / 2);
+              dragView.setY(event.getY() - dragView.getHeight() / 2);
+
+              dragView.animate().x(x).y(y);
             }
 
-            return false;
           default:
             break;
         }
@@ -138,7 +145,7 @@ public class WindowManagerTest extends RoboActivity implements OnLongClickListen
         return true;
       }
     };
-    luncherLayout_1.setOnDragListener(viewGroupDragListener);
+    luncherParent.setOnDragListener(viewGroupDragListener);
   }
 
   @Override
@@ -148,12 +155,11 @@ public class WindowManagerTest extends RoboActivity implements OnLongClickListen
 
     // 设置拖动阴影,即你所拖动的那个图标(这也同时说明,你拖动的不过是一个影分身,本尊其实并没有移动)
     DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-
     view.startDrag(data, shadowBuilder, view, 0);
 
     // 将本尊隐身(其实是淡化处理,为什么不View.INVISIBLE而是采取淡化呢?是因为防止在其隐身后,该拖动事件被其ViewGroup捕获,从而造成"The specified child already has a parent"的异常)
     // view.setVisibility(View.INVISIBLE);
-    view.setAlpha((float) 0.3);
+    view.setAlpha((float) 0.5);
 
     isItemOnDragListener = true;
     return true;
@@ -185,7 +191,7 @@ public class WindowManagerTest extends RoboActivity implements OnLongClickListen
     return true;
   }
 
-  void addViewToWindowManage(Bitmap bm, int x, int y, int height, int width) {
+  void addViewToWindowManage(Bitmap bm, ImageView addView, int x, int y, int height, int width) {
     mWindowParams = new WindowManager.LayoutParams();
 
     mWindowParams.gravity = Gravity.LEFT | Gravity.TOP;
@@ -200,11 +206,18 @@ public class WindowManagerTest extends RoboActivity implements OnLongClickListen
             | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
     mWindowParams.format = PixelFormat.TRANSLUCENT;
     mWindowParams.windowAnimations = 0;
-    v = new ImageView(this);
-    v.setImageBitmap(bm);
+    if (null == addView) {
+      v = new ImageView(this);
+      v.setImageBitmap(bm);
 
-    v.setVisibility(View.GONE);
-    mWindowManager.addView(v, mWindowParams);
+      v.setVisibility(View.GONE);
+
+      mWindowManager.addView(v, mWindowParams);
+    } else {
+      addView.setImageBitmap(bm);
+
+      mWindowManager.addView(addView, mWindowParams);
+    }
   }
 
 }
