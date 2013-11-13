@@ -43,13 +43,14 @@ public class ScaleImageViewActivity extends Activity {
       public boolean onScale(ScaleGestureDetector detector) {
 
         if (0 == lastSpan) {
+          // 获得初始指距
           lastSpan = detector.getCurrentSpan();
         }
 
-        // 根据当前指距和上次指距的比率是否>1来判断此次是缩小还是放大操作
+        // 根据当前指距和上次指距的比例值是否>1来判断此次是缩小还是放大操作,并且两次的指距比例即为缩放比例
         float currentScale = detector.getCurrentSpan() / lastSpan;
         if (1 < currentScale) {
-          scale += currentScale / 26;// 除以29只是为了降低其灵敏度
+          scale += currentScale / 26;// 除以26只是为了降低其灵敏度
         } else if (1 > currentScale) {
           scale -= currentScale / 23;// 比width少除以3个百分比,是因为感觉缩小的时候比较难错
         }
