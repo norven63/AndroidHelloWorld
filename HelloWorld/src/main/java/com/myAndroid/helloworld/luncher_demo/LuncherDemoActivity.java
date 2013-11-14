@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
 import android.content.ClipData;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,10 +16,13 @@ import android.os.Message;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.View.DragShadowBuilder;
+import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
@@ -30,48 +34,55 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
     @Override
     public void handleMessage(Message msg) {
       ViewGroup parentView = (ViewGroup) msg.obj;
-      View view = parentView.getChildAt(msg.arg1);
+      final View view = parentView.getChildAt(msg.arg1);
       final View dragView = parentView.getChildAt(msg.arg2);
 
-      // 监听View的坐标
-      float x = view.getX();
-      float y = view.getY();
+      if (dragView instanceof CellView) {
+        // 监听View的坐标
+        float x = view.getX();
+        float y = view.getY();
 
-      // 拖动View的原位置坐标
-      float x_ = dragView.getX();
-      float y_ = dragView.getY();
+        // 拖动View的原位置坐标
+        float x_ = dragView.getX();
+        float y_ = dragView.getY();
 
-      ((ViewGroup) dragView.getParent()).removeView(dragView);
-      parentView.addView(dragView, msg.arg1);
+        ((ViewGroup) dragView.getParent()).removeView(dragView);
+        parentView.addView(dragView, msg.arg1);
 
-      // 在ViewGroup对拖动View的新增&删除操作完毕后,先将拖动View重新布局至原位置,然后再开启从原位置移动至新位置的动画
-      dragView.setX(x_);
-      dragView.setY(y_);
-      dragView.animate().x(x).y(y).setDuration(620).setListener(new AnimatorListener() {
+        // 在ViewGroup对拖动View的新增&删除操作完毕后,先将拖动View重新布局至原位置,然后再开启从原位置移动至新位置的动画
+        dragView.setX(x_);
+        dragView.setY(y_);
+        dragView.animate().x(x).y(y).setListener(new AnimatorListener() {
+          @Override
+          public void onAnimationCancel(Animator animation) {
+          }
 
-        @Override
-        public void onAnimationCancel(Animator animation) {
-        }
+          @Override
+          public void onAnimationEnd(Animator animation) {
+            // 恢复标记位,允许ViewGroup作出将本尊移回原位的响应操作
+            isItemOnDragListener = true;
+          }
 
-        @Override
-        public void onAnimationEnd(Animator animation) {
-          // 恢复标记位,允许ViewGroup作出将本尊移回原位的响应操作
-          isItemOnDragListener = true;
-        }
+          @Override
+          public void onAnimationRepeat(Animator animation) {
+          }
 
-        @Override
-        public void onAnimationRepeat(Animator animation) {
-        }
-
-        @Override
-        public void onAnimationStart(Animator animation) {
-          // 设置标记位,不让ViewGroup作出将本尊移回原位的响应操作
-          isItemOnDragListener = false;
-        }
-      });
-
+          @Override
+          public void onAnimationStart(Animator animation) {
+            dragView.setAlpha((float) 1.0);
+            // 设置标记位,不让ViewGroup作出将本尊移回原位的响应操作
+            isItemOnDragListener = false;
+          }
+        });
+      } else {
+        view.setAlpha((float) 0.3);
+      }
     }
   };
+
+  private LuncherDemoFragment luncherDemoFragment;
+  @InjectView(R.id.cellLayout)
+  private LinearLayout cellLayout;
 
   private OnDragListener viewGroupDragListener;
   private OnDragListener viewDragListener;
@@ -87,6 +98,9 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    luncherDemoFragment = new LuncherDemoFragment();
+
+    cellLayout.setY(450);
     // 每个单独View的拖动监听
     viewDragListener = new OnDragListener() {
       @Override
@@ -98,10 +112,10 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
           return false;
         }
 
-        Timer timer = (Timer) view.getTag(R.id.timer);
-
         final GridLayout parentView = (GridLayout) view.getParent();
         final int index = parentView.indexOfChild(view);
+
+        Timer timer = (Timer) view.getTag(R.id.timer);
 
         switch (event.getAction()) {
           case DragEvent.ACTION_DRAG_ENTERED:
@@ -122,7 +136,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                   }
                 });
               }
-            }, 700);
+            }, 600);
 
             break;
 
@@ -135,7 +149,47 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
           case DragEvent.ACTION_DROP:
             if (view.getAlpha() == (float) 0.3) {
+              if (view instanceof CellView) {
+                // 直接添加至已存在的CellView中
+                ((CellView) view).addChildView(dragView);
+                view.setAlpha((float) 1.0);
+                ((ViewGroup) dragView.getParent()).removeView(dragView);
+              } else {
+                // 新建一个CellView,并初始化相应数据
+                CellView cellView = new CellView(LuncherDemoActivity.this);
+                cellView.addChildView(view);
+                cellView.addChildView(dragView);
+                cellView.setOnDragListener(viewDragListener);
+                cellView.setOnLongClickListener(LuncherDemoActivity.this);
+                cellView.setTag(R.id.timer, new Timer());
+                cellView.setOnClickListener(new OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                    CellView cellView = (CellView) v;
+                    for (View view : cellView.getChildViews()) {
+                      luncherDemoFragment.addIteme(view);
+                    }
 
+                    FragmentTransaction fragmentTransaction = LuncherDemoActivity.this.getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.cellLayout, luncherDemoFragment);
+                    fragmentTransaction.commitAllowingStateLoss();
+
+                    cellLayout.animate().y(((View) cellLayout.getParent()).getHeight() - cellLayout.getHeight());
+                  }
+                });
+
+                GridLayout.LayoutParams vLayoutParams = new GridLayout.LayoutParams(new LayoutParams(140, 140));
+                vLayoutParams.leftMargin = 5;
+                vLayoutParams.topMargin = 5;
+                vLayoutParams.rightMargin = 5;
+                vLayoutParams.bottomMargin = 5;
+                parentView.addView(cellView, index, vLayoutParams);
+
+                parentView.removeView(view);
+                parentView.removeView(dragView);
+              }
+
+              isItemOnDragListener = false;
             }
 
             dragView.setAlpha((float) 1.0);
@@ -187,7 +241,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
               dragView.setX(e_x);
               dragView.setY(e_y);
 
-              dragView.animate().x(x).y(y);
+              dragView.animate().x(x).y(y).setDuration(250);
             } else {
               // 两个View的移位动画未结束时就拦截住DROP事件处理方案
               // TODO
@@ -221,5 +275,4 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
     isItemOnDragListener = true;
     return true;
   }
-
 }
