@@ -4,9 +4,11 @@ import com.myAndroid.helloworld.R;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
@@ -51,14 +53,44 @@ public class CellView extends View {
     return childViews;
   }
 
+  public void removeChildView(View childView) {
+    childViews.remove(childView);
+
+    this.invalidate();
+  }
+
+  @SuppressLint("DrawAllocation")
   @Override
   protected void onDraw(Canvas canvas) {
-    canvas.drawColor(R.color.gray);
+    Bitmap backBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.layout_background)).getBitmap();
 
-    int x = 10;
-    int y = 10;
+    int bitmapWidth = backBitmap.getWidth();
+    int bitmapHeight = backBitmap.getHeight();
 
-    int operator = 0;// 终止算子,保证只显示前4个图标
+    int canvasWidth = canvas.getWidth();
+    int canvasHeight = canvas.getHeight();
+
+    float newWidth = 1;
+    if (bitmapWidth > canvasWidth) {
+      newWidth = ((float) canvasWidth) / bitmapWidth;
+    }
+
+    float newHeight = 1;
+    if (bitmapHeight > canvasHeight) {
+      newHeight = ((float) canvasHeight) / bitmapHeight;
+    }
+
+    Matrix matrix = new Matrix();
+    matrix.setScale(newWidth, newHeight);
+
+    backBitmap = Bitmap.createBitmap(backBitmap, 0, 0, bitmapWidth, bitmapHeight, matrix, true);
+
+    canvas.drawBitmap(backBitmap, 0, 0, paint);
+
+    int x = 25;
+    int y = 25;
+
+    int operator = 0;// 终止算子,其保证只显示前4个图标
     if (childViews.size() > 4) {
       operator = childViews.size() - 4;
     }
@@ -69,11 +101,11 @@ public class CellView extends View {
 
         canvas.drawBitmap(bitmap, x, y, paint);
 
-        if (x == 10) {
+        if (x == 25) {
           x += bitmap.getWidth();
-        } else if (y == 10) {
+        } else if (y == 25) {
           y += bitmap.getHeight();
-          x = 10;
+          x = 25;
         }
       }
     }
