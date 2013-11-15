@@ -90,7 +90,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
   private OnDragListener viewGroupDragListener;
 
   // 为了防止ViewGroup和View同时监听drag事件而起冲突:true-ViewGroup可监听;false-View监听
-  private boolean isItemOnDragListener;
+  private boolean isItemOnDragListener = true;
 
   @InjectView(R.id.luncherParent)
   private ViewGroup luncherParent;
@@ -100,10 +100,24 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    if (null == luncherDemoFragment) {
+      luncherDemoFragment = new LuncherDemoFragment();
+      FragmentTransaction fragmentTransaction = LuncherDemoActivity.this.getFragmentManager().beginTransaction();
+      fragmentTransaction.replace(R.id.cellLayout, luncherDemoFragment);
+      fragmentTransaction.commitAllowingStateLoss();
+    }
+
     middleLayout.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         hiddenLayout();
+      }
+    });
+
+    cellLayout.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // 只为拦截middleLayout的点击事件
       }
     });
 
@@ -162,16 +176,6 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
           case DragEvent.ACTION_DROP:
             if (view.getAlpha() == (float) 0.3) {
               if (view instanceof CellView) {
-                if (null != dragView.getTag()) {
-                  CellView cellView = (CellView) dragView.getTag();
-                  cellView.removeChildView(dragView);
-                  dragView.setTag(null);
-                }
-
-                if (null != ((ViewGroup) dragView.getParent())) {
-                  ((ViewGroup) dragView.getParent()).removeView(dragView);
-                }
-
                 ((CellView) view).addChildView(dragView);
                 dragView.setTag(view);
 
@@ -190,12 +194,8 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                   @Override
                   public void onClick(View v) {
                     CellView cellView = (CellView) v;
-                    luncherDemoFragment = new LuncherDemoFragment();
-                    luncherDemoFragment.setCellView(cellView);
 
-                    FragmentTransaction fragmentTransaction = LuncherDemoActivity.this.getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.cellLayout, luncherDemoFragment);
-                    fragmentTransaction.commitAllowingStateLoss();
+                    luncherDemoFragment.setCellView(cellView);
 
                     cellLayout.animate().y(((View) cellLayout.getParent()).getHeight() - cellLayout.getHeight());
                     middleLayout.animate().y(0);
@@ -262,16 +262,13 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                 cellView.removeChildView(dragView);
                 dragView.setTag(null);
 
-                // 删除空文件夹
-                if (0 == cellView.getChildViews().size()) {
-                  ((ViewGroup) v).removeView(cellView);
-                }
-
                 if (null != ((ViewGroup) dragView.getParent())) {
                   ((ViewGroup) dragView.getParent()).removeView(dragView);
                 }
 
                 ((ViewGroup) v).addView(dragView);
+
+                dragView.setOnDragListener(viewDragListener);
 
                 // 强制执行一次动画,使子元素能够正常排列(防止不对齐现象)
                 ((ViewGroup) dragView.getParent()).scheduleLayoutAnimation();
@@ -332,5 +329,6 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
   private void hiddenLayout() {
     cellLayout.animate().y(luncherParent.getHeight());
     middleLayout.animate().y(-luncherParent.getHeight());
+    luncherDemoFragment.clearLayout();
   }
 }

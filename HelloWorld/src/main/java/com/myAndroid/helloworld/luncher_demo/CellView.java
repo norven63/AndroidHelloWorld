@@ -4,6 +4,8 @@ import com.myAndroid.helloworld.R;
 
 import java.util.ArrayList;
 
+import android.view.ViewGroup;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -41,6 +43,16 @@ public class CellView extends View {
   }
 
   public void addChildView(View childView) {
+    if (null != childView.getTag()) {
+      CellView cellView = (CellView) childView.getTag();
+      cellView.removeChildView(childView);
+      childView.setTag(null);
+    }
+
+    if (null != ((ViewGroup) childView.getParent())) {
+      ((ViewGroup) childView.getParent()).removeView(childView);
+    }
+
     childViews.add(childView);
 
     this.invalidate();
@@ -55,6 +67,11 @@ public class CellView extends View {
 
   public void removeChildView(View childView) {
     childViews.remove(childView);
+
+    // 删除空文件夹
+    if (0 == childViews.size()) {
+      ((ViewGroup) this.getParent()).removeView(this);
+    }
 
     this.invalidate();
   }

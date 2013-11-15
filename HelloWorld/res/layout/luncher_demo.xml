@@ -99,7 +99,6 @@
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:background="@color/background"
-        android:divider="@color/blue"
         android:orientation="vertical" />
 
 </FrameLayout>

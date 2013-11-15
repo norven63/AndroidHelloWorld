@@ -17,18 +17,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnDragListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.GridLayout;
 
 public class LuncherDemoFragment extends Fragment {
+  private GridLayout gridLayout;
+
   private CellView cellView;
   @SuppressLint("HandlerLeak")
   private Handler handler = new Handler() {
     @Override
     public void handleMessage(Message msg) {
-      ViewGroup parentView = (ViewGroup) msg.obj;
-      final View view = parentView.getChildAt(msg.arg1);
-      final View dragView = parentView.getChildAt(msg.arg2);
+      final View view = gridLayout.getChildAt(msg.arg1);
+      final View dragView = gridLayout.getChildAt(msg.arg2);
 
       // 监听View的坐标
       float x = view.getX();
@@ -39,7 +39,7 @@ public class LuncherDemoFragment extends Fragment {
       float y_ = dragView.getY();
 
       ((ViewGroup) dragView.getParent()).removeView(dragView);
-      parentView.addView(dragView, msg.arg1);
+      gridLayout.addView(dragView, msg.arg1);
 
       // 在ViewGroup对拖动View的新增&删除操作完毕后,先将拖动View重新布局至原位置,然后再开启从原位置移动至新位置的动画
       dragView.setX(x_);
@@ -79,8 +79,7 @@ public class LuncherDemoFragment extends Fragment {
         return false;
       }
 
-      final GridLayout parentView = (GridLayout) view.getParent();
-      final int index = parentView.indexOfChild(view);
+      final int index = gridLayout.indexOfChild(view);
 
       Timer timer = (Timer) view.getTag(R.id.timer);
 
@@ -95,9 +94,8 @@ public class LuncherDemoFragment extends Fragment {
                 public void run() {
                   // 发送Message以触发Handle处理,其中包含了ViewGroup对象,监听View和拖动View的索引
                   Message message = new Message();
-                  message.obj = parentView;
                   message.arg1 = index;
-                  message.arg2 = parentView.indexOfChild(dragView);
+                  message.arg2 = gridLayout.indexOfChild(dragView);
 
                   handler.sendMessage(message);
                 }
@@ -164,6 +162,12 @@ public class LuncherDemoFragment extends Fragment {
 
   private boolean isItemOnDragListener = true;
 
+  public void clearLayout() {
+    this.cellView = null;
+
+    gridLayout.removeAllViews();
+  }
+
   /**
    * @return the cellView
    */
@@ -179,10 +183,21 @@ public class LuncherDemoFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    GridLayout gridLayout = new GridLayout(this.getActivity());
-    gridLayout.setColumnCount(4);
-    gridLayout.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    return inflater.inflate(R.layout.luncher_demo_folder, container, false);
+  }
+
+  @Override
+  public void onViewCreated(View view, Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    gridLayout = (GridLayout) getView().findViewById(R.id.luncerFolder);
     gridLayout.setOnDragListener(viewGroupDragListener);
+  }
+
+  /**
+   * @param cellView the cellView to set
+   */
+  public void setCellView(CellView cellView) {
+    this.cellView = cellView;
 
     for (View view : cellView.getChildViews()) {
       view.setAlpha((float) 1.0);
@@ -191,21 +206,8 @@ public class LuncherDemoFragment extends Fragment {
       if (null != ((ViewGroup) view.getParent())) {
         ((ViewGroup) view.getParent()).removeView(view);
       }
+
       gridLayout.addView(view);
     }
-
-    return gridLayout;
-  }
-
-  @Override
-  public void onViewCreated(View view, Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-  }
-
-  /**
-   * @param cellView the cellView to set
-   */
-  public void setCellView(CellView cellView) {
-    this.cellView = cellView;
   }
 }
