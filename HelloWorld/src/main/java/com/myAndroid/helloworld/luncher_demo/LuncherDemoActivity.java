@@ -5,8 +5,8 @@ import com.myAndroid.helloworld.R;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
+import android.graphics.drawable.Drawable;
+
 import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.ClipData;
@@ -33,54 +33,46 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
   private Handler handler = new Handler() {
     @Override
     public void handleMessage(Message msg) {
-      ViewGroup parentView = (ViewGroup) msg.obj;
-      final View view = parentView.getChildAt(msg.arg1);
-      final View dragView = parentView.getChildAt(msg.arg2);
+      ViewGroupAddAndRemove viewGroupAddAndRemove = (ViewGroupAddAndRemove) msg.obj;
+      ViewGroup parentView = viewGroupAddAndRemove.getViewGroup();
+      final View view = viewGroupAddAndRemove.getListenerView();
+      final View dragView = viewGroupAddAndRemove.getDragView();
 
       /**
-       * 能够触发位移动画两种条件: 1.停留超过指定秒数后并继续拖动,根据左移还是右移判断当坐标与(监听View的宽度/2)的值 2.拖动View是一个CellView
+       * 能够触发位移操作两种条件: 1.停留超过指定秒数后并继续拖动,根据左移还是右移判断当坐标与(监听View的宽度/2)的值 2.拖动View是一个CellView
        */
       if (msg.what == 1 || dragView instanceof CellView) {
-        // 监听View的坐标
-        float x = view.getX();
-        float y = view.getY();
+        // 为了防止监听View在执行布局调整动画时仍然继续监听onDrag事件,并然后在0.35秒后恢复其监听功能
+        view.setTag(R.id.isMove, true);
+        new Timer().schedule(new TimerTask() {
+          @Override
+          public void run() {
+            view.setTag(R.id.isMove, false);
 
-        // 拖动View的原位置坐标
-        float x_ = dragView.getX();
-        float y_ = dragView.getY();
+            handler.post(new Runnable() {
+              @Override
+              public void run() {
+                view.setAlpha((float) 1.0);
+              }
+            });
+          }
+        }, 350);
 
-        ((ViewGroup) dragView.getParent()).removeView(dragView);
+        // 删除&添加
+        if (null != dragView.getTag()) {
+          CellView cellView = (CellView) dragView.getTag();
+          cellView.removeChildView(dragView);
+          dragView.setTag(null);
+        }
+
+        if (null != ((ViewGroup) dragView.getParent())) {
+          ((ViewGroup) dragView.getParent()).removeView(dragView);
+        }
         parentView.addView(dragView, msg.arg1);
 
-        // 在ViewGroup对拖动View的新增&删除操作完毕后,先将拖动View重新布局至原位置,然后再开启从原位置移动至新位置的动画
-        dragView.setX(x_);
-        dragView.setY(y_);
-        dragView.animate().x(x).y(y).setListener(new AnimatorListener() {
-          @Override
-          public void onAnimationCancel(Animator animation) {
-          }
+        // 强制执行一次布局动画,使子元素能够正常排列(防止错乱现象)
+        ((ViewGroup) dragView.getParent()).scheduleLayoutAnimation();
 
-          @Override
-          public void onAnimationEnd(Animator animation) {
-            view.setTag(R.id.isMove, false);
-            isItemOnDragListener = true;
-          }
-
-          @Override
-          public void onAnimationRepeat(Animator animation) {
-          }
-
-          @Override
-          public void onAnimationStart(Animator animation) {
-            dragView.setAlpha((float) 1.0);
-
-            // 标记监听View正在执行动画
-            view.setTag(R.id.isMove, true);
-
-            // 设置标记位,不让ViewGroup作出将本尊移回原位的响应操作
-            isItemOnDragListener = false;
-          }
-        });
       } else {
         view.setAlpha((float) 0.3);
       }
@@ -158,42 +150,48 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
         switch (event.getAction()) {
           case DragEvent.ACTION_DRAG_ENTERED:
-            // 开启计时器,在只有当拖动View在监听View处停留0.5秒后才会有效果
+            // 开启计时器,在只有当拖动View在监听View处停留0.25秒后才会有效果
             timer.schedule(new TimerTask() {
               @Override
               public void run() {
                 handler.post(new Runnable() {
                   @Override
                   public void run() {
-                    // 发送Message以触发Handle处理,其中包含了ViewGroup对象,监听View和拖动View的索引
+                    ViewGroupAddAndRemove viewGroupAddAndRemove = new ViewGroupAddAndRemove();
+                    viewGroupAddAndRemove.setViewGroup(parentView);
+                    viewGroupAddAndRemove.setListenerView(view);
+                    viewGroupAddAndRemove.setDragView(dragView);
+
+                    // 发送Message以触发Handle处理,其中封装了ViewGroup、监听View、拖动View三个对象以及监听View的索引
                     Message message = new Message();
-                    message.obj = parentView;
+                    message.obj = viewGroupAddAndRemove;
                     message.arg1 = index;
-                    message.arg2 = parentView.indexOfChild(dragView);
 
                     handler.sendMessage(message);
                   }
                 });
               }
-            }, 500);
+            }, 250);
 
             break;
 
           case DragEvent.ACTION_DRAG_LOCATION:
             boolean canMove = false;
             if (isLeft) {
-              canMove = event.getX() >= view.getWidth() / 2;
+              canMove = event.getX() >= view.getWidth() * 3 / 4;
             } else {
-              canMove = event.getX() <= view.getWidth() / 2;
+              canMove = event.getX() <= view.getWidth() / 4;
             }
 
-            if (canMove) {
-              view.setTag(R.id.isMove, true);
-              view.setAlpha((float) 1.0);
+            if (view.getAlpha() != 1.0 && canMove) {
+              ViewGroupAddAndRemove viewGroupAddAndRemove = new ViewGroupAddAndRemove();
+              viewGroupAddAndRemove.setViewGroup(parentView);
+              viewGroupAddAndRemove.setListenerView(view);
+              viewGroupAddAndRemove.setDragView(dragView);
+
               Message message = new Message();
-              message.obj = parentView;
+              message.obj = viewGroupAddAndRemove;
               message.arg1 = index;
-              message.arg2 = parentView.indexOfChild(dragView);
               message.what = 1;
 
               handler.sendMessage(message);
@@ -287,11 +285,10 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
     viewGroupDragListener = new OnDragListener() {
       @Override
       public boolean onDrag(View v, DragEvent event) {
-        View dragView = (View) event.getLocalState();
-
+        final View dragView = (View) event.getLocalState();
         switch (event.getAction()) {
           case DragEvent.ACTION_DROP:
-            dragView.setAlpha((float) 1.0);
+            dragView.setBackground((Drawable) dragView.getTag(R.id.bg));
             dragView.setOnDragListener(viewDragListener);
 
             float e_x = event.getX() - dragView.getWidth() / 2;
@@ -312,8 +309,6 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                 dragView.setOnDragListener(viewDragListener);
                 dragView.setOnLongClickListener(LuncherDemoActivity.this);
 
-                // 强制执行一次动画,使子元素能够正常排列(防止不对齐现象)
-                ((ViewGroup) dragView.getParent()).scheduleLayoutAnimation();
               } else {
                 // 从拖动点移回至原位的动画
                 float x = dragView.getX();
@@ -322,7 +317,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                 dragView.setX(e_x);
                 dragView.setY(e_y);
 
-                dragView.animate().x(x).y(y).setDuration(250);
+                dragView.animate().x(x).y(y).setDuration(200);
               }
             } else {
               // 两个View的移位动画未结束时就拦截住DROP事件处理方案
@@ -331,7 +326,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
             break;
           case DragEvent.ACTION_DRAG_ENTERED:
-            // 记录开始坐标,并隐藏文件夹界面
+            // 记录拖动开始位置坐标,并隐藏文件夹界面
             currentX = event.getX();
             hiddenLayout();
 
@@ -359,11 +354,11 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
     luncherParent.setOnDragListener(viewGroupDragListener);
   }
 
+  @SuppressLint("NewApi")
   @Override
   public boolean onLongClick(View view) {
-    // 将本尊隐身(其实是淡化处理,为什么不View.INVISIBLE而是采取淡化呢?是因为防止在其隐身后,该拖动事件被其ViewGroup捕获,从而造成"The specified child already has a parent"的异常)
-    // view.setVisibility(View.INVISIBLE);
-    view.setAlpha((float) 0.5);
+    // 将本尊隐身
+    view.setTag(R.id.bg, view.getBackground());
 
     // 设置数据,会被拖动目标ViewGroup所接收,即用来传递信息
     ClipData data = ClipData.newPlainText("", "");
@@ -371,6 +366,8 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
     // 设置拖动阴影,即你所拖动的那个图标(这也同时说明,你拖动的不过是一个影分身,本尊其实并没有移动)
     DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
     view.startDrag(data, shadowBuilder, view, 0);
+
+    view.setBackground(null);
 
     isItemOnDragListener = true;
     return true;

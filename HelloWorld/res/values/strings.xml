@@ -33,5 +33,5 @@
 
     <item name="timer" type="id"/>
     <item name="isMove" type="id"/>
-
+    <item name="bg" type="id"/>
 </resources>

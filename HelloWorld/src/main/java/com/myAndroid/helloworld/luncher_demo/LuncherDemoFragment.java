@@ -5,8 +5,8 @@ import com.myAndroid.helloworld.R;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
+import android.graphics.drawable.Drawable;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -27,45 +27,11 @@ public class LuncherDemoFragment extends Fragment {
   private Handler handler = new Handler() {
     @Override
     public void handleMessage(Message msg) {
-      final View view = gridLayout.getChildAt(msg.arg1);
       final View dragView = gridLayout.getChildAt(msg.arg2);
-
-      // 监听View的坐标
-      float x = view.getX();
-      float y = view.getY();
-
-      // 拖动View的原位置坐标
-      float x_ = dragView.getX();
-      float y_ = dragView.getY();
 
       ((ViewGroup) dragView.getParent()).removeView(dragView);
       gridLayout.addView(dragView, msg.arg1);
 
-      // 在ViewGroup对拖动View的新增&删除操作完毕后,先将拖动View重新布局至原位置,然后再开启从原位置移动至新位置的动画
-      dragView.setX(x_);
-      dragView.setY(y_);
-      dragView.animate().x(x).y(y).setDuration(300).setListener(new AnimatorListener() {
-        @Override
-        public void onAnimationCancel(Animator animation) {
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animation) {
-          // 恢复标记位,允许ViewGroup作出将本尊移回原位的响应操作
-          isItemOnDragListener = true;
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animation) {
-        }
-
-        @Override
-        public void onAnimationStart(Animator animation) {
-          dragView.setAlpha((float) 1.0);
-          // 设置标记位,不让ViewGroup作出将本尊移回原位的响应操作
-          isItemOnDragListener = false;
-        }
-      });
     }
   };
 
@@ -85,14 +51,12 @@ public class LuncherDemoFragment extends Fragment {
 
       switch (event.getAction()) {
         case DragEvent.ACTION_DRAG_ENTERED:
-          // 开启计时器,在只有当拖动View在监听View处停留0.7秒后才会有效果
           timer.schedule(new TimerTask() {
             @Override
             public void run() {
               handler.post(new Runnable() {
                 @Override
                 public void run() {
-                  // 发送Message以触发Handle处理,其中包含了ViewGroup对象,监听View和拖动View的索引
                   Message message = new Message();
                   message.arg1 = index;
                   message.arg2 = gridLayout.indexOfChild(dragView);
@@ -101,7 +65,7 @@ public class LuncherDemoFragment extends Fragment {
                 }
               });
             }
-          }, 600);
+          }, 250);
 
           break;
 
@@ -124,13 +88,14 @@ public class LuncherDemoFragment extends Fragment {
     }
   };
   private OnDragListener viewGroupDragListener = new OnDragListener() {
+    @SuppressLint("NewApi")
     @Override
     public boolean onDrag(View v, DragEvent event) {
       View dragView = (View) event.getLocalState();
 
       switch (event.getAction()) {
         case DragEvent.ACTION_DROP:
-          dragView.setAlpha((float) 1.0);
+          dragView.setBackground((Drawable) dragView.getTag(R.id.bg));
           dragView.setOnDragListener(viewDragListener);
 
           float e_x = event.getX() - dragView.getWidth() / 2;

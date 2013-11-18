@@ -4,6 +4,8 @@ import com.myAndroid.helloworld.R;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap.Config;
+
 import android.view.ViewGroup;
 
 import android.annotation.SuppressLint;
@@ -18,6 +20,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 public class CellView extends View {
+  // 控制onDraw方法何时可以设置背景
+  private boolean flag;
+
   public ArrayList<View> childViews;
   private Paint paint;
 
@@ -55,6 +60,7 @@ public class CellView extends View {
 
     childViews.add(childView);
 
+    this.flag = true;
     this.invalidate();
   }
 
@@ -73,19 +79,24 @@ public class CellView extends View {
       ((ViewGroup) this.getParent()).removeView(this);
     }
 
+    this.flag = true;
     this.invalidate();
   }
 
-  @SuppressLint("DrawAllocation")
+  @SuppressLint({"DrawAllocation", "NewApi"})
   @Override
   protected void onDraw(Canvas canvas) {
+    Canvas backGroundCanvas = new Canvas();
+    Bitmap cacheBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Config.ARGB_8888);
+    backGroundCanvas.setBitmap(cacheBitmap);// 设置画布的Bitmap,使图像都画在此Bitmap上
+
     Bitmap backBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.layout_background)).getBitmap();
 
     int bitmapWidth = backBitmap.getWidth();
     int bitmapHeight = backBitmap.getHeight();
 
-    int canvasWidth = canvas.getWidth();
-    int canvasHeight = canvas.getHeight();
+    int canvasWidth = backGroundCanvas.getWidth();
+    int canvasHeight = backGroundCanvas.getHeight();
 
     float newWidth = 1;
     if (bitmapWidth > canvasWidth) {
@@ -102,7 +113,7 @@ public class CellView extends View {
 
     backBitmap = Bitmap.createBitmap(backBitmap, 0, 0, bitmapWidth, bitmapHeight, matrix, true);
 
-    canvas.drawBitmap(backBitmap, 0, 0, paint);
+    backGroundCanvas.drawBitmap(backBitmap, 0, 0, paint);
 
     int x = 25;
     int y = 25;
@@ -116,7 +127,7 @@ public class CellView extends View {
         ImageView childView = (ImageView) childViews.get(i);
         Bitmap bitmap = ((BitmapDrawable) childView.getBackground()).getBitmap();
 
-        canvas.drawBitmap(bitmap, x, y, paint);
+        backGroundCanvas.drawBitmap(bitmap, x, y, paint);
 
         if (x == 25) {
           x += bitmap.getWidth();
@@ -125,6 +136,15 @@ public class CellView extends View {
           x = 25;
         }
       }
+    }
+
+    BitmapDrawable bitmapDrawable = new BitmapDrawable(cacheBitmap);
+    this.setTag(R.id.bg, bitmapDrawable);
+
+    if (flag) {
+      this.setBackground(bitmapDrawable);
+
+      flag = false;
     }
 
     super.onDraw(canvas);
