@@ -5,11 +5,12 @@ import com.myAndroid.helloworld.R;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.graphics.drawable.Drawable;
-
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.ClipData;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -47,12 +48,11 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
         new Timer().schedule(new TimerTask() {
           @Override
           public void run() {
-            view.setTag(R.id.isMove, false);
-
             handler.post(new Runnable() {
               @Override
               public void run() {
-                view.setAlpha((float) 1.0);
+                view.setTag(R.id.isMove, false);
+                view.animate().alpha((float) 1.0).setListener(null);
               }
             });
           }
@@ -74,7 +74,28 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
         ((ViewGroup) dragView.getParent()).scheduleLayoutAnimation();
 
       } else {
-        view.setAlpha((float) 0.3);
+        view.animate().alpha((float) 0.3).setDuration(400).setListener(new AnimatorListener() {
+          @Override
+          public void onAnimationCancel(Animator animation) {
+          }
+
+          @Override
+          public void onAnimationEnd(Animator animation) {
+            if (view.getAlpha() == (float) 1.0) {
+              view.animate().setDuration(400).alpha((float) 0.3);
+            } else {
+              view.animate().setDuration(400).alpha((float) 1.0);
+            }
+          }
+
+          @Override
+          public void onAnimationRepeat(Animator animation) {
+          }
+
+          @Override
+          public void onAnimationStart(Animator animation) {
+          }
+        });
       }
     }
   };
@@ -203,17 +224,19 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
             // 取消定时器,并重置
             timer.cancel();
             view.setTag(R.id.timer, new Timer());
-            view.setAlpha((float) 1.0);
+            view.animate().alpha((float) 1.0).setListener(null);
 
             break;
 
           case DragEvent.ACTION_DROP:
-            if (view.getAlpha() == (float) 0.3) {
+            if (view.getAlpha() != (float) 1.0) {
+              view.animate().alpha((float) 1.0).setListener(null);
+
               if (view instanceof CellView) {
                 ((CellView) view).addChildView(dragView);
                 dragView.setTag(view);
 
-                view.setAlpha((float) 1.0);
+                view.animate().alpha((float) 1.0);
               } else {
                 // 新建一个CellView,并初始化相应数据
                 CellView cellView = new CellView(LuncherDemoActivity.this);
@@ -260,6 +283,11 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
             view.setTag(R.id.timer, new Timer());
 
             // 此处返回false是为了让ViewGroup能够捕获到DragEvent.ACTION_DROP事件!!!
+            return false;
+          case DragEvent.ACTION_DRAG_ENDED:
+
+            view.animate().alpha((float) 1.0).setListener(null);
+
             return false;
 
           default:
