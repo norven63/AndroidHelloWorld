@@ -37,7 +37,10 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
       final View view = parentView.getChildAt(msg.arg1);
       final View dragView = parentView.getChildAt(msg.arg2);
 
-      if (dragView instanceof CellView) {
+      /**
+       * 能够触发位移动画两种条件: 1.停留超过指定秒数后并继续拖动,根据左移还是右移判断当坐标与(监听View的宽度/2)的值 2.拖动View是一个CellView
+       */
+      if (msg.what == 1 || dragView instanceof CellView) {
         // 监听View的坐标
         float x = view.getX();
         float y = view.getY();
@@ -59,7 +62,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
           @Override
           public void onAnimationEnd(Animator animation) {
-            // 恢复标记位,允许ViewGroup作出将本尊移回原位的响应操作
+            view.setTag(R.id.isMove, false);
             isItemOnDragListener = true;
           }
 
@@ -70,6 +73,10 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
           @Override
           public void onAnimationStart(Animator animation) {
             dragView.setAlpha((float) 1.0);
+
+            // 标记监听View正在执行动画
+            view.setTag(R.id.isMove, true);
+
             // 设置标记位,不让ViewGroup作出将本尊移回原位的响应操作
             isItemOnDragListener = false;
           }
@@ -79,6 +86,9 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
       }
     }
   };
+
+  private float currentX = 0;
+  private boolean isLeft = true;
 
   private LuncherDemoFragment luncherDemoFragment;
   @InjectView(R.id.cellLayout)
@@ -125,6 +135,11 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
     viewDragListener = new OnDragListener() {
       @Override
       public boolean onDrag(final View view, DragEvent event) {
+        // 如果监听View正在执行一个移动动画则直接return
+        if (null != view.getTag(R.id.isMove) && (Boolean) view.getTag(R.id.isMove)) {
+          return false;
+        }
+
         final View dragView = (View) event.getLocalState();
 
         // 如果拖动事件遮蔽自己则直接return
@@ -143,7 +158,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
         switch (event.getAction()) {
           case DragEvent.ACTION_DRAG_ENTERED:
-            // 开启计时器,在只有当拖动View在监听View处停留0.7秒后才会有效果
+            // 开启计时器,在只有当拖动View在监听View处停留0.5秒后才会有效果
             timer.schedule(new TimerTask() {
               @Override
               public void run() {
@@ -160,16 +175,37 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                   }
                 });
               }
-            }, 600);
+            }, 500);
+
+            break;
+
+          case DragEvent.ACTION_DRAG_LOCATION:
+            boolean canMove = false;
+            if (isLeft) {
+              canMove = event.getX() >= view.getWidth() / 2;
+            } else {
+              canMove = event.getX() <= view.getWidth() / 2;
+            }
+
+            if (canMove) {
+              view.setTag(R.id.isMove, true);
+              view.setAlpha((float) 1.0);
+              Message message = new Message();
+              message.obj = parentView;
+              message.arg1 = index;
+              message.arg2 = parentView.indexOfChild(dragView);
+              message.what = 1;
+
+              handler.sendMessage(message);
+            }
 
             break;
 
           case DragEvent.ACTION_DRAG_EXITED:
-            view.setAlpha((float) 1.0);
-
             // 取消定时器,并重置
             timer.cancel();
             view.setTag(R.id.timer, new Timer());
+            view.setAlpha((float) 1.0);
 
             break;
 
@@ -207,10 +243,15 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                 vLayoutParams.topMargin = 10;
                 vLayoutParams.rightMargin = 10;
                 vLayoutParams.bottomMargin = 10;
-                parentView.addView(cellView, index, vLayoutParams);
 
                 parentView.removeView(view);
                 parentView.removeView(dragView);
+
+                if (index >= parentView.getChildCount()) {
+                  parentView.addView(cellView, vLayoutParams);
+                } else {
+                  parentView.addView(cellView, index, vLayoutParams);
+                }
               }
 
               isItemOnDragListener = false;
@@ -269,6 +310,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                 ((ViewGroup) v).addView(dragView);
 
                 dragView.setOnDragListener(viewDragListener);
+                dragView.setOnLongClickListener(LuncherDemoActivity.this);
 
                 // 强制执行一次动画,使子元素能够正常排列(防止不对齐现象)
                 ((ViewGroup) dragView.getParent()).scheduleLayoutAnimation();
@@ -289,8 +331,24 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
             break;
           case DragEvent.ACTION_DRAG_ENTERED:
+            // 记录开始坐标,并隐藏文件夹界面
+            currentX = event.getX();
             hiddenLayout();
+
             break;
+
+          case DragEvent.ACTION_DRAG_LOCATION:
+            // 判断是左移还是右移
+            if (event.getX() > currentX) {
+              isLeft = true;
+            } else {
+              isLeft = false;
+            }
+
+            currentX = event.getX();
+
+            break;
+
           default:
             break;
         }
@@ -303,16 +361,16 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
   @Override
   public boolean onLongClick(View view) {
+    // 将本尊隐身(其实是淡化处理,为什么不View.INVISIBLE而是采取淡化呢?是因为防止在其隐身后,该拖动事件被其ViewGroup捕获,从而造成"The specified child already has a parent"的异常)
+    // view.setVisibility(View.INVISIBLE);
+    view.setAlpha((float) 0.5);
+
     // 设置数据,会被拖动目标ViewGroup所接收,即用来传递信息
     ClipData data = ClipData.newPlainText("", "");
 
     // 设置拖动阴影,即你所拖动的那个图标(这也同时说明,你拖动的不过是一个影分身,本尊其实并没有移动)
     DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
     view.startDrag(data, shadowBuilder, view, 0);
-
-    // 将本尊隐身(其实是淡化处理,为什么不View.INVISIBLE而是采取淡化呢?是因为防止在其隐身后,该拖动事件被其ViewGroup捕获,从而造成"The specified child already has a parent"的异常)
-    // view.setVisibility(View.INVISIBLE);
-    view.setAlpha((float) 0.5);
 
     isItemOnDragListener = true;
     return true;

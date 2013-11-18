@@ -32,5 +32,6 @@
     </string-array>
 
     <item name="timer" type="id"/>
+    <item name="isMove" type="id"/>
 
 </resources>
