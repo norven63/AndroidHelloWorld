@@ -81,7 +81,7 @@ public class ScaleImageViewActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.scaleimage);
+    setContentView(R.layout.scale_image);
 
     matrix = new Matrix();
     matrix.setScale(1, 1);

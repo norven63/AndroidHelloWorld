@@ -23,7 +23,7 @@ public class WebViewActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.webview_activity);
+    setContentView(R.layout.webview);
 
     progressBar = (ProgressBar) findViewById(R.id.webViewBar);
     progressBar.setMax(100);

@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
     PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
     // 注意这里Builder的用法,设定了很多Notification的属性,而其中setContent(RemoteView)可以使你用一个自定义的布局来填充Notification(此方法并未例句出来,因为会覆盖这之前所有的显示设置)
-    RemoteViews remoteViews = new RemoteViews(MainActivity.this.getPackageName(), R.layout.mynotification_layout);
+    RemoteViews remoteViews = new RemoteViews(MainActivity.this.getPackageName(), R.layout.mynotification);
 
     notification =
         new Notification.Builder(this).setContentText("Hello World!").setContentTitle("Hello").setSmallIcon(R.drawable.ic_launcher)

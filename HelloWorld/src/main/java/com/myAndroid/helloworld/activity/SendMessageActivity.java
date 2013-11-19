@@ -13,7 +13,7 @@ public class SendMessageActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.sendmessagelayout);
+		setContentView(R.layout.sendmessage);
 		Button button = (Button) findViewById(R.id.button);
 
 		button.setOnClickListener(new View.OnClickListener() {

@@ -15,7 +15,7 @@ public class SlidingDrawerActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.slidingdrawer_layout);
+    setContentView(R.layout.sliding_drawer);
     SlidingDrawer slidingDrawer = (SlidingDrawer) findViewById(R.id.slidingdrawer);
 
     slidingDrawer.setOnDrawerCloseListener(new OnDrawerCloseListener() {

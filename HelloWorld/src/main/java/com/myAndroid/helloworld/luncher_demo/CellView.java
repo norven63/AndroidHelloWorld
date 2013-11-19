@@ -83,6 +83,7 @@ public class CellView extends View {
     this.invalidate();
   }
 
+  @SuppressWarnings("deprecation")
   @SuppressLint({"DrawAllocation", "NewApi"})
   @Override
   protected void onDraw(Canvas canvas) {

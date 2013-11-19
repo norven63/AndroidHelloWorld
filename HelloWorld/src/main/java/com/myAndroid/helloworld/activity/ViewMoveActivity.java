@@ -14,7 +14,7 @@ import roboguice.inject.InjectView;
  * 由于是FrameLayout布局，所以在onTouch事件里如果对布局下的其他View(那些TextView)进行操作，那么会导致整个布局重绘，从而使得图片再次复位
  * ，效果即是图片原地不动。所以针对此现象，需要将TextView的宽和高设定死。
  */
-@ContentView(R.layout.move_view_activity)
+@ContentView(R.layout.move_view)
 public class ViewMoveActivity extends RoboActivity {
   @InjectView(R.id.screen_width)
   private TextView screenWidthView;

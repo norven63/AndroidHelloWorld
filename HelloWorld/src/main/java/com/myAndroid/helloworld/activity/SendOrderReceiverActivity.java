@@ -25,6 +25,6 @@ public class SendOrderReceiverActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.activity_sendorderreceiver);
+    setContentView(R.layout.order_receiver);
   }
 }

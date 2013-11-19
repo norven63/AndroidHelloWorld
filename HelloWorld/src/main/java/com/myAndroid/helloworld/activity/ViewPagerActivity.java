@@ -20,7 +20,7 @@ public class ViewPagerActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.viewpager_activity);
+    setContentView(R.layout.viewpager);
 
     final String[] titles = new String[] { "机器人", "三角形" };
 
