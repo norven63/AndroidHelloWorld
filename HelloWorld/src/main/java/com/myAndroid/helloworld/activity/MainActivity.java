@@ -2,15 +2,10 @@ package com.myAndroid.helloworld.activity;
 
 import com.myAndroid.helloworld.R;
 import com.myAndroid.helloworld.service.SaveFileService;
+
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
-import android.view.SubMenu;
-
-import android.view.Window;
-
-import android.graphics.BitmapFactory;
-import android.widget.RemoteViews;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -25,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.ColorStateList;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.view.KeyEvent;
@@ -32,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -46,6 +43,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.RemoteViews;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;

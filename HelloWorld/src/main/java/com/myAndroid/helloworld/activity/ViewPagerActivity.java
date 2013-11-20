@@ -22,7 +22,7 @@ public class ViewPagerActivity extends Activity {
 
     setContentView(R.layout.viewpager);
 
-    final String[] titles = new String[] { "机器人", "三角形" };
+    final String[] titles = new String[] {"机器人", "三角形"};
 
     final List<ImageView> imaViews = new ArrayList<ImageView>();
 
@@ -66,6 +66,5 @@ public class ViewPagerActivity extends Activity {
     });
     // TODO
     // viewPager.setCurrentItem(item);
-
   }
 }

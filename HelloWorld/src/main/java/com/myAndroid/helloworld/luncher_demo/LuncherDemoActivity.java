@@ -113,7 +113,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
   private OnDragListener viewGroupDragListener;
 
   // 为了防止ViewGroup和View同时监听drag事件而起冲突:true-ViewGroup可监听;false-View监听
-  private boolean isItemOnDragListener = true;
+  private boolean isItemOnDragListener = false;
 
   @InjectView(R.id.luncherParent)
   private ViewGroup luncherParent;
@@ -275,7 +275,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                 }
               }
 
-              isItemOnDragListener = false;
+              isItemOnDragListener = true;
             }
 
             // 取消定时器,并重置
@@ -322,7 +322,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
             float e_x = event.getX() - dragView.getWidth() / 2;
             float e_y = event.getY() - dragView.getHeight() / 2;
 
-            if (isItemOnDragListener) {
+            if (!isItemOnDragListener) {
               if (null != dragView.getTag()) {
                 CellView cellView = (CellView) dragView.getTag();
                 cellView.removeChildView(dragView);
@@ -397,7 +397,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
     view.setBackground(null);
 
-    isItemOnDragListener = true;
+    isItemOnDragListener = false;
     return true;
   }
 
