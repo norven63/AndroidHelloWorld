@@ -5,15 +5,14 @@ import com.myAndroid.helloworld.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.widget.ImageView;
-
-import android.view.ViewGroup;
-
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 public class ViewPagerActivity extends Activity {
   @Override
@@ -27,7 +26,7 @@ public class ViewPagerActivity extends Activity {
     final List<ImageView> imaViews = new ArrayList<ImageView>();
 
     ImageView imageView1 = new ImageView(this);
-    imageView1.setBackgroundResource(R.drawable.image_view1);
+    imageView1.setBackgroundResource(R.drawable.test_image);
     imaViews.add(imageView1);
 
     ImageView imageView2 = new ImageView(this);
@@ -35,6 +34,27 @@ public class ViewPagerActivity extends Activity {
     imaViews.add(imageView2);
 
     ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+    viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+
+      @Override
+      public void onPageScrolled(int arg0, float arg1, int arg2) {
+        // TODO Auto-generated method stub
+
+      }
+
+      @Override
+      public void onPageScrollStateChanged(int arg0) {
+        // TODO Auto-generated method stub
+
+      }
+
+      @Override
+      public void onPageSelected(int arg0) {
+        // TODO Auto-generated method stub
+
+      }
+    });
+
     viewPager.setAdapter(new PagerAdapter() {
       @Override
       public void destroyItem(ViewGroup container, int position, Object object) {

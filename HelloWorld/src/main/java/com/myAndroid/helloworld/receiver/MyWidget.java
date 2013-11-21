@@ -16,6 +16,7 @@ public class MyWidget extends AppWidgetProvider {
 
   public static final String WIDGET_BORADCAST2 = "myAndroid.helloworld.receiver.MYWIDGET_BORADCAST_ic_launcher";
 
+  // 不推荐使用onReceive()
   @Override
   public void onReceive(Context context, Intent intent) {
     super.onReceive(context, intent);

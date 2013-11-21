@@ -311,10 +311,7 @@ public class MainActivity extends Activity {
     for (int i = 0; i < 4; i++) {
       final int ii = i;
       Tab tab = bar.newTab();
-      tab.setIcon(R.drawable.ic_launcher);
-      tab.setText("Tab-" + i);
-      tab.setContentDescription("标签:" + i);
-      tab.setTabListener(new TabListener() {
+      tab.setText("Tab-" + i).setIcon(R.drawable.ic_launcher).setContentDescription("标签:" + i).setTabListener(new TabListener() {
 
         @Override
         public void onTabReselected(Tab tab, FragmentTransaction ft) {
@@ -331,6 +328,7 @@ public class MainActivity extends Activity {
           Toast.makeText(MainActivity.this, "onTabUnselected-" + ii, Toast.LENGTH_SHORT).show();
         }
       });
+
       if (0 == i) {
         bar.addTab(tab, true);
       } else {
