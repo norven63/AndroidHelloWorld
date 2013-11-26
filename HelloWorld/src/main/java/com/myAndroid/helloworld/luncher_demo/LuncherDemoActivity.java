@@ -30,6 +30,8 @@ import roboguice.inject.InjectView;
 
 @ContentView(R.layout.luncher_demo)
 public class LuncherDemoActivity extends RoboActivity implements OnLongClickListener {
+  private boolean isOut = false;// 判断是否超出屏幕
+
   @SuppressLint("HandlerLeak")
   private Handler handler = new Handler() {
     @Override
@@ -288,6 +290,11 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
             view.animate().alpha((float) 1.0).setListener(null);
 
+            // 判断是否被拖出Activity之外,如果是则将拖动View复原
+            if (isOut) {
+              dragView.setBackground((Drawable) dragView.getTag(R.id.bg));
+            }
+
             return false;
 
           default:
@@ -354,6 +361,8 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
             break;
           case DragEvent.ACTION_DRAG_ENTERED:
+            isOut = false;
+
             // 记录拖动开始位置坐标,并隐藏文件夹界面
             currentX = event.getX();
             hiddenLayout();
@@ -371,7 +380,10 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
             currentX = event.getX();
 
             break;
+          case DragEvent.ACTION_DRAG_EXITED:
+            isOut = true;
 
+            break;
           default:
             break;
         }
