@@ -6,6 +6,8 @@ import com.myAndroid.helloworld.service.SaveFileService;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
+import android.view.animation.Animation;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -33,6 +35,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -46,6 +50,7 @@ import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -430,7 +435,7 @@ public class MainActivity extends Activity {
     TextView urlTextView = (TextView) findViewById(R.id.url_);
     // Linkify.addLinks(urlTextView, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
 
-    ToggleButton toggleButton = (ToggleButton) findViewById(R.id.togglebutton);
+    final ToggleButton toggleButton = (ToggleButton) findViewById(R.id.togglebutton);
     toggleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -438,6 +443,51 @@ public class MainActivity extends Activity {
           Toast.makeText(MainActivity.this, "Checked!-下载", Toast.LENGTH_SHORT).show();
         } else {
           Toast.makeText(MainActivity.this, "UnChecked!-删除", Toast.LENGTH_SHORT).show();
+        }
+      }
+    });
+
+    // 一个有意思的动画,偷懒专用 ^_______________^
+    Switch switchButton = (Switch) findViewById(R.id.switchButton);
+    switchButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Animation fadein = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in);
+        fadein.setAnimationListener(new AnimationListener() {
+          @Override
+          public void onAnimationEnd(Animation animation) {
+            toggleButton.setVisibility(View.VISIBLE);
+          }
+
+          @Override
+          public void onAnimationRepeat(Animation animation) {
+          }
+
+          @Override
+          public void onAnimationStart(Animation animation) {
+          }
+        });
+
+        Animation fadeOut = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out);
+        fadeOut.setAnimationListener(new AnimationListener() {
+          @Override
+          public void onAnimationEnd(Animation animation) {
+            toggleButton.setVisibility(View.INVISIBLE);
+          }
+
+          @Override
+          public void onAnimationRepeat(Animation animation) {
+          }
+
+          @Override
+          public void onAnimationStart(Animation animation) {
+          }
+        });
+
+        if (isChecked) {
+          toggleButton.startAnimation(fadeOut);
+        } else {
+          toggleButton.startAnimation(fadein);
         }
       }
     });
