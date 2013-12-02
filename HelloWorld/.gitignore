@@ -6,7 +6,7 @@
 *.dex 
   
 # Java class files 
-*.class 
+*.class
   
 # generated files 
 bin/ 
@@ -17,4 +17,5 @@ local.properties
   
 # Eclipse project files 
 .classpath 
-.project 
+.project
+.settings/ 
