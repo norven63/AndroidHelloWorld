@@ -4,9 +4,9 @@
     <stroke
         android:width="2dp"
         android:color="#FFFF0000" />
-
+    <!-- android:angle为90的倍数 -->
     <gradient
-        android:angle="225"
+        android:angle="270"
         android:endColor="#DD2ECCFA"
         android:startColor="#DD000000" />
 
