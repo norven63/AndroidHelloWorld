@@ -46,6 +46,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     TextView rowTextView = (TextView) convertView;
     if (null == rowTextView) {
       rowTextView = new TextView(context);
+      rowTextView.setPadding(15, 0, 0, 0);
     }
 
     rowTextView.setText(contents[groupPosition][childPosition]);
