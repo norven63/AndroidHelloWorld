@@ -99,6 +99,8 @@ public class DataListActivity extends Activity {
 
       @Override
       public boolean onTouch(View v, MotionEvent event) {
+        boolean returnValue = false;
+
         switch (event.getAction()) {
           case MotionEvent.ACTION_DOWN:
             startPointY = event.getY();
@@ -106,7 +108,6 @@ public class DataListActivity extends Activity {
             break;
           case MotionEvent.ACTION_UP:
             v.animate().y((Float) v.getTag());// 松开手后复位
-            Toast.makeText(DataListActivity.this, "!!! " + headView.getHeight(), Toast.LENGTH_SHORT).show();
 
             break;
           case MotionEvent.ACTION_MOVE:
@@ -125,7 +126,7 @@ public class DataListActivity extends Activity {
           default:
             break;
         }
-        return false;
+        return returnValue;
       }
     });
     // ///////////////////////end///////////////////////////////////
