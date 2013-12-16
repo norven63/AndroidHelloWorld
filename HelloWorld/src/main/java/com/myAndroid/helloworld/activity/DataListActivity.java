@@ -23,7 +23,7 @@ import android.widget.Toast;
  * 此类中涉及到ListView下拉刷新的案例。但是此例还是建议用ScrollView配合ListView来实现，下拉的不是ListView而是外层的ScrollView，原因很简单，
  * ScrollView比起ListView更容易判断是否已经滑动至最顶部。具体代码可以参考DreamBook项目中的书架功能。
  * 
- * P.S：上述方案需要注意点一点细节是，ListView的onTouch()方法返回值设为false，避免与ScrollView冲突
+ * P.S：上述方案需要注意点一点细节是，ListView的onTouch()方法返回值设为false(记得还须要同时调用super.onTouch()方法)，避免与ScrollView冲突
  * 
  * @author Administrator
  */
