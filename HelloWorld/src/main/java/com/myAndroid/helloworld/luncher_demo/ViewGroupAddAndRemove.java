@@ -4,6 +4,12 @@ import android.view.View;
 
 import android.view.ViewGroup;
 
+/**
+ * 封装了ViewGroup、监听View、拖动View三个对象
+ * 
+ * @author Administrator
+ * 
+ */
 public class ViewGroupAddAndRemove {
   private ViewGroup viewGroup;
   private View listenerView;

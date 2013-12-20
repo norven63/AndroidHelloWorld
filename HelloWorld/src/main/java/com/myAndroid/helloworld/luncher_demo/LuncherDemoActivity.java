@@ -42,7 +42,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
       final View dragView = viewGroupAddAndRemove.getDragView();
 
       /**
-       * 能够触发位移操作两种条件: 1.停留超过指定秒数后并继续拖动,根据左移还是右移判断当坐标与(监听View的宽度/2)的值 2.拖动View是一个CellView
+       * 能够触发可位移操作的两个条件: 1.停留超过指定秒数后并继续拖动,根据左移入还是右移入来判断当坐标与"监听View的2分之1宽度值"的值 2.拖动View是一个CellView
        */
       if (msg.what == 1 || dragView instanceof CellView) {
         // 为了防止监听View在执行布局调整动画时仍然继续监听onDrag事件,并然后在0.35秒后恢复其监听功能
@@ -60,13 +60,16 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
           }
         }, 350);
 
-        // 删除&添加
+        // 清空拖动View和与其相关的CellView的关联状态
         if (null != dragView.getTag()) {
           CellView cellView = (CellView) dragView.getTag();
           cellView.removeChildView(dragView);
           dragView.setTag(null);
         }
 
+        /**
+         * 先删除,然后再添加到监听View之前(即在执行删除拖动View的操作之前)的索引位置
+         */
         if (null != ((ViewGroup) dragView.getParent())) {
           ((ViewGroup) dragView.getParent()).removeView(dragView);
         }
@@ -76,6 +79,9 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
         ((ViewGroup) dragView.getParent()).scheduleLayoutAnimation();
 
       } else {
+        /**
+         * 不满足移动条件时,则触发闪烁动画
+         */
         view.animate().alpha((float) 0.3).setDuration(400).setListener(new AnimatorListener() {
           @Override
           public void onAnimationCancel(Animator animation) {
@@ -115,7 +121,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
   private OnDragListener viewGroupDragListener;
 
   // 为了防止ViewGroup和View同时监听drag事件而起冲突:true-ViewGroup可监听;false-View监听
-  private boolean isItemOnDragListener = false;
+  private boolean isItemHandleDragEvent = false;
 
   @InjectView(R.id.luncherParent)
   private ViewGroup luncherParent;
@@ -173,7 +179,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
         switch (event.getAction()) {
           case DragEvent.ACTION_DRAG_ENTERED:
-            // 开启计时器,在只有当拖动View在监听View处停留0.25秒后才会有效果
+            // 开启计时器,在只有当拖动View在监听View处停留0.25秒后才会有相应效果
             timer.schedule(new TimerTask() {
               @Override
               public void run() {
@@ -185,10 +191,10 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                     viewGroupAddAndRemove.setListenerView(view);
                     viewGroupAddAndRemove.setDragView(dragView);
 
-                    // 发送Message以触发Handle处理,其中封装了ViewGroup、监听View、拖动View三个对象以及监听View的索引
+                    // 发送Message以触发Handle处理,其中包含ViewGroupAnddRemove以及监听View的索引
                     Message message = new Message();
                     message.obj = viewGroupAddAndRemove;
-                    message.arg1 = index;
+                    message.arg1 = index;// 监听View索引
 
                     handler.sendMessage(message);
                   }
@@ -198,8 +204,14 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
             break;
 
+          /**
+           * 触发可以移动的两个条件之1:当监听View处于可以操作状态(即停留了0.25秒,这里采用alpha值来判断,因为停留0.25秒后监听View会执行闪烁动画,改变alpha值。
+           * 但这不是一个可靠的参数,建议专门使用一个标记位来进行标识),并且继续移动超过了"监听View的2分之1宽度值"
+           */
           case DragEvent.ACTION_DRAG_LOCATION:
-            boolean canMove = false;
+            boolean canMove = false;// 标记是否超过了"监听View的2分之1宽度值"
+
+            // 这个isLeft的赋值操作在ViewGroup的拖动监听中执行
             if (isLeft) {
               canMove = event.getX() >= view.getWidth() * 3 / 4;
             } else {
@@ -215,7 +227,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
               Message message = new Message();
               message.obj = viewGroupAddAndRemove;
               message.arg1 = index;
-              message.what = 1;
+              message.what = 1;// 直接设置为1,当handler处理时,将直接判定为能够触发可位移操作
 
               handler.sendMessage(message);
             }
@@ -249,7 +261,11 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                 cellView.setOnDragListener(viewDragListener);
                 cellView.setOnLongClickListener(LuncherDemoActivity.this);
                 cellView.setTag(R.id.timer, new Timer());
+
                 cellView.setOnClickListener(new OnClickListener() {
+                  /**
+                   * 点击打开文件夹界面
+                   */
                   @Override
                   public void onClick(View v) {
                     CellView cellView = (CellView) v;
@@ -277,7 +293,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
                 }
               }
 
-              isItemOnDragListener = true;
+              isItemHandleDragEvent = true;
             }
 
             // 取消定时器,并重置
@@ -329,8 +345,12 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
             float e_x = event.getX() - dragView.getWidth() / 2;
             float e_y = event.getY() - dragView.getHeight() / 2;
 
-            if (!isItemOnDragListener) {
+            if (!isItemHandleDragEvent) {
               if (null != dragView.getTag()) {
+                /**
+                 * 这里是拖动View从一个文件夹拖动至桌面的情况分支。首先清空拖动View和与其相关的CellView的关联状态，然后再将拖动View加入到桌面上。这里，
+                 * 在添加操作中是没有动画效果的，可以考虑添加一下...TODO
+                 */
                 CellView cellView = (CellView) dragView.getTag();
                 cellView.removeChildView(dragView);
                 dragView.setTag(null);
@@ -341,11 +361,14 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
 
                 ((ViewGroup) v).addView(dragView);
 
+                // 重新添加个Listener
                 dragView.setOnDragListener(viewDragListener);
                 dragView.setOnLongClickListener(LuncherDemoActivity.this);
 
               } else {
-                // 从拖动点移回至原位的动画
+                /**
+                 * 这里是拖动View处于桌面拖动的情况分支。只须执行 从拖动点移回至原位的动画。
+                 */
                 float x = dragView.getX();
                 float y = dragView.getY();
 
@@ -370,7 +393,8 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
             break;
 
           case DragEvent.ACTION_DRAG_LOCATION:
-            // 判断是左移还是右移
+
+            // 判断是左移还是右移,这个值将会在每个单独View的拖动监听中判断是否可触发移动效果时用到
             if (event.getX() > currentX) {
               isLeft = true;
             } else {
@@ -397,7 +421,7 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
   @SuppressLint("NewApi")
   @Override
   public boolean onLongClick(View view) {
-    // 将本尊隐身
+    // 缓存拖动View的背景图
     view.setTag(R.id.bg, view.getBackground());
 
     // 设置数据,会被拖动目标ViewGroup所接收,即用来传递信息
@@ -407,9 +431,10 @@ public class LuncherDemoActivity extends RoboActivity implements OnLongClickList
     DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
     view.startDrag(data, shadowBuilder, view, 0);
 
+    // 将本尊隐身（注意这里采取的是设置背景图为null的策略。而至于为何不采用设置alpha值为0的策略，是因为在拖动View被重新add入一个ViewGroup中时，会重置其alpha值，这将导致拖动View重新被展现出来，从而无法达到完美的隐身效果）
     view.setBackground(null);
 
-    isItemOnDragListener = false;
+    isItemHandleDragEvent = false;
     return true;
   }
 
