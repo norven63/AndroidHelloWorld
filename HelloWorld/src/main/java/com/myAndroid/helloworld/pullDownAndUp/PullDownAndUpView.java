@@ -80,16 +80,24 @@ public class PullDownAndUpView extends ScrollView {
   protected void onScrollChanged(int l, int t, int oldl, int oldt) {
     super.onScrollChanged(l, t, oldl, oldt);
 
-    if (t == 0 && t == oldt) {
-      isPullToTop = true;// top为0且top=oldt时标记为拖动至顶部
-    } else {
-      isPullToTop = false;
-    }
+    do {
+      if (t != oldt) {
+        isPullToTop = false;
+        isPullToBottom = false;
 
-    if (t != 0 && t == oldt) {
-      isPullToBottom = true;// top值"不"为0且top=oldt时标记为拖动至底部
-    } else {
-      isPullToBottom = false;
-    }
+        break;
+      }
+
+      // top值为0且top=oldt时标记为拖动至顶部
+      if (t == 0) {
+        isPullToTop = true;
+      }
+
+      // top值"不"为0且top=oldt时标记为拖动至底部
+      if (t != 0) {
+        isPullToBottom = true;
+      }
+
+    } while (false);
   }
 }
