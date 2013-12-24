@@ -140,7 +140,7 @@ public class CellView extends View {
     }
 
     BitmapDrawable bitmapDrawable = new BitmapDrawable(cacheBitmap);
-    this.setTag(R.id.bg, bitmapDrawable);
+    this.setTag(R.id.bg, bitmapDrawable);// 缓存于tag中,在拖动时用(拖动时会设置背景为null)
 
     if (flag) {
       this.setBackground(bitmapDrawable);
