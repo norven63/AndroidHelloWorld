@@ -15,7 +15,6 @@
 
     <!-- 申请自定义的权限 -->
     <uses-permission android:name="com.myAndroid.hellorld.orderReceiver.permission" />
-
     <!-- 声明自定义的权限 -->
     <permission android:name="com.myAndroid.hellorld.orderReceiver.permission" />
 
