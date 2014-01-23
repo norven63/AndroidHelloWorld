@@ -1,4 +1,5 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:gridlayouts="http://schemas.android.com/apk/res/com.myAndroid.helloworld"
     android:id="@+id/main_scrollView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
@@ -13,12 +14,17 @@
             android:layout_marginLeft="15dp"
             android:orientation="vertical" >
 
+            <com.myAndroid.helloworld.view.MyAttrView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                gridlayouts:testattr="2" />
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="HelloWorld!"
                 android:background="@null"
+                android:text="HelloWorld!"
                 android:textColor="@color/selector_textview_text_color"
                 android:textSize="35sp" />
 

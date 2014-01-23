@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- name属性必须和类命一致 -->
+    <declare-styleable name="MyAttrView">
+        <attr name="testattr" format="integer" />
+    </declare-styleable>
+
+</resources>
