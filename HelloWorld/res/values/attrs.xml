@@ -10,6 +10,7 @@
         <attr name="android:layout_marginBottom" />
     </declare-styleable>
 
+    <!-- 此处定义一个attr标签,以供下面使用 。凡是用到的地方,都自动沿袭其属性,比如其下定义的enum-->
     <!-- Alignment constants. -->
     <attr name="alignmentMode">
         <!-- Align the bounds of the children.
