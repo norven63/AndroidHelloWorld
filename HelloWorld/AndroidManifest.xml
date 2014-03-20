@@ -127,6 +127,15 @@
         <activity
             android:name=".activity.ViewMoveActivity"
             android:screenOrientation="landscape" />
+
+        <!-- JUnit配置:记住这个一要放在application内,activity外 -->
+        <uses-library android:name="android.test.runner" />
     </application>
+    
+    <!-- JUnit配置:记住这个一要放在application外面 -->
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:label="Tests for My App"
+        android:targetPackage="com.myAndroid.helloworld" />
 
 </manifest>
