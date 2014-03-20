@@ -131,11 +131,13 @@
         <!-- JUnit配置:记住这个一要放在application内,activity外 -->
         <uses-library android:name="android.test.runner" />
     </application>
-    
+
     <!-- JUnit配置:记住这个一要放在application外面 -->
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
         android:label="Tests for My App"
         android:targetPackage="com.myAndroid.helloworld" />
+
+    <!-- JUnit配置:切记Run As\Run configurations内配置相应的 android.test.InstrumentationTestRunner!!!! -->
 
 </manifest>
