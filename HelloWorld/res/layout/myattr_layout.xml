@@ -1,4 +1,4 @@
-<!-- 声明命名空间时,末尾的包名只需要到helloworld为止即可,而不需要精确到view,切记! -->
+<!-- 声明命名空间时,末尾的包名必须清单文件中声明的package属性,切记! -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:gridlayouts="http://schemas.android.com/apk/res/com.myAndroid.helloworld"
     android:layout_width="match_parent"
