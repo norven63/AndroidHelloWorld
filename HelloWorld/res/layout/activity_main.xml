@@ -205,8 +205,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="IntentManager"
-                    android:tag="com.myAndroid.helloworld.activity.ViewPagerActivity"
-                    android:text="ViewPager" />
+                    android:tag="com.myAndroid.helloworld.activity.GestureImageViewActivity"
+                    android:text="开源:缩放图片" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -240,10 +240,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="IntentManager"
-                    android:tag="com.myAndroid.helloworld.activity.GestureImageViewActivity"
-                    android:text="开源:缩放图片" />
+                    android:tag="com.myAndroid.helloworld.activity.ViewPagerActivity"
+                    android:text="ViewPager" />
             </GridLayout>
         </LinearLayout>
     </HorizontalScrollView>
-
 </ScrollView>
