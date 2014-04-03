@@ -124,6 +124,8 @@
         <activity android:name=".activity.ScaleImageViewActivity" />
         <activity android:name=".luncher_demo.LuncherDemoActivity" />
         <activity android:name=".activity.WindowManagerActivity" />
+        <activity android:name=".activity.GestureImageViewActivity" />
+        
         <activity
             android:name=".activity.ViewMoveActivity"
             android:screenOrientation="landscape" />
