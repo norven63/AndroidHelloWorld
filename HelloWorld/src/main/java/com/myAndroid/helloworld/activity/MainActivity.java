@@ -3,6 +3,8 @@ package com.myAndroid.helloworld.activity;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
+import org.apache.http.Header;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -20,6 +22,7 @@ import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,6 +54,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.loopj.android.AsyncHttpClient;
+import com.loopj.android.AsyncHttpResponseHandler;
 import com.myAndroid.helloworld.R;
 import com.myAndroid.helloworld.service.SaveFileService;
 
@@ -209,6 +214,18 @@ public class MainActivity extends Activity {
 		}
 
 		return true;
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+		asyncHttpClient.post("http://www.baidu.com", new AsyncHttpResponseHandler() {
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+				Log.e("asyn", responseBody.toString());
+			}
+		});
 	}
 
 	public void onSaveFile(View view) {
