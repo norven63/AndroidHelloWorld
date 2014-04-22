@@ -87,19 +87,24 @@ public class MainActivity extends Activity {
 	}
 
 	public void notification(View view) {
-		Intent intent = new Intent(this, ThirdActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+		if (notification == null) {
+			Intent intent = new Intent(this, ThirdActivity.class);
+			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-		// 注意这里Builder的用法,设定了很多Notification的属性,而其中setContent(RemoteView)可以使你用一个自定义的布局来填充Notification(此方法并未例句出来,因为会覆盖这之前所有的显示设置)
-		RemoteViews remoteViews = new RemoteViews(MainActivity.this.getPackageName(), R.layout.mynotification);
+			// 注意这里Builder的用法,设定了很多Notification的属性,而其中setContent(RemoteView)可以使你用一个自定义的布局来填充Notification(此方法并未例句出来,因为会覆盖这之前所有的显示设置)
+			RemoteViews remoteViews = new RemoteViews(MainActivity.this.getPackageName(), R.layout.mynotification);
 
-		notification = new Notification.Builder(this).setContentText("Hello World!").setContentTitle("Hello")
-				.setSmallIcon(R.drawable.ic_launcher).setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.image_view2))
-				.setContentIntent(pendingIntent).setDefaults(Notification.DEFAULT_SOUND).setTicker("Come on!Baby!").getNotification();
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+			notification = new Notification.Builder(this).setContentText("Hello World!").setContentTitle("Hello")
+					.setSmallIcon(R.drawable.ic_launcher).setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.image_view2))
+					.setContentIntent(pendingIntent).setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS).setTicker("Come on!Baby!")
+					.build();
+			notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		notificationManager.notify(NOTIFICATION_ID, notification);
+			notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+			notificationManager.notify(NOTIFICATION_ID, notification);
+		} else {
+
+		}
 	}
 
 	@Override
