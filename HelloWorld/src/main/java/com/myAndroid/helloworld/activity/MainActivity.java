@@ -74,7 +74,6 @@ public class MainActivity extends Activity {
 	private SaveFileService service;
 	private SharedPreferences spf;
 	private Editor editor;
-
 	private Menu barMenu;
 
 	public void IntentManager(View view) {
