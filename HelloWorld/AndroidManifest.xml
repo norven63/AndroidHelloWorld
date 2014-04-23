@@ -126,7 +126,7 @@
         <activity android:name=".activity.GestureImageViewActivity" />
         <activity android:name=".activity.IntentActivity" >
             <intent-filter android:label="啦啦~" >
-                <action android:name="android.intent.action.WEB_SEARCH" />
+                <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.ALTERNATIVE" />

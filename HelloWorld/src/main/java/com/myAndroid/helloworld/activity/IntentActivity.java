@@ -22,7 +22,8 @@ public class IntentActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.setAction(Intent.ACTION_WEB_SEARCH);
+				intent.setAction(Intent.ACTION_SEND);
+				intent.setType("text/plain");
 				IntentActivity.this.startActivity(intent);
 			}
 		});
