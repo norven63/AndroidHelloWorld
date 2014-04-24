@@ -14,12 +14,21 @@ public class FirstReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		Log.e("abc", "一进入!");
+
 		String string = intent.getStringExtra(SendOrderReceiverActivity.DATA);
 		Toast.makeText(context, "1: " + string, Toast.LENGTH_SHORT).show();
 
 		Bundle bundle = new Bundle();
 		bundle.putString(DATA_FROM_FIRST, "Data from 一!");
 		setResultExtras(bundle);// 为下一个接收器传入数据,可以一直被传递
+
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Log.e("abc", "一结束!");
 
 		Log.i("ORDER_RECEIVER", "first");
 	}
