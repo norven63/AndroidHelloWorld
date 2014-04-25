@@ -72,7 +72,7 @@ import android.content.Context;
 import android.util.Log;
 
 /**
- * Th AsyncHttpClient can be used to make asynchronous GET, POST, PUT and DELETE HTTP requests in
+ * The AsyncHttpClient can be used to make asynchronous GET, POST, PUT and DELETE HTTP requests in
  * your Android applications. Requests can be made with additional parameters by passing a
  * {@link RequestParams} instance, and responses can be handled by passing an anonymously overridden
  * {@link ResponseHandlerInterface} instance.
