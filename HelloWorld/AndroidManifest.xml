@@ -97,6 +97,7 @@
         <activity
             android:name=".activity.SecondActivity"
             android:label="@string/app_name" >
+
             <!-- 以下是隐式调用的intent-filter设置规范 -->
             <intent-filter>
                 <action android:name="com.myAndroid.helloworld.second" />
@@ -124,12 +125,12 @@
         <activity android:name=".luncher_demo.LuncherDemoActivity" />
         <activity android:name=".activity.WindowManagerActivity" />
         <activity android:name=".activity.GestureImageViewActivity" />
+        <activity android:name=".activity.ImageSwitcherActivity" />
         <activity android:name=".activity.IntentActivity" >
             <intent-filter android:label="啦啦~" >
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                
                 <category android:name="android.intent.category.ALTERNATIVE" />
                 <category android:name="android.intent.category.SELECTED_ALTERNATIVE" />
             </intent-filter>

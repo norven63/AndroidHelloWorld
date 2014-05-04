@@ -79,15 +79,14 @@ public class PopupwindowOnLeftActivity extends Activity {
     View popupWindow_view = getLayoutInflater().inflate(R.layout.popupmenu, null, false);
 
     // 创建PopupWindow实例,100,220分别是宽度和高度,并将视图放入
-    popupWindow = new PopupWindow(popupWindow_view, 220, 220, true);
-
+    popupWindow = new PopupWindow(popupWindow_view, 220, 220, true);// 这个true表示弹出框会focus，导致它出现后其他控件无法点击
+    popupWindow.setOutsideTouchable(true);
     // 点击其他地方消失
     popupWindow_view.setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View v, MotionEvent event) {
         if (popupWindow != null && popupWindow.isShowing()) {
           popupWindow.dismiss();
-          popupWindow = null;
         }
 
         return false;
