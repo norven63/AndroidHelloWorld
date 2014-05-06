@@ -255,6 +255,12 @@
                     android:onClick="IntentManager"
                     android:tag="com.myAndroid.helloworld.activity.ImageSwitcherActivity"
                     android:text="ImageSwitcher" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.startActivityByBrowser.WebViewLuncherActivity"
+                    android:text="浏览器启动Activity" />
             </GridLayout>
         </LinearLayout>
     </HorizontalScrollView>

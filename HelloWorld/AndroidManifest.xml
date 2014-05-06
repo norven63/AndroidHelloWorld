@@ -126,6 +126,18 @@
         <activity android:name=".activity.WindowManagerActivity" />
         <activity android:name=".activity.GestureImageViewActivity" />
         <activity android:name=".activity.ImageSwitcherActivity" />
+        <activity android:name=".activity.startActivityByBrowser.WebViewLuncherActivity" />
+        <activity android:name=".activity.startActivityByBrowser.StartByBrowserActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="hellow" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activity.IntentActivity" >
             <intent-filter android:label="啦啦~" >
                 <action android:name="android.intent.action.SEND" />
