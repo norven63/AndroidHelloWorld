@@ -2,6 +2,10 @@ package com.myAndroid.helloworld.activity;
 
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.http.Header;
 
@@ -262,6 +266,22 @@ public class MainActivity extends Activity {
 		// getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 
 		setContentView(R.layout.activity_main);
+
+		// 时间显示
+		final TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
+		final SimpleDateFormat sdp = new SimpleDateFormat("HH:mm:ss");
+		timeTextView.setText("时间: " + sdp.format(new Date()));
+		Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				timeTextView.post(new Runnable() {
+					@Override
+					public void run() {
+						timeTextView.setText("时间: " + sdp.format(new Date()));
+					}
+				});
+			}
+		}, 0, 1, TimeUnit.SECONDS);
 
 		// ScrollView会拦截Activity的onTouch事件,所以为ScorllView的事件添加监听逻辑
 		ScrollView scrollView = (ScrollView) findViewById(R.id.main_scrollView);
