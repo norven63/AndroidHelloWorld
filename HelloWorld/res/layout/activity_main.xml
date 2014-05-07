@@ -271,6 +271,12 @@
                     android:onClick="IntentManager"
                     android:tag="com.myAndroid.helloworld.activity.startActivityByBrowser.WebViewLuncherActivity"
                     android:text="浏览器启动Activity" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.AlarmActivity"
+                    android:text="AlarmManager" />
             </GridLayout>
         </LinearLayout>
     </HorizontalScrollView>
