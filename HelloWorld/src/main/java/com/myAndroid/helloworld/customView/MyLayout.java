@@ -1,4 +1,4 @@
-package com.myAndroid.helloworld.view;
+package com.myAndroid.helloworld.customView;
 
 import com.myAndroid.helloworld.R;
 

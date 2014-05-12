@@ -1,4 +1,4 @@
-package com.myAndroid.helloworld.view;
+package com.myAndroid.helloworld.customView;
 
 import android.content.Context;
 import android.content.res.TypedArray;

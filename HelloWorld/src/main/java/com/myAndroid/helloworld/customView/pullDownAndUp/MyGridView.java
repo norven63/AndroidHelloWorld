@@ -1,4 +1,4 @@
-package com.myAndroid.helloworld.pullDownAndUp;
+package com.myAndroid.helloworld.customView.pullDownAndUp;
 
 import android.content.Context;
 import android.util.AttributeSet;
