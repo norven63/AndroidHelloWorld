@@ -17,6 +17,7 @@
             <com.myAndroid.helloworld.customView.MyAttrView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 gridlayouts:testattr="2" />
 
             <Button
@@ -24,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:background="@null"
-                android:text="HelloWorld!"
+                android:text="碰我换色"
                 android:textColor="@color/selector_textview_text_color"
                 android:textSize="35sp" />
 
@@ -32,6 +33,7 @@
                 android:id="@+id/changeBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="20dp"
                 android:text="长按以显示菜单" />
 
@@ -271,7 +273,8 @@
                     android:onClick="IntentManager"
                     android:tag="com.myAndroid.helloworld.activity.startActivityByBrowser.WebViewLuncherActivity"
                     android:text="浏览器启动Activity" />
-                <Button
+
+                <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="IntentManager"

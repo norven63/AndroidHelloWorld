@@ -231,6 +231,7 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	// 保存文件
 	public void onSaveFile(View view) {
 		fileContent = (EditText) findViewById(R.id.fileContent);
 		String content = fileContent.getText().toString();
