@@ -31,7 +31,7 @@ public class AlarmActivity extends Activity {
 
 	/**
 	 * 取消Alarm
-	 * 注意这里cancel塞的参数,虽然不是同一个PendingIntent,但是他们因为效果一样,
+	 * 注意这里cancel()塞的参数,虽然不是同一个PendingIntent,但是他们因为效果一样,
 	 * 所以依然可以被AlarmManager用来执行cancel的操作
 	 * 
 	 * @param view
