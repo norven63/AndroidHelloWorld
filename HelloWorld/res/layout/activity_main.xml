@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:text="长按以更改ActionBar" />
+                android:text="长按以显示菜单" />
 
             <TextView
                 android:id="@+id/timeTextView"
@@ -173,14 +173,14 @@
                     android:layout_height="wrap_content"
                     android:onClick="IntentManager"
                     android:tag="com.myAndroid.helloworld.activity.ImageViewActivity"
-                    android:text="ImageViewActivity" />
+                    android:text="ImageView" />
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="IntentManager"
                     android:tag="com.myAndroid.helloworld.activity.WebViewActivity"
-                    android:text="WebViewActivity" />
+                    android:text="WebView" />
 
                 <Button
                     android:layout_width="wrap_content"
