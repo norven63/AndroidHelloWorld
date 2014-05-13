@@ -129,6 +129,7 @@
         <activity android:name=".activity.ImageSwitcherActivity" />
         <activity android:name=".activity.AlarmActivity" />
         <activity android:name=".activity.startActivityByBrowser.WebViewLuncherActivity" />
+        <activity android:name="com.myAndroid.helloworld.customView.dragToFresh.DragToFreshActivity" />
         <activity android:name=".activity.startActivityByBrowser.StartByBrowserActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

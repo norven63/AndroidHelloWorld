@@ -3,7 +3,8 @@
 
     <!-- name属性值必须和类名一致 -->
     <declare-styleable name="MyAttrView">
-        <attr name="testattr" format="integer" />
+        <attr name="testattr" format="integer" /><!-- int -->
+        <attr name="headerView" format="reference" /><!-- 引用 -->
     </declare-styleable>
 
 </resources>

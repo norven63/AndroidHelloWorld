@@ -1,21 +1,22 @@
-package com.myAndroid.helloworld.customView.pullDownAndUp;
+package com.myAndroid.helloworld.customView.dragToFresh;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ScrollView;
 
-public class CanPullDownAndUpScrollView extends ScrollView {
+public class DragToFreshScrollView extends ScrollView {
 	private boolean canPull = false;// 标记是否可以拖拽
 
-	public CanPullDownAndUpScrollView(Context context) {
+	public DragToFreshScrollView(Context context) {
 		super(context);
 
 		init();
 	}
 
-	public CanPullDownAndUpScrollView(Context context, AttributeSet attrs) {
+	public DragToFreshScrollView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		init();
@@ -26,9 +27,15 @@ public class CanPullDownAndUpScrollView extends ScrollView {
 			private float startPointY;
 
 			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (null == v.getTag()) {
-					v.setTag(v.getY());
+			public boolean onTouch(View view, MotionEvent event) {
+				View childView = ((ViewGroup) view).getChildAt(0);
+
+				if (null == childView) {
+					return false;
+				}
+
+				if (null == childView.getTag()) {
+					childView.setTag(childView.getY());
 				}
 
 				switch (event.getAction()) {
@@ -38,7 +45,7 @@ public class CanPullDownAndUpScrollView extends ScrollView {
 					break;
 				case MotionEvent.ACTION_UP:
 					// 复位动画
-					animate().y((Float) v.getTag());
+					childView.animate().y((Float) childView.getTag());
 
 					// 重置标记位
 					canPull = false;
@@ -50,7 +57,7 @@ public class CanPullDownAndUpScrollView extends ScrollView {
 
 					do {
 						if (canPull && Math.abs(move) > 1) {
-							v.setY(v.getY() + move * 1 / 3);
+							childView.setY(childView.getY() + move * 1 / 3);
 						}
 					} while (false);
 

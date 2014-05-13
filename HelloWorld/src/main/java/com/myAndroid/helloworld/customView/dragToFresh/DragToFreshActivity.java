@@ -1,0 +1,65 @@
+package com.myAndroid.helloworld.customView.dragToFresh;
+
+import java.util.List;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.TextView;
+
+import com.google.api.client.util.Lists;
+import com.myAndroid.helloworld.R;
+
+public class DragToFreshActivity extends Activity {
+	private DragToFreshLayout dragToFreshLayout;
+	private GridView myGridView;
+
+	public class MyBaseAdapter extends BaseAdapter {
+		private List<TextView> dateSource;
+		{
+			dateSource = Lists.newArrayList();
+			for (int i = 0; i < 9; i++) {
+				TextView textView = (TextView) getLayoutInflater().inflate(R.layout.drag_to_fresh_textview, null);
+				dateSource.add(textView);
+			}
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getItem(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getItem(int position) {
+			return dateSource.get(position);
+		}
+
+		@Override
+		public int getCount() {
+			return dateSource.size();
+		}
+	};
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.drag_to_fresh_layout);
+
+		BaseAdapter adapter = new MyBaseAdapter();
+		dragToFreshLayout = (DragToFreshLayout) findViewById(R.id.dragToFreshListView);
+		dragToFreshLayout.setAdapter(adapter);
+
+		adapter = new MyBaseAdapter();
+		myGridView = (GridView) findViewById(R.id.myGivdView);
+		myGridView.setAdapter(adapter);
+	}
+}
