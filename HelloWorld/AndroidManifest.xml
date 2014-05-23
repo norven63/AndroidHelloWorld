@@ -77,6 +77,7 @@
                 android:resource="@xml/mywidget_provider" />
         </receiver>
 
+        <service android:name=".service.LockScreenService" />
         <service android:name=".service.SendMessageService" />
         <service android:name=".service.TestService" />
         <service
@@ -128,6 +129,7 @@
         <activity android:name=".activity.GestureImageViewActivity" />
         <activity android:name=".activity.ImageSwitcherActivity" />
         <activity android:name=".activity.AlarmActivity" />
+        <activity android:name=".activity.LockScreenActivity" />
         <activity android:name=".activity.startActivityByBrowser.WebViewLuncherActivity" />
         <activity android:name="com.myAndroid.helloworld.customView.dragToFresh.DragToFreshActivity" />
         <activity android:name=".activity.startActivityByBrowser.StartByBrowserActivity" >
