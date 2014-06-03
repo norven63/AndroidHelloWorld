@@ -6,7 +6,9 @@
     <ListView
         android:id="@+id/listHead"
         android:layout_width="match_parent"
-        android:layout_height="150dp"/>
+        android:layout_height="150dp" />
+
+    <!-- 可折叠&展开的ListView -->
 
     <ExpandableListView
         android:id="@+id/exListView"
@@ -14,27 +16,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp" />
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <fragment
-            android:id="@+id/fragment1"
-            android:name="com.myAndroid.helloworld.activity.Fragment1"
-            android:layout_width="240dp"
-            android:layout_height="wrap_content" />
-
-        <fragment
-            android:id="@+id/fragment2"
-            android:name="com.myAndroid.helloworld.activity.Fragment2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/popFragment"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:entries="@array/spinner_key" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addF"
+        android:text="增加Fragment" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="popF"
+        android:text="弹出Fragment" />
 
 </LinearLayout>
