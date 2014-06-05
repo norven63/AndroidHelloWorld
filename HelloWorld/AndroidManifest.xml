@@ -139,7 +139,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="hellow" />
+                <data android:scheme="hello" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.IntentActivity" >
