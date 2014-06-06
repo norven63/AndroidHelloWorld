@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.api.client.util.Lists;
 import com.myAndroid.helloworld.R;
+import com.myAndroid.helloworld.customView.dragToFresh.DragToFreshLayout.OnUpdateListener;
 
 public class DragToFreshActivity extends Activity {
 	private DragToFreshLayout dragToFreshLayout;
@@ -52,11 +54,17 @@ public class DragToFreshActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.drag_to_fresh_layout);
+		setContentView(R.layout.activity_drag_to_fresh_layout);
 
 		BaseAdapter adapter = new MyBaseAdapter();
 		dragToFreshLayout = (DragToFreshLayout) findViewById(R.id.dragToFreshListView);
 		dragToFreshLayout.setAdapter(adapter);
+		dragToFreshLayout.setOnUpdateListener(new OnUpdateListener() {
+			@Override
+			public void onUpdate() {
+				Toast.makeText(DragToFreshActivity.this, "update!!!", Toast.LENGTH_LONG).show();
+			}
+		});
 
 		adapter = new MyBaseAdapter();
 		myGridView = (GridView) findViewById(R.id.myGivdView);

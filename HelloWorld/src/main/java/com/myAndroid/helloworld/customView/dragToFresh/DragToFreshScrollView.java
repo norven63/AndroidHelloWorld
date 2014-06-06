@@ -39,29 +39,29 @@ public class DragToFreshScrollView extends ScrollView {
 				}
 
 				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					startPointY = event.getY();
+					case MotionEvent.ACTION_DOWN:
+						startPointY = event.getY();
 
-					break;
-				case MotionEvent.ACTION_UP:
-					// 复位动画
-					childView.animate().y((Float) childView.getTag());
+						break;
+					case MotionEvent.ACTION_UP:
+						// 复位动画
+						childView.animate().y((Float) childView.getTag());
 
-					// 重置标记位
-					canPull = false;
+						// 重置标记位
+						canPull = false;
 
-					break;
-				case MotionEvent.ACTION_MOVE:
-					float move = event.getY() - startPointY;
-					startPointY = event.getY();
+						break;
+					case MotionEvent.ACTION_MOVE:
+						float move = event.getY() - startPointY;
+						startPointY = event.getY();
 
-					do {
-						if (canPull && Math.abs(move) > 1) {
-							childView.setY(childView.getY() + move * 1 / 3);
-						}
-					} while (false);
+						do {
+							if (canPull && Math.abs(move) > 1.5) {
+								childView.setY(childView.getY() + move / Math.abs(move));
+							}
+						} while (false);
 
-					break;
+						break;
 				}
 
 				return false;
