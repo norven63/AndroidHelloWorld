@@ -324,7 +324,7 @@ public class MainActivity extends Activity {
 		newTextView1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				newTextView1.setBackgroundDrawable(getResources().getDrawable(R.color.blue));
+				newTextView1.setBackground(getResources().getDrawable(R.color.blue));
 			}
 		});
 
@@ -338,7 +338,7 @@ public class MainActivity extends Activity {
 		newTextView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				newTextView.setBackgroundDrawable(getResources().getDrawable(R.color.blue));
+				newTextView.setBackground(getResources().getDrawable(R.color.blue));
 			}
 		});
 
@@ -470,10 +470,6 @@ public class MainActivity extends Activity {
 
 			}
 		});
-
-		TextView urlTextView = (TextView) findViewById(R.id.url_);
-		// Linkify.addLinks(urlTextView, Linkify.WEB_URLS |
-		// Linkify.EMAIL_ADDRESSES);
 
 		final ToggleButton toggleButton = (ToggleButton) findViewById(R.id.togglebutton);
 		toggleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
