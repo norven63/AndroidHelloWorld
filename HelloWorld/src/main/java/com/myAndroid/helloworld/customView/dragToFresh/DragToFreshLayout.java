@@ -49,12 +49,13 @@ public class DragToFreshLayout extends LinearLayout {
 							startPointY = event.getY();
 
 							do {
-								if (canPull && Math.abs(distanceY) > 1.8) {// 如果改用move>1则只允许下拉刷新,现在Math.abs(move)则是可以上下拉都能刷新
+								if (canPull && Math.abs(distanceY) > 1.8) {// 如果改用move>1.8则只允许下拉刷新,现在Math.abs(move)则是可以上下拉都能刷新
 									float moveRange = 2f * (distanceY / Math.abs(distanceY));
 									contentListView.setY(contentListView.getY() + moveRange);
 									headView.setY(headView.getY() + moveRange);
 
-									if (canUpdate && headView.getY() == 0f) {
+									// 刷新操作
+									if (canUpdate && onUpdateListener != null && headView.getY() == 0f) {
 										canUpdate = false;
 										onUpdateListener.onUpdate();
 									}
