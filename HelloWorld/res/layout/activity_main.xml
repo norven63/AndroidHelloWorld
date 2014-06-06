@@ -37,6 +37,14 @@
                 android:layout_marginBottom="20dp"
                 android:text="长按以显示菜单" />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:onClick="showToastWithImage"
+                android:text="显示带图片的Toast" />
+
             <TextView
                 android:id="@+id/timeTextView"
                 android:layout_width="wrap_content"
@@ -280,7 +288,8 @@
                     android:onClick="IntentManager"
                     android:tag="com.myAndroid.helloworld.activity.AlarmActivity"
                     android:text="AlarmManager" />
-                <Button
+
+                <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="IntentManager"

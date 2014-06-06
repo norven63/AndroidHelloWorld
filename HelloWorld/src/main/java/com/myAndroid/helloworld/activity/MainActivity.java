@@ -208,10 +208,10 @@ public class MainActivity extends Activity {
 		super.onOptionsItemSelected(item);
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			/**
-			 * 为程序图片添加返回主界面的功能; FLAG_ACTIVITY_CLEAR_TOP是为了清除back
-			 * stack中的其他一系列活动,如此一来如果用户单击Back键,应用程序的其他活动将不再显示
-			 */
+				/**
+				 * 为程序图片添加返回主界面的功能; FLAG_ACTIVITY_CLEAR_TOP是为了清除back
+				 * stack中的其他一系列活动,如此一来如果用户单击Back键,应用程序的其他活动将不再显示
+				 */
 			Intent i = new Intent(this, MainActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(i);
@@ -352,7 +352,8 @@ public class MainActivity extends Activity {
 		for (int i = 0; i < 4; i++) {
 			final int ii = i;
 			Tab tab = bar.newTab();
-			tab.setText("Tab-" + i).setIcon(R.drawable.ic_launcher).setContentDescription("标签:" + i).setTabListener(new TabListener() {
+			tab.setText("Tab-" + i).setIcon(R.drawable.ic_launcher).setContentDescription("标签:" + i)
+					.setTabListener(new TabListener() {
 
 				@Override
 				public void onTabReselected(Tab tab, FragmentTransaction ft) {
@@ -559,6 +560,19 @@ public class MainActivity extends Activity {
 				menu.add(0, 3, 1, "333");
 			}
 		});
+	}
+
+	/**
+	 * 显示带有图片的Toast
+	 * 
+	 * @param view
+	 */
+	public void showToastWithImage(View view) {
+		View toastView = getLayoutInflater().inflate(R.layout.view_toast_show_image, null);
+		Toast toast = new Toast(this);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setView(toastView);
+		toast.show();
 	}
 
 	@Override
