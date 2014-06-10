@@ -1,4 +1,4 @@
-package com.myAndroid.helloworld.customView.dragToFresh;
+package com.myAndroid.helloworld.customView.drag4Fresh;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,7 +14,7 @@ import android.widget.ListView;
 
 import com.myAndroid.helloworld.R;
 
-public class DragToFreshLayout extends LinearLayout {
+public class Drag4FreshLayout extends LinearLayout {
 	public interface OnUpdateListener {
 		public void onUpdate();
 	}
@@ -59,11 +59,11 @@ public class DragToFreshLayout extends LinearLayout {
 	private OnUpdateListener onUpdateListener;
 	private OnTouchListener onTouchListener;
 
-	public DragToFreshLayout(final Context context, AttributeSet attrs) {
+	public Drag4FreshLayout(final Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DragToFreshLayout);
-		final int numColumns = typedArray.getInt(R.styleable.DragToFreshLayout_numColumns, USE_LISTVIEW);
+		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Drag4FreshLayout);
+		final int numColumns = typedArray.getInt(R.styleable.Drag4FreshLayout_numColumns, USE_LISTVIEW);
 		typedArray.recycle();
 
 		getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {

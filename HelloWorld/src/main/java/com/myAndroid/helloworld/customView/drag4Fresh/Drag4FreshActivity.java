@@ -1,4 +1,4 @@
-package com.myAndroid.helloworld.customView.dragToFresh;
+package com.myAndroid.helloworld.customView.drag4Fresh;
 
 import java.util.List;
 
@@ -12,10 +12,10 @@ import android.widget.Toast;
 
 import com.google.api.client.util.Lists;
 import com.myAndroid.helloworld.R;
-import com.myAndroid.helloworld.customView.dragToFresh.DragToFreshLayout.OnUpdateListener;
+import com.myAndroid.helloworld.customView.drag4Fresh.Drag4FreshLayout.OnUpdateListener;
 
-public class DragToFreshActivity extends Activity {
-	private DragToFreshLayout dragToFreshLayout;
+public class Drag4FreshActivity extends Activity {
+	private Drag4FreshLayout dragToFreshLayout;
 
 	public class MyBaseAdapter extends BaseAdapter {
 		private List<TextView> dateSource = Lists.newArrayList();
@@ -57,12 +57,12 @@ public class DragToFreshActivity extends Activity {
 		setContentView(R.layout.activity_drag4fresh_layout);
 
 		BaseAdapter adapter = new MyBaseAdapter();
-		dragToFreshLayout = (DragToFreshLayout) findViewById(R.id.dragToFreshListView);
+		dragToFreshLayout = (Drag4FreshLayout) findViewById(R.id.dragToFreshListView);
 		dragToFreshLayout.setAdapter(adapter);
 		dragToFreshLayout.setOnUpdateListener(new OnUpdateListener() {
 			@Override
 			public void onUpdate() {
-				Toast.makeText(DragToFreshActivity.this, "update!!!", Toast.LENGTH_LONG).show();
+				Toast.makeText(Drag4FreshActivity.this, "update!!!", Toast.LENGTH_LONG).show();
 			}
 		});
 	}
