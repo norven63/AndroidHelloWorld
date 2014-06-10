@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:drag4fresh="http://schemas.android.com/apk/res/com.myAndroid.helloworld"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <!-- 若设置了drag2fresh:numColumns属性，则用GridView来展现数据。默认是用ListView来展现的 -->
+    <!-- 若要下拉刷新，TextView的id用drag4fresh_headView；若要上拉刷新，id则用drag4fresh_footView -->
+
+    <com.myAndroid.helloworld.customView.dragToFresh.DragToFreshLayout
+        android:id="@+id/dragToFreshListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"        android:orientation="vertical"
+        drag4fresh:numColumns="3" >
+
+        <TextView
+            android:id="@id/drag4fresh_headView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="开始刷新"
+            android:textSize="20sp" />
+    </com.myAndroid.helloworld.customView.dragToFresh.DragToFreshLayout>
+
+</LinearLayout>

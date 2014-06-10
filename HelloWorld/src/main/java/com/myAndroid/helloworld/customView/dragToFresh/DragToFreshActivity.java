@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,12 +16,13 @@ import com.myAndroid.helloworld.customView.dragToFresh.DragToFreshLayout.OnUpdat
 
 public class DragToFreshActivity extends Activity {
 	private DragToFreshLayout dragToFreshLayout;
-	private GridView myGridView;
 
 	public class MyBaseAdapter extends BaseAdapter {
-		private List<TextView> dateSource;
-		{
-			dateSource = Lists.newArrayList();
+		private List<TextView> dateSource = Lists.newArrayList();
+
+		public MyBaseAdapter() {
+			super();
+
 			for (int i = 0; i < 9; i++) {
 				TextView textView = (TextView) getLayoutInflater().inflate(R.layout.drag_to_fresh_textview, null);
 				dateSource.add(textView);
@@ -54,7 +54,7 @@ public class DragToFreshActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_drag_to_fresh_layout);
+		setContentView(R.layout.activity_drag4fresh_layout);
 
 		BaseAdapter adapter = new MyBaseAdapter();
 		dragToFreshLayout = (DragToFreshLayout) findViewById(R.id.dragToFreshListView);
@@ -65,9 +65,5 @@ public class DragToFreshActivity extends Activity {
 				Toast.makeText(DragToFreshActivity.this, "update!!!", Toast.LENGTH_LONG).show();
 			}
 		});
-
-		adapter = new MyBaseAdapter();
-		myGridView = (GridView) findViewById(R.id.myGivdView);
-		myGridView.setAdapter(adapter);
 	}
 }

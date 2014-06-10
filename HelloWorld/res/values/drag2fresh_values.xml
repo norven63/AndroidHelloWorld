@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DragToFreshLayout">
+        <attr name="numColumns" format="integer" />
+    </declare-styleable>
+
+    <item name="drag4fresh_headView" type="id"/>
+    <item name="drag4fresh_footView" type="id"/>
+    <item name="firstY" type="id"/>
+</resources>
