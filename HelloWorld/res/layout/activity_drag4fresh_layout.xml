@@ -6,9 +6,8 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    <!-- 若设置了drag2fresh:numColumns属性，则用GridView来展现数据。默认是用ListView来展现的 -->
+    <!-- 一旦设置了drag4fresh:numColumns属性的值，则用GridView来展现数据。默认是用ListView来展现的 -->
     <!-- 若要下拉刷新，TextView的id用drag4fresh_headView；若要上拉刷新，id则用drag4fresh_footView -->
-
     <com.myAndroid.helloworld.customView.drag4Fresh.Drag4FreshLayout
         android:id="@+id/dragToFreshListView"
         android:layout_width="match_parent"
@@ -21,7 +20,8 @@
             android:layout_height="60dp"
             android:gravity="center"
             android:text="开始刷新"
-            android:textSize="20sp" />
+            android:textSize="20sp" >
+        </TextView>
     </com.myAndroid.helloworld.customView.drag4Fresh.Drag4FreshLayout>
 
 </LinearLayout>

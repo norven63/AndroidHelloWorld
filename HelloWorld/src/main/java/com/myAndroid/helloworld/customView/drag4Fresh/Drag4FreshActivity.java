@@ -23,8 +23,8 @@ public class Drag4FreshActivity extends Activity {
 		public MyBaseAdapter() {
 			super();
 
-			for (int i = 0; i < 9; i++) {
-				TextView textView = (TextView) getLayoutInflater().inflate(R.layout.drag_to_fresh_textview, null);
+			for (int i = 0; i < 15 * 3; i++) {
+				TextView textView = (TextView) getLayoutInflater().inflate(R.layout.drag4fresh_item, null);
 				dateSource.add(textView);
 			}
 		}
