@@ -163,7 +163,7 @@ public class Drag4FreshLayout extends LinearLayout {
 						float distanceY = event.getY() - currentY;
 						currentY = event.getY();
 
-						if (canDrag && Math.abs(distanceY) > 2.5) {// 如果改用move>?则只能够下拉操作,现在Math.abs(move)则是可以上下拉操作都能够
+						if (canDrag && Math.abs(distanceY) > 2.5) {// 如果改用distanceY>?则只能够下拉操作,现在Math.abs(distanceY)则是可以上下拉操作都能够
 							float moveRange = 3f * (distanceY / Math.abs(distanceY));
 
 							contentListView.setY(contentListView.getY() + moveRange);
