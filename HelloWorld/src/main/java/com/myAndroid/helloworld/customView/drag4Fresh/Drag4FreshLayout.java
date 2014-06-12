@@ -15,6 +15,18 @@ import android.widget.ListView;
 import com.myAndroid.helloworld.R;
 
 public class Drag4FreshLayout extends LinearLayout {
+	private final int USE_LISTVIEW = 9999;
+	private boolean isFirstLayout = true;// 标记是否为第一次渲染布局
+	private boolean canDrag;// 标记是否允许拖拽
+	private boolean canUpdate = true;
+	private float currentY;
+	private float startY;
+	private View headView;
+	private View footView;
+	private BaseAdapter adapter;
+	private OnUpdateListener onUpdateListener;
+	private OnTouchListener onTouchListener;
+
 	public interface OnUpdateListener {
 		public void onUpdate();
 	}
@@ -47,20 +59,10 @@ public class Drag4FreshLayout extends LinearLayout {
 		}
 	}
 
-	private final int USE_LISTVIEW = 9999;
-	private boolean isFirstLayout = true;// 标记是否为第一次渲染布局
-	private boolean canDrag;// 标记是否允许拖拽
-	private boolean canUpdate = true;
-	private float currentY;
-	private float startY;
-	private View headView;
-	private View footView;
-	private BaseAdapter adapter;
-	private OnUpdateListener onUpdateListener;
-	private OnTouchListener onTouchListener;
-
 	public Drag4FreshLayout(final Context context, AttributeSet attrs) {
 		super(context, attrs);
+
+		this.setOrientation(LinearLayout.VERTICAL);
 
 		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Drag4FreshLayout);
 		final int numColumns = typedArray.getInt(R.styleable.Drag4FreshLayout_numColumns, USE_LISTVIEW);
