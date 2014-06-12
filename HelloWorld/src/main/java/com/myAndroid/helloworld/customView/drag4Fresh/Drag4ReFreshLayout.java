@@ -14,21 +14,21 @@ import android.widget.ListView;
 
 import com.myAndroid.helloworld.R;
 
-public class Drag4FreshLayout extends LinearLayout {
+public class Drag4ReFreshLayout extends LinearLayout {
 	private final int USE_LISTVIEW = 9999;
-	private boolean isFirstLayout = true;// 标记是否为第一次渲染布局
-	private boolean canDrag;// 标记是否允许拖拽
-	private boolean canUpdate = true;
+	private boolean isFirstLayout = true;
+	private boolean canDrag;
 	private float currentY;
 	private float startY;
 	private View headView;
 	private View footView;
 	private BaseAdapter adapter;
-	private OnUpdateListener onUpdateListener;
+	private OnRefreshListener onRefreshListener;
 	private OnTouchListener onTouchListener;
+	private AbsListView contentListView;
 
-	public interface OnUpdateListener {
-		public void onUpdate();
+	public interface OnRefreshListener {
+		public void onRefresh();
 	}
 
 	private class DragToFreshListView extends ListView {
@@ -40,7 +40,7 @@ public class Drag4FreshLayout extends LinearLayout {
 
 		@Override
 		protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
-			canDrag = clampedY;// 捕捉允许拖拽的时机，此法甚妙
+			canDrag = clampedY;
 			super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
 		}
 	}
@@ -54,18 +54,18 @@ public class Drag4FreshLayout extends LinearLayout {
 
 		@Override
 		protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
-			canDrag = clampedY;// 捕捉允许拖拽的时机，用此法感觉良好
+			canDrag = clampedY;
 			super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
 		}
 	}
 
-	public Drag4FreshLayout(final Context context, AttributeSet attrs) {
+	public Drag4ReFreshLayout(final Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		this.setOrientation(LinearLayout.VERTICAL);
 
-		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Drag4FreshLayout);
-		final int numColumns = typedArray.getInt(R.styleable.Drag4FreshLayout_numColumns, USE_LISTVIEW);
+		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Drag4ReFreshLayout);
+		final int numColumns = typedArray.getInt(R.styleable.Drag4ReFreshLayout_numColumns, USE_LISTVIEW);
 		typedArray.recycle();
 
 		getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -81,7 +81,6 @@ public class Drag4FreshLayout extends LinearLayout {
 				footView = findViewById(R.id.drag4fresh_footView);
 
 				if (null != headView) {
-					// 隐藏headView
 					LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) headView.getLayoutParams();
 					params.topMargin = -headView.getHeight();
 					headView.setLayoutParams(params);
@@ -91,8 +90,6 @@ public class Drag4FreshLayout extends LinearLayout {
 					removeView(footView);
 				}
 
-				AbsListView contentListView;
-				// 加入Content
 				if (numColumns == USE_LISTVIEW) {
 					contentListView = new DragToFreshListView(getContext());
 				} else {
@@ -127,7 +124,21 @@ public class Drag4FreshLayout extends LinearLayout {
 
 						break;
 					case MotionEvent.ACTION_UP:
-						// 复位动画
+						// 刷新操作========start=========
+						int totalDistance = (int) (event.getY() - startY);// 计算出一共拉滑了多少距离
+
+						boolean shouldUpdate = false;
+						if ((headView != null && headView.getHeight() <= totalDistance / 2)
+								|| (footView != null && -footView.getHeight() >= totalDistance / 2)) {
+							shouldUpdate = true;
+						}
+
+						if (canDrag && onRefreshListener != null && shouldUpdate) {
+							onRefreshListener.onRefresh();
+						}
+						// 刷新操作========end=========
+
+						// 复位相关动画
 						contentListView.animate().y(0f);
 						if (null != headView) {
 							headView.animate().y((Float) headView.getTag(R.id.firstY));
@@ -139,33 +150,13 @@ public class Drag4FreshLayout extends LinearLayout {
 
 						// 重置标记位
 						canDrag = false;
-						canUpdate = true;
-
-						// 刷新操作
-						int top = -123;
-						int bottom = -123;
-
-						int totalDistance = (int) (event.getY() - startY);// 计算出一共拉滑了多少距离
-
-						if (headView != null) {
-							top = headView.getTop() + totalDistance;
-						}
-
-						if (footView != null) {
-							bottom = footView.getBottom() + totalDistance;
-						}
-
-						if (canUpdate && onUpdateListener != null && (top >= 0 || bottom >= 0)) {
-							canUpdate = false;
-							onUpdateListener.onUpdate();
-						}
 
 						break;
 					case MotionEvent.ACTION_MOVE:
 						float distanceY = event.getY() - currentY;
 						currentY = event.getY();
 
-						if (canDrag && Math.abs(distanceY) > 2.5) {// 如果改用distanceY>?则只能够下拉操作,现在Math.abs(distanceY)则是可以上下拉操作都能够
+						if (canDrag && Math.abs(distanceY) > 2.5) {
 							float moveRange = 3f * (distanceY / Math.abs(distanceY));
 
 							contentListView.setY(contentListView.getY() + moveRange);
@@ -187,11 +178,34 @@ public class Drag4FreshLayout extends LinearLayout {
 		};
 	}
 
-	public void setOnUpdateListener(OnUpdateListener onUpdateListener) {
-		this.onUpdateListener = onUpdateListener;
+	public void showHeadAndFootView() {
+		if (null != headView) {
+			headView.setVisibility(View.VISIBLE);
+		}
+
+		if (null != footView) {
+			footView.setVisibility(View.VISIBLE);
+		}
+	}
+
+	public void hideHeadAndFootView() {
+		if (null != headView) {
+			headView.setVisibility(View.INVISIBLE);
+		}
+
+		if (null != footView) {
+			footView.setVisibility(View.INVISIBLE);
+		}
+	}
+
+	public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
+		this.onRefreshListener = onRefreshListener;
 	}
 
 	public void setAdapter(BaseAdapter adapter) {
+		if (null != contentListView) {
+			contentListView.setAdapter(adapter);
+		}
 		this.adapter = adapter;
 		adapter.notifyDataSetChanged();
 	}
