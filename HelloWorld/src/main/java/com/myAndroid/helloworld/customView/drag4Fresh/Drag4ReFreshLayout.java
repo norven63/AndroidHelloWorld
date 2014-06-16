@@ -16,6 +16,7 @@ import com.myAndroid.helloworld.R;
 
 public class Drag4ReFreshLayout extends LinearLayout {
 	private final int USE_LISTVIEW = 9999;
+	private boolean shouldRefresh = true;
 	private boolean isFirstLayout = true;
 	private boolean canDrag;
 	private float currentY;
@@ -127,13 +128,12 @@ public class Drag4ReFreshLayout extends LinearLayout {
 						// 刷新操作========start=========
 						int totalDistance = (int) (event.getY() - startY);// 计算出一共拉滑了多少距离
 
-						boolean shouldUpdate = false;
-						if ((headView != null && headView.getHeight() <= totalDistance / 2)
-								|| (footView != null && -footView.getHeight() >= totalDistance / 2)) {
-							shouldUpdate = true;
-						}
+						if (onRefreshListener != null
+								&& shouldRefresh
+								&& canDrag
+								&& ((headView != null && headView.getHeight() <= totalDistance / 2) || (footView != null && -footView
+										.getHeight() >= totalDistance / 2))) {
 
-						if (canDrag && onRefreshListener != null && shouldUpdate) {
 							onRefreshListener.onRefresh();
 						}
 						// 刷新操作========end=========
@@ -208,5 +208,13 @@ public class Drag4ReFreshLayout extends LinearLayout {
 		}
 		this.adapter = adapter;
 		adapter.notifyDataSetChanged();
+	}
+
+	public void closeRefresh() {
+		shouldRefresh = false;
+	}
+
+	public void openRefresh() {
+		shouldRefresh = true;
 	}
 }
