@@ -14,6 +14,9 @@ import android.widget.ListView;
 
 import com.myAndroid.helloworld.R;
 
+/**
+ * 下拉刷新控件
+ */
 public class Drag4ReFreshLayout extends LinearLayout {
 	private final int USE_LISTVIEW = 9999;
 	private boolean shouldRefresh = true;
@@ -32,6 +35,9 @@ public class Drag4ReFreshLayout extends LinearLayout {
 		public void onRefresh();
 	}
 
+	/**
+	 * ListView
+	 */
 	private class DragToFreshListView extends ListView {
 		public DragToFreshListView(Context context) {
 			super(context);
@@ -41,11 +47,14 @@ public class Drag4ReFreshLayout extends LinearLayout {
 
 		@Override
 		protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
-			canDrag = clampedY;
+			canDrag = clampedY;// 捕捉滑动到顶部或者底部的时机
 			super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
 		}
 	}
 
+	/**
+	 * GridView
+	 */
 	private class DragToFreshGridView extends GridView {
 		public DragToFreshGridView(Context context) {
 			super(context);
@@ -55,7 +64,7 @@ public class Drag4ReFreshLayout extends LinearLayout {
 
 		@Override
 		protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
-			canDrag = clampedY;
+			canDrag = clampedY;// 捕捉滑动到顶部或者底部的时机
 			super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
 		}
 	}
@@ -76,21 +85,24 @@ public class Drag4ReFreshLayout extends LinearLayout {
 					return;
 				}
 
-				isFirstLayout = false;
+				isFirstLayout = false;// 防止循环加载
 
 				headView = findViewById(R.id.drag4fresh_headView);
 				footView = findViewById(R.id.drag4fresh_footView);
 
 				if (null != headView) {
+					// 向上隐藏headView
 					LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) headView.getLayoutParams();
 					params.topMargin = -headView.getHeight();
 					headView.setLayoutParams(params);
 				}
 
 				if (null != footView) {
+					// 临时移除footView
 					removeView(footView);
 				}
 
+				// 根据numColumns属性值判断是用ListView还是GridView来展现数据
 				if (numColumns == USE_LISTVIEW) {
 					contentListView = new DragToFreshListView(getContext());
 				} else {
@@ -102,6 +114,7 @@ public class Drag4ReFreshLayout extends LinearLayout {
 				contentListView.setAdapter(adapter);
 
 				if (null != footView) {
+					// 将footView加回来
 					addView(footView);
 				}
 			}
@@ -112,6 +125,7 @@ public class Drag4ReFreshLayout extends LinearLayout {
 			public boolean onTouch(View contentListView, MotionEvent event) {
 				switch (event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
+						// 缓存headView和footView的坐标值=======start========
 						if (null != headView && null == headView.getTag(R.id.firstY)) {
 							headView.setTag(R.id.firstY, headView.getY());
 						}
@@ -119,6 +133,7 @@ public class Drag4ReFreshLayout extends LinearLayout {
 						if (null != footView && null == footView.getTag(R.id.firstY)) {
 							footView.setTag(R.id.firstY, footView.getY());
 						}
+						// 缓存headView和footView的坐标值=======end========
 
 						startY = event.getY();
 						currentY = event.getY();
@@ -156,6 +171,7 @@ public class Drag4ReFreshLayout extends LinearLayout {
 						float distanceY = event.getY() - currentY;
 						currentY = event.getY();
 
+						// 若位移量大于2.5则进行滑动
 						if (canDrag && Math.abs(distanceY) > 2.5) {
 							float moveRange = 3f * (distanceY / Math.abs(distanceY));
 
@@ -178,6 +194,25 @@ public class Drag4ReFreshLayout extends LinearLayout {
 		};
 	}
 
+	public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
+		this.onRefreshListener = onRefreshListener;
+	}
+
+	public void setAdapter(BaseAdapter adapter) {
+		if (adapter == null) {
+			throw new NullPointerException("入参非法：" + getClass().getSimpleName() + ".setAdapter入参不可为null！");
+		}
+
+		if (null != contentListView) {
+			contentListView.setAdapter(adapter);
+		}
+		this.adapter = adapter;
+		adapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * 显示headView和footView
+	 */
 	public void showHeadAndFootView() {
 		if (null != headView) {
 			headView.setVisibility(View.VISIBLE);
@@ -188,6 +223,9 @@ public class Drag4ReFreshLayout extends LinearLayout {
 		}
 	}
 
+	/**
+	 * 隐藏headView和footView
+	 */
 	public void hideHeadAndFootView() {
 		if (null != headView) {
 			headView.setVisibility(View.INVISIBLE);
@@ -198,22 +236,16 @@ public class Drag4ReFreshLayout extends LinearLayout {
 		}
 	}
 
-	public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
-		this.onRefreshListener = onRefreshListener;
-	}
-
-	public void setAdapter(BaseAdapter adapter) {
-		if (null != contentListView) {
-			contentListView.setAdapter(adapter);
-		}
-		this.adapter = adapter;
-		adapter.notifyDataSetChanged();
-	}
-
+	/**
+	 * 关闭刷新功能
+	 */
 	public void closeRefresh() {
 		shouldRefresh = false;
 	}
 
+	/**
+	 * 打开刷新功能
+	 */
 	public void openRefresh() {
 		shouldRefresh = true;
 	}
