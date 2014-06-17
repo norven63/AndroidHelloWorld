@@ -146,8 +146,8 @@ public class Drag4ReFreshLayout extends LinearLayout {
 						if (onRefreshListener != null
 								&& shouldRefresh
 								&& canDrag
-								&& ((headView != null && headView.getHeight() <= totalDistance / 2) || (footView != null && -footView
-										.getHeight() >= totalDistance / 2))) {
+								&& ((headView != null && headView.getHeight() <= totalDistance / 2) || (footView != null && footView
+										.getHeight() <= -totalDistance / 2))) {
 
 							onRefreshListener.onRefresh();
 						}

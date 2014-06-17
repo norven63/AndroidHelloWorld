@@ -6,16 +6,27 @@
     android:gravity="center"
     android:orientation="vertical" >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@android:color/darker_gray"
+        android:gravity="center"
+        android:text="拖动刷新控件展示"
+        android:textColor="@android:color/white"
+        android:textSize="28sp" />
+
     <!-- 一旦设置了drag4fresh:numColumns属性的值，则用GridView来展现数据。默认是用ListView来展现的 -->
     <!-- 若要下拉刷新，TextView的id用drag4fresh_headView；若要上拉刷新，id则用drag4fresh_footView -->
+
     <com.myAndroid.helloworld.customView.drag4Fresh.Drag4ReFreshLayout
         android:id="@+id/dragToFreshListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         drag4fresh:numColumns="3" >
 
         <TextView
-            android:id="@id/drag4fresh_headView"
+            android:id="@id/drag4fresh_footView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center"
