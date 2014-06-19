@@ -155,11 +155,11 @@ public class Drag4ReFreshLayout extends LinearLayout {
 
 						// 复位相关动画
 						contentListView.animate().y(0f);
-						if (null != headView) {
+						if (null != headView && null != headView.getTag(R.id.firstY)) {
 							headView.animate().y((Float) headView.getTag(R.id.firstY));
 						}
 
-						if (null != footView) {
+						if (null != footView && null != footView.getTag(R.id.firstY)) {
 							footView.animate().y((Float) footView.getTag(R.id.firstY));
 						}
 
