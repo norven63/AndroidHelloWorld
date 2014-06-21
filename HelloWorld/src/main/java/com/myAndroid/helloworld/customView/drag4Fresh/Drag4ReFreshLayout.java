@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.animation.LinearInterpolator;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -154,13 +155,13 @@ public class Drag4ReFreshLayout extends LinearLayout {
 						// 刷新操作========end=========
 
 						// 复位相关动画
-						contentListView.animate().y(0f);
+						contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
 						if (null != headView && null != headView.getTag(R.id.firstY)) {
-							headView.animate().y((Float) headView.getTag(R.id.firstY));
+							headView.animate().setInterpolator(new LinearInterpolator()).y((Float) headView.getTag(R.id.firstY));
 						}
 
 						if (null != footView && null != footView.getTag(R.id.firstY)) {
-							footView.animate().y((Float) footView.getTag(R.id.firstY));
+							footView.animate().setInterpolator(new LinearInterpolator()).y((Float) footView.getTag(R.id.firstY));
 						}
 
 						// 重置标记位
