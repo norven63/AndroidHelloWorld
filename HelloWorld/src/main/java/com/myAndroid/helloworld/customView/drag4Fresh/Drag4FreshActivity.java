@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.api.client.util.Lists;
+import com.google.common.collect.Lists;
 import com.myAndroid.helloworld.R;
 import com.myAndroid.helloworld.customView.drag4Fresh.Drag4ReFreshLayout.OnRefreshListener;
 

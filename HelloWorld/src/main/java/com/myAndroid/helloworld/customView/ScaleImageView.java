@@ -1,17 +1,18 @@
 package com.myAndroid.helloworld.customView;
 
-import com.myAndroid.helloworld.R;
-import android.util.Log;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.util.AttributeSet;
-import android.graphics.Matrix;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.widget.ImageView;
+
+import com.myAndroid.helloworld.R;
 
 public class ScaleImageView extends ImageView {
   private Canvas canvas;
