@@ -130,6 +130,9 @@
         <activity android:name=".activity.ImageSwitcherActivity" />
         <activity android:name=".activity.AlarmActivity" />
         <activity android:name=".activity.LockScreenActivity" />
+        <activity
+            android:name=".activity.ScreenShotActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
         <activity android:name=".activity.startActivityByBrowser.WebViewLuncherActivity" />
         <activity android:name="com.myAndroid.helloworld.customView.drag4Fresh.Drag4FreshActivity" />
         <activity android:name=".activity.startActivityByBrowser.StartByBrowserActivity" >
@@ -147,6 +150,7 @@
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
                 <data android:mimeType="image/*" />
             </intent-filter>
