@@ -1,5 +1,6 @@
 package com.myAndroid.helloworld.customView.drag4Fresh;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -18,6 +19,7 @@ import com.myAndroid.helloworld.R;
 /**
  * 下拉刷新控件
  */
+@SuppressLint("ClickableViewAccessibility")
 public class Drag4ReFreshLayout extends LinearLayout {
 	private final int USE_LISTVIEW = 9999;
 	private boolean shouldRefresh = true;
@@ -82,41 +84,39 @@ public class Drag4ReFreshLayout extends LinearLayout {
 		getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
-				if (!isFirstLayout) {
-					return;
-				}
+				if (isFirstLayout) {
+					isFirstLayout = false;// 防止循环加载
 
-				isFirstLayout = false;// 防止循环加载
+					headView = findViewById(R.id.drag4fresh_headView);
+					footView = findViewById(R.id.drag4fresh_footView);
 
-				headView = findViewById(R.id.drag4fresh_headView);
-				footView = findViewById(R.id.drag4fresh_footView);
+					if (null != headView) {
+						// 向上隐藏headView
+						LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) headView.getLayoutParams();
+						params.topMargin = -headView.getHeight();
+						headView.setLayoutParams(params);
+					}
 
-				if (null != headView) {
-					// 向上隐藏headView
-					LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) headView.getLayoutParams();
-					params.topMargin = -headView.getHeight();
-					headView.setLayoutParams(params);
-				}
+					if (null != footView) {
+						// 临时移除footView
+						removeView(footView);
+					}
 
-				if (null != footView) {
-					// 临时移除footView
-					removeView(footView);
-				}
+					// 根据numColumns属性值判断是用ListView还是GridView来展现数据
+					if (numColumns == USE_LISTVIEW) {
+						contentListView = new DragToFreshListView(getContext());
+					} else {
+						contentListView = new DragToFreshGridView(getContext());
+						((DragToFreshGridView) contentListView).setNumColumns(numColumns);
+					}
 
-				// 根据numColumns属性值判断是用ListView还是GridView来展现数据
-				if (numColumns == USE_LISTVIEW) {
-					contentListView = new DragToFreshListView(getContext());
-				} else {
-					contentListView = new DragToFreshGridView(getContext());
-					((DragToFreshGridView) contentListView).setNumColumns(numColumns);
-				}
+					addView(contentListView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+					contentListView.setAdapter(adapter);
 
-				addView(contentListView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-				contentListView.setAdapter(adapter);
-
-				if (null != footView) {
-					// 将footView加回来
-					addView(footView);
+					if (null != footView) {
+						// 将footView加回来
+						addView(footView);
+					}
 				}
 			}
 		});

@@ -14,7 +14,7 @@ import com.google.common.collect.Lists;
 import com.myAndroid.helloworld.R;
 import com.myAndroid.helloworld.customView.drag4Fresh.Drag4ReFreshLayout.OnRefreshListener;
 
-public class Drag4FreshActivity extends Activity {
+public class Drag4FreshDemoActivity extends Activity {
 	private Drag4ReFreshLayout dragToFreshLayout;
 
 	public class MyBaseAdapter extends BaseAdapter {
@@ -62,7 +62,7 @@ public class Drag4FreshActivity extends Activity {
 		dragToFreshLayout.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				Toast.makeText(Drag4FreshActivity.this, "update!!!", Toast.LENGTH_LONG).show();
+				Toast.makeText(Drag4FreshDemoActivity.this, "update!!!", Toast.LENGTH_LONG).show();
 			}
 		});
 	}

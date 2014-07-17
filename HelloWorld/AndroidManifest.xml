@@ -135,7 +135,7 @@
             android:name=".activity.ScreenShotActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar" />
         <activity android:name=".activity.startActivityByBrowser.WebViewLuncherActivity" />
-        <activity android:name="com.myAndroid.helloworld.customView.drag4Fresh.Drag4FreshActivity" />
+        <activity android:name="com.myAndroid.helloworld.customView.drag4Fresh.Drag4FreshDemoActivity" />
         <activity android:name=".activity.startActivityByBrowser.StartByBrowserActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
