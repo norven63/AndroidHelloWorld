@@ -110,7 +110,7 @@ public class ScreenShotActivity extends Activity {
 		ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
 
 		// 开始任务
-		final Future future1 = schedule.scheduleAtFixedRate(new Runnable() {
+		final Future<?> future1 = schedule.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
 				try {

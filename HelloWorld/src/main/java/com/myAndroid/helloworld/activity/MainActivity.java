@@ -65,7 +65,7 @@ import com.loopj.android.AsyncHttpResponseHandler;
 import com.myAndroid.helloworld.R;
 import com.myAndroid.helloworld.service.SaveFileService;
 
-@SuppressLint("NewApi")
+@SuppressLint({ "NewApi", "InflateParams" })
 public class MainActivity extends Activity {
 	private final static int NOTIFICATION_ID = 1;
 	private Notification notification;
@@ -259,6 +259,7 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -287,6 +288,7 @@ public class MainActivity extends Activity {
 		// ScrollView会拦截Activity的onTouch事件,所以为ScorllView的事件添加监听逻辑
 		ScrollView scrollView = (ScrollView) findViewById(R.id.main_scrollView);
 		scrollView.setOnTouchListener(new OnTouchListener() {
+			@SuppressLint("ClickableViewAccessibility")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				switch (event.getAction()) {

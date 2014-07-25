@@ -1,5 +1,6 @@
 package com.myAndroid.helloworld.customView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.view.Gravity;
@@ -20,6 +21,7 @@ public class FloatView extends ImageView {
 		super(context);
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
