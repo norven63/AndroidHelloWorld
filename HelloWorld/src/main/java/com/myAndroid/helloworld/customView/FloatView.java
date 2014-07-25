@@ -10,8 +10,8 @@ import android.widget.ImageView;
 
 public class FloatView extends ImageView {
 	private int barHeight;
-	private WindowManager.LayoutParams mWindowParams;
-	private WindowManager mWindowManager;
+	private WindowManager.LayoutParams windowParams;
+	private WindowManager windowManager;
 
 	private float startX;
 	private float startY;
@@ -30,10 +30,10 @@ public class FloatView extends ImageView {
 				break;
 			case MotionEvent.ACTION_MOVE:
 				// RawX和RawY都是屏幕的触点坐标，而非View上的触点坐标
-				mWindowParams.x = (int) (event.getRawX() - startX);
-				mWindowParams.y = (int) (event.getRawY() - startY - barHeight);
+				windowParams.x = (int) (event.getRawX() - startX);
+				windowParams.y = (int) (event.getRawY() - startY - barHeight);
 
-				mWindowManager.updateViewLayout(FloatView.this, mWindowParams);
+				windowManager.updateViewLayout(FloatView.this, windowParams);
 
 				break;
 		}
@@ -52,21 +52,21 @@ public class FloatView extends ImageView {
 			}
 		});
 
-		mWindowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+		windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
 
-		mWindowParams = new WindowManager.LayoutParams();
+		windowParams = new WindowManager.LayoutParams();
 
-		mWindowParams.gravity = Gravity.LEFT | Gravity.TOP;
+		windowParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 
-		mWindowParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+		windowParams.height = 80;
+		windowParams.width = 80;
 
-		mWindowParams.height = 80;
-		mWindowParams.width = 80;
+		// 注意，这里是基于窗口为背景的x、y坐标
+		windowParams.x = 100;
+		windowParams.y = 100;
 
-		// 注意，这里是以窗口为背景的x、y坐标
-		mWindowParams.x = 100;
-		mWindowParams.y = 100;
+		windowParams.gravity = Gravity.LEFT | Gravity.TOP;
 
-		mWindowManager.addView(this, mWindowParams);
+		windowManager.addView(this, windowParams);
 	}
 }
