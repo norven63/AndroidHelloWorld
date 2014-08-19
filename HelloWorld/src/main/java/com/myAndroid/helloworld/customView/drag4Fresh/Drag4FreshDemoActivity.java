@@ -54,7 +54,7 @@ public class Drag4FreshDemoActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_drag4fresh_layout);
+		setContentView(R.layout.activity_drag_fresh_layout);
 
 		BaseAdapter adapter = new MyBaseAdapter();
 		dragToFreshLayout = (Drag4ReFreshLayout) findViewById(R.id.dragToFreshListView);

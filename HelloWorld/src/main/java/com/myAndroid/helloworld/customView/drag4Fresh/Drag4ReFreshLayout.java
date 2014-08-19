@@ -21,7 +21,8 @@ import com.myAndroid.helloworld.R;
  */
 @SuppressLint("ClickableViewAccessibility")
 public class Drag4ReFreshLayout extends LinearLayout {
-	private final int USE_LISTVIEW = 9999;
+	private final int USE_LISTVIEW = 199991;
+	private final int NO_DIVIDERID = 299992;
 	private boolean shouldRefresh = true;
 	private boolean isFirstLayout = true;
 	private boolean canDrag;
@@ -77,8 +78,9 @@ public class Drag4ReFreshLayout extends LinearLayout {
 
 		this.setOrientation(LinearLayout.VERTICAL);
 
-		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Drag4ReFreshLayout);
-		final int numColumns = typedArray.getInt(R.styleable.Drag4ReFreshLayout_numColumns, USE_LISTVIEW);
+		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DragFreshLayout);
+		final int numColumns = typedArray.getInt(R.styleable.DragFreshLayout_column, USE_LISTVIEW);
+		final int dividerId = typedArray.getResourceId(R.styleable.DragFreshLayout_divider, NO_DIVIDERID);
 		typedArray.recycle();
 
 		getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -105,6 +107,10 @@ public class Drag4ReFreshLayout extends LinearLayout {
 					// 根据numColumns属性值判断是用ListView还是GridView来展现数据
 					if (numColumns == USE_LISTVIEW) {
 						contentListView = new DragToFreshListView(getContext());
+
+						if (dividerId != NO_DIVIDERID) {
+							((DragToFreshListView) contentListView).setDivider(getResources().getDrawable(dividerId));
+						}
 					} else {
 						contentListView = new DragToFreshGridView(getContext());
 						((DragToFreshGridView) contentListView).setNumColumns(numColumns);
