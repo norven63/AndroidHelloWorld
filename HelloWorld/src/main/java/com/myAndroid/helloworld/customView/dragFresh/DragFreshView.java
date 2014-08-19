@@ -1,4 +1,4 @@
-package com.myAndroid.helloworld.customView.drag4Fresh;
+package com.myAndroid.helloworld.customView.dragFresh;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,7 +20,7 @@ import com.myAndroid.helloworld.R;
  * 下拉刷新控件
  */
 @SuppressLint("ClickableViewAccessibility")
-public class Drag4ReFreshLayout extends LinearLayout {
+public class DragFreshView extends LinearLayout {
 	private final int USE_LISTVIEW = 199991;
 	private final int NO_DIVIDERID = 299992;
 	private boolean shouldRefresh = true;
@@ -73,7 +73,7 @@ public class Drag4ReFreshLayout extends LinearLayout {
 		}
 	}
 
-	public Drag4ReFreshLayout(final Context context, AttributeSet attrs) {
+	public DragFreshView(final Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		this.setOrientation(LinearLayout.VERTICAL);
@@ -89,8 +89,8 @@ public class Drag4ReFreshLayout extends LinearLayout {
 				if (isFirstLayout) {
 					isFirstLayout = false;// 防止循环加载
 
-					headView = findViewById(R.id.drag4fresh_headView);
-					footView = findViewById(R.id.drag4fresh_footView);
+					headView = findViewById(R.id.dragFresh_headView);
+					footView = findViewById(R.id.dragFresh_footView);
 
 					if (null != headView) {
 						// 向上隐藏headView
