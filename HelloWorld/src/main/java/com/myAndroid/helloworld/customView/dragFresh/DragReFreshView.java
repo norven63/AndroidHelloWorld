@@ -20,9 +20,10 @@ import com.myAndroid.helloworld.R;
  * 下拉刷新控件
  */
 @SuppressLint("ClickableViewAccessibility")
-public class DragFreshView extends LinearLayout {
+public class DragReFreshView extends LinearLayout {
 	private final int USE_LISTVIEW = 199991;
 	private final int NO_DIVIDERID = 299992;
+	private boolean isRefreshing = false;
 	private boolean shouldRefresh = true;
 	private boolean isFirstLayout = true;
 	private boolean canDrag;
@@ -73,7 +74,7 @@ public class DragFreshView extends LinearLayout {
 		}
 	}
 
-	public DragFreshView(final Context context, AttributeSet attrs) {
+	public DragReFreshView(final Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		this.setOrientation(LinearLayout.VERTICAL);
@@ -151,10 +152,13 @@ public class DragFreshView extends LinearLayout {
 						int totalDistance = (int) (event.getY() - startY);// 计算出一共拉滑了多少距离
 
 						if (onRefreshListener != null
+								&& !isRefreshing
 								&& shouldRefresh
 								&& canDrag
 								&& ((headView != null && headView.getHeight() <= totalDistance / 2) || (footView != null && footView
 										.getHeight() <= -totalDistance / 2))) {
+
+							isRefreshing = true;
 
 							onRefreshListener.onRefresh();
 						}
@@ -163,11 +167,13 @@ public class DragFreshView extends LinearLayout {
 						// 复位相关动画
 						contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
 						if (null != headView && null != headView.getTag(R.id.firstY)) {
-							headView.animate().setInterpolator(new LinearInterpolator()).y((Float) headView.getTag(R.id.firstY));
+							headView.animate().setInterpolator(new LinearInterpolator())
+									.y((Float) headView.getTag(R.id.firstY));
 						}
 
 						if (null != footView && null != footView.getTag(R.id.firstY)) {
-							footView.animate().setInterpolator(new LinearInterpolator()).y((Float) footView.getTag(R.id.firstY));
+							footView.animate().setInterpolator(new LinearInterpolator())
+									.y((Float) footView.getTag(R.id.firstY));
 						}
 
 						// 重置标记位
@@ -255,5 +261,12 @@ public class DragFreshView extends LinearLayout {
 	 */
 	public void openRefresh() {
 		shouldRefresh = true;
+	}
+
+	/**
+	 * 任务完成
+	 */
+	public void taskFinished() {
+		this.isRefreshing = false;
 	}
 }
