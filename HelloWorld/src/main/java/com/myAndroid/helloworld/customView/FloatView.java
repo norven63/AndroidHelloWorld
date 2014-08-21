@@ -60,12 +60,12 @@ public class FloatView extends ImageView {
 
 		windowParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 
-		windowParams.height = 80;
-		windowParams.width = 80;
+		windowParams.height = 100;
+		windowParams.width = 100;
 
 		// 注意，这里是基于窗口为背景的x、y坐标
-		windowParams.x = 100;
-		windowParams.y = 100;
+		windowParams.x = 0;
+		windowParams.y = 200;
 
 		windowParams.gravity = Gravity.LEFT | Gravity.TOP;
 
