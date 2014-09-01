@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:id="@+id/ip_textView_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="IP：" />
+
+        <TextView
+            android:id="@+id/ip_textView_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/ip_textView_left" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:id="@+id/mac_address_textView_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="MAC地址：" />
+
+        <TextView
+            android:id="@+id/mac_address_textView_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/mac_address_textView_left" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:id="@+id/installtionID_textView_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="InstalltionID：" />
+
+        <TextView
+            android:id="@+id/installtionID_textView_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/installtionID_textView_left" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:id="@+id/AID_textView_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="AndroidID：" />
+
+        <TextView
+            android:id="@+id/AID_textView_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/AID_textView_left" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:id="@+id/device_id_textView_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="DeviceID：" />
+
+        <TextView
+            android:id="@+id/device_id_textView_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/device_id_textView_left" />
+    </RelativeLayout>
+
+</LinearLayout>

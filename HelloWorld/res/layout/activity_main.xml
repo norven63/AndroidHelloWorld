@@ -302,6 +302,13 @@
                     android:onClick="IntentManager"
                     android:tag="com.myAndroid.helloworld.activity.ScreenShotActivity"
                     android:text="截屏" />
+                
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="IntentManager"
+                    android:tag="com.myAndroid.helloworld.activity.DeviceInfoActivity"
+                    android:text="获取设备信息" />
             </GridLayout>
         </LinearLayout>
     </HorizontalScrollView>
