@@ -5,15 +5,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.UUID;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.myAndroid.helloworld.R;
@@ -25,26 +33,28 @@ public class DeviceInfoActivity extends Activity {
 
 		setContentView(R.layout.device_info_activity);
 
-		showIpAndMac();
 		showUUID();
 		showAndroidId();
 		showDeviceId();
+		showNetConnectionInfo();
 	}
 
 	/**
-	 * ===获取ip===
+	 * ===获取网络连接信息===
 	 * 
-	 * 1. 需要打开wifi,否则会返回0.0.0.0
+	 * 1. 需要打开wifi,否则ip会返回0.0.0.0
 	 * 2. 需要权限<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	 */
-	private void showIpAndMac() {
+	private void showNetConnectionInfo() {
 		TextView ipTextView = (TextView) findViewById(R.id.ip_textView_right);
 		TextView macTextView = (TextView) findViewById(R.id.mac_address_textView_right);
 
 		WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+
 		if (!wifiManager.isWifiEnabled()) {
 			ipTextView.setText("请开启wifi");
 			macTextView.setText("请开启wifi");
+
 			return;
 		}
 
@@ -55,6 +65,65 @@ public class DeviceInfoActivity extends Activity {
 		ipTextView.setText(ip);
 
 		macTextView.setText(wifiInfo.getMacAddress());
+
+		// 获取当前连接的wifi信息
+		TextView wifiSSIDTextView = (TextView) findViewById(R.id.wifi_SSID_textView_right);
+		wifiSSIDTextView.setText(wifiInfo.getSSID());
+
+		TextView wifiMacTextView = (TextView) findViewById(R.id.wifi_mac_textView_right);
+		wifiMacTextView.setText(wifiInfo.getBSSID());
+
+		// 获取所有附近的wifi信息
+		final ListView listView = (ListView) findViewById(R.id.wifi_listView);
+		final List<ScanResult> wifiList = wifiManager.getScanResults();
+		listView.setAdapter(new BaseAdapter() {
+
+			@SuppressLint("InflateParams")
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				View view;
+				ViewHolder viewHolder;
+
+				if (convertView != null) {
+					view = convertView;
+					viewHolder = (ViewHolder) view.getTag();
+				} else {
+					view = getLayoutInflater().inflate(R.layout.device_info_item_layout, null);
+					viewHolder = new ViewHolder();
+					viewHolder.textView = (TextView) view.findViewById(R.id.wifi_info_item_SSID);
+					viewHolder.editText = (EditText) view.findViewById(R.id.wifi_info_item_mac);
+
+					view.setTag(viewHolder);
+				}
+
+				if (getItem(position) != null) {
+					viewHolder.textView.setText(getItem(position).SSID);
+					viewHolder.editText.setText(getItem(position).BSSID);
+				}
+
+				return view;
+			}
+
+			@Override
+			public long getItemId(int position) {
+				return position;
+			}
+
+			@Override
+			public ScanResult getItem(int position) {
+				return wifiList == null ? null : wifiList.get(position);
+			}
+
+			@Override
+			public int getCount() {
+				return wifiList == null ? 0 : wifiList.size();
+			}
+
+			class ViewHolder {
+				TextView textView;
+				EditText editText;
+			}
+		});
 	}
 
 	private String intToIp(int ipAddress) {
@@ -130,7 +199,8 @@ public class DeviceInfoActivity extends Activity {
 	 * 根据不同的手机设备返回IMEI、MEID或者ESN码
 	 * 
 	 * 1. 非手机设备： 如果设备没有通话的硬件功能的话，就没有这个DEVICE_ID
-	 * 2. 权限： 获取DEVICE_ID需要READ_PHONE_STATE权限（目前Google已经开始禁止获取该权限）
+	 * 2. 权限： 获取DEVICE_ID需要<uses-permission
+	 * android:name="android.permission.READ_PHONE_STATE"/>权限（目前Google已经开始禁止获取该权限）
 	 * 3. bug：在少数的一些手机设备上，该实现有漏洞，会返回垃圾，如:zeros或者asterisks的产品
 	 */
 	private void showDeviceId() {
