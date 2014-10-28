@@ -151,12 +151,8 @@ public class DragReFreshView extends LinearLayout {
 						// 刷新操作========start=========
 						int totalDistance = (int) (event.getY() - startY);// 计算出一共拉滑了多少距离
 
-						if (onRefreshListener != null
-								&& !isRefreshing
-								&& shouldRefresh
-								&& canDrag
-								&& ((headView != null && headView.getHeight() <= totalDistance / 2) || (footView != null && footView
-										.getHeight() <= -totalDistance / 2))) {
+						if (onRefreshListener != null && !isRefreshing && shouldRefresh && canDrag
+								&& ((headView != null && headView.getHeight() <= totalDistance / 2) || (footView != null && footView.getHeight() <= -totalDistance / 2))) {
 
 							isRefreshing = true;
 
@@ -167,13 +163,11 @@ public class DragReFreshView extends LinearLayout {
 						// 复位相关动画
 						contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
 						if (null != headView && null != headView.getTag(R.id.firstY)) {
-							headView.animate().setInterpolator(new LinearInterpolator())
-									.y((Float) headView.getTag(R.id.firstY));
+							headView.animate().setInterpolator(new LinearInterpolator()).y((Float) headView.getTag(R.id.firstY));
 						}
 
 						if (null != footView && null != footView.getTag(R.id.firstY)) {
-							footView.animate().setInterpolator(new LinearInterpolator())
-									.y((Float) footView.getTag(R.id.firstY));
+							footView.animate().setInterpolator(new LinearInterpolator()).y((Float) footView.getTag(R.id.firstY));
 						}
 
 						// 重置标记位
