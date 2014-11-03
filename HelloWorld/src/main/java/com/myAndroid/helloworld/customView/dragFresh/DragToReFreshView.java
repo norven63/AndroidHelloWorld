@@ -36,6 +36,9 @@ public class DragToReFreshView extends LinearLayout {
 	private OnTouchListener onTouchListener;
 	private AbsListView contentListView;
 
+	/**
+	 * 刷新操作监听接口
+	 */
 	public interface OnRefreshListener {
 		public void onRefresh();
 	}
