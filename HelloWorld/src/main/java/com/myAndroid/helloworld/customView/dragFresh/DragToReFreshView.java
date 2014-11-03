@@ -20,7 +20,7 @@ import com.myAndroid.helloworld.R;
  * 下拉刷新控件
  */
 @SuppressLint("ClickableViewAccessibility")
-public class DragReFreshView extends LinearLayout {
+public class DragToReFreshView extends LinearLayout {
 	private final int USE_LISTVIEW = 199991;
 	private final int NO_DIVIDERID = 299992;
 	private boolean isRefreshing = false;
@@ -74,7 +74,7 @@ public class DragReFreshView extends LinearLayout {
 		}
 	}
 
-	public DragReFreshView(final Context context, AttributeSet attrs) {
+	public DragToReFreshView(final Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		this.setOrientation(LinearLayout.VERTICAL);
