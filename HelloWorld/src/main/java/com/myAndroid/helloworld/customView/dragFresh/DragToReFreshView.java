@@ -79,9 +79,9 @@ public class DragToReFreshView extends LinearLayout {
 
 		this.setOrientation(LinearLayout.VERTICAL);
 
-		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DragFreshLayout);
-		final int numColumns = typedArray.getInt(R.styleable.DragFreshLayout_column, USE_LISTVIEW);
-		final int dividerId = typedArray.getResourceId(R.styleable.DragFreshLayout_divider, NO_DIVIDERID);
+		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DragToReFreshLayout);
+		final int numColumns = typedArray.getInt(R.styleable.DragToReFreshLayout_column, USE_LISTVIEW);
+		final int dividerId = typedArray.getResourceId(R.styleable.DragToReFreshLayout_divider, NO_DIVIDERID);
 		typedArray.recycle();
 
 		getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -90,8 +90,8 @@ public class DragToReFreshView extends LinearLayout {
 				if (isFirstLayout) {
 					isFirstLayout = false;// 防止循环加载
 
-					headView = findViewById(R.id.dragFresh_headView);
-					footView = findViewById(R.id.dragFresh_footView);
+					headView = findViewById(R.id.dragToReFresh_headView);
+					footView = findViewById(R.id.dragToReFresh_footView);
 
 					if (null != headView) {
 						// 向上隐藏headView

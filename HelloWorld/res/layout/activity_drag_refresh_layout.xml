@@ -26,7 +26,7 @@
         drag4fresh:divider="@drawable/listview_line" >
 
         <TextView
-            android:id="@id/dragFresh_footView"
+            android:id="@id/dragToReFresh_footView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center"
