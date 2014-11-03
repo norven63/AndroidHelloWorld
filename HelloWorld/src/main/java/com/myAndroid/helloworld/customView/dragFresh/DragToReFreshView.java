@@ -74,6 +74,93 @@ public class DragToReFreshView extends LinearLayout {
 		}
 	}
 
+	/**
+	 * MotionEvent策略接口
+	 */
+	private interface MotionEventStrategy {
+		void handelMotionEvent(View contentListView, MotionEvent event);
+	}
+
+	/**
+	 * MotionEvent按下事件策略类
+	 */
+	private class MotionEventStrategyForDown implements MotionEventStrategy {
+		@Override
+		public void handelMotionEvent(View contentListView, MotionEvent event) {
+			// 缓存headView和footView的坐标值=======start========
+			if (null != headView && null == headView.getTag(R.id.firstY)) {
+				headView.setTag(R.id.firstY, headView.getY());
+			}
+
+			if (null != footView && null == footView.getTag(R.id.firstY)) {
+				footView.setTag(R.id.firstY, footView.getY());
+			}
+			// 缓存headView和footView的坐标值=======end========
+
+			startY = event.getY();
+			currentY = event.getY();
+		}
+	}
+
+	/**
+	 * MotionEvent抬起事件策略类
+	 */
+	private class MotionEventStrategyForUp implements MotionEventStrategy {
+		@Override
+		public void handelMotionEvent(View contentListView, MotionEvent event) {
+			// 刷新操作========start=========
+			int totalDistance = (int) (event.getY() - startY);// 计算出一共拉滑了多少距离
+
+			if (onRefreshListener != null && !isRefreshing && shouldRefresh && canDrag
+					&& ((headView != null && headView.getHeight() <= totalDistance / 2) || (footView != null && footView.getHeight() <= -totalDistance / 2))) {
+
+				isRefreshing = true;
+
+				onRefreshListener.onRefresh();
+			}
+			// 刷新操作========end=========
+
+			// 复位相关动画
+			contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
+			if (null != headView && null != headView.getTag(R.id.firstY)) {
+				headView.animate().setInterpolator(new LinearInterpolator()).y((Float) headView.getTag(R.id.firstY));
+			}
+
+			if (null != footView && null != footView.getTag(R.id.firstY)) {
+				footView.animate().setInterpolator(new LinearInterpolator()).y((Float) footView.getTag(R.id.firstY));
+			}
+
+			// 重置标记位
+			canDrag = false;
+		}
+	}
+
+	/**
+	 * MotionEvent移动事件策略类
+	 */
+	private class MotionEventStrategyForMove implements MotionEventStrategy {
+		@Override
+		public void handelMotionEvent(View contentListView, MotionEvent event) {
+			float distanceY = event.getY() - currentY;
+			currentY = event.getY();
+
+			// 若位移量大于2.5则进行滑动
+			if (canDrag && Math.abs(distanceY) > 2.5) {
+				float moveRange = 3f * (distanceY / Math.abs(distanceY));
+
+				contentListView.setY(contentListView.getY() + moveRange);
+
+				if (null != headView) {
+					headView.setY(headView.getY() + moveRange);
+				}
+
+				if (null != footView) {
+					footView.setY(footView.getY() + moveRange);
+				}
+			}
+		}
+	}
+
 	public DragToReFreshView(final Context context, AttributeSet attrs) {
 		super(context, attrs);
 
@@ -101,11 +188,11 @@ public class DragToReFreshView extends LinearLayout {
 					}
 
 					if (null != footView) {
-						// 临时移除footView
+						// 临时移除footView，下面的数据加载会影响到布局的高度，在数据填充完之后再将footView加回来
 						removeView(footView);
 					}
 
-					// 根据numColumns属性值判断是用ListView还是GridView来展现数据
+					// 根据numColumns属性的值来判断是用ListView还是GridView加载数据
 					if (numColumns == USE_LISTVIEW) {
 						contentListView = new DragToFreshListView(getContext());
 
@@ -131,74 +218,30 @@ public class DragToReFreshView extends LinearLayout {
 		onTouchListener = new OnTouchListener() {
 			@Override
 			public boolean onTouch(View contentListView, MotionEvent event) {
-				switch (event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-						// 缓存headView和footView的坐标值=======start========
-						if (null != headView && null == headView.getTag(R.id.firstY)) {
-							headView.setTag(R.id.firstY, headView.getY());
-						}
-
-						if (null != footView && null == footView.getTag(R.id.firstY)) {
-							footView.setTag(R.id.firstY, footView.getY());
-						}
-						// 缓存headView和footView的坐标值=======end========
-
-						startY = event.getY();
-						currentY = event.getY();
-
-						break;
-					case MotionEvent.ACTION_UP:
-						// 刷新操作========start=========
-						int totalDistance = (int) (event.getY() - startY);// 计算出一共拉滑了多少距离
-
-						if (onRefreshListener != null && !isRefreshing && shouldRefresh && canDrag
-								&& ((headView != null && headView.getHeight() <= totalDistance / 2) || (footView != null && footView.getHeight() <= -totalDistance / 2))) {
-
-							isRefreshing = true;
-
-							onRefreshListener.onRefresh();
-						}
-						// 刷新操作========end=========
-
-						// 复位相关动画
-						contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
-						if (null != headView && null != headView.getTag(R.id.firstY)) {
-							headView.animate().setInterpolator(new LinearInterpolator()).y((Float) headView.getTag(R.id.firstY));
-						}
-
-						if (null != footView && null != footView.getTag(R.id.firstY)) {
-							footView.animate().setInterpolator(new LinearInterpolator()).y((Float) footView.getTag(R.id.firstY));
-						}
-
-						// 重置标记位
-						canDrag = false;
-
-						break;
-					case MotionEvent.ACTION_MOVE:
-						float distanceY = event.getY() - currentY;
-						currentY = event.getY();
-
-						// 若位移量大于2.5则进行滑动
-						if (canDrag && Math.abs(distanceY) > 2.5) {
-							float moveRange = 3f * (distanceY / Math.abs(distanceY));
-
-							contentListView.setY(contentListView.getY() + moveRange);
-
-							if (null != headView) {
-								headView.setY(headView.getY() + moveRange);
-							}
-
-							if (null != footView) {
-								footView.setY(footView.getY() + moveRange);
-							}
-						}
-
-						break;
-				}
+				MotionEventStrategy strategy = createStrategyWithMotionEvent(event);
+				strategy.handelMotionEvent(contentListView, event);
 
 				return false;
 			}
 		};
+	}
+
+	private MotionEventStrategy createStrategyWithMotionEvent(MotionEvent event) {
+		MotionEventStrategy returnValue = null;
+
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				return new MotionEventStrategyForDown();
+
+			case MotionEvent.ACTION_MOVE:
+				return new MotionEventStrategyForMove();
+
+			case MotionEvent.ACTION_UP:
+				return new MotionEventStrategyForUp();
+
+			default:
+				return returnValue;
+		}
 	}
 
 	public void setOnRefreshListener(OnRefreshListener onRefreshListener) {

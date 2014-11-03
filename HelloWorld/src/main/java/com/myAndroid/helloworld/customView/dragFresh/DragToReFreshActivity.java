@@ -24,7 +24,7 @@ public class DragToReFreshActivity extends Activity {
 			super();
 
 			for (int i = 0; i < 15 * 3; i++) {
-				TextView textView = (TextView) getLayoutInflater().inflate(R.layout.drag4fresh_item, null);
+				TextView textView = (TextView) getLayoutInflater().inflate(R.layout.drag_to_refresh_item, null);
 				dateSource.add(textView);
 			}
 		}
@@ -54,7 +54,7 @@ public class DragToReFreshActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_drag_refresh_layout);
+		setContentView(R.layout.activity_drag_to_refresh_layout);
 
 		BaseAdapter adapter = new MyBaseAdapter();
 		dragToFreshLayout = (DragToReFreshView) findViewById(R.id.dragToFreshListView);
@@ -62,8 +62,8 @@ public class DragToReFreshActivity extends Activity {
 		dragToFreshLayout.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				Toast.makeText(DragToReFreshActivity.this, "update!!!", Toast.LENGTH_LONG).show();
-				dragToFreshLayout.taskFinished();
+				Toast.makeText(DragToReFreshActivity.this, "Update!", Toast.LENGTH_LONG).show();
+				dragToFreshLayout.taskFinished();// 标记任务完成(一般在异步任务回调中执行此接口)
 			}
 		});
 	}
