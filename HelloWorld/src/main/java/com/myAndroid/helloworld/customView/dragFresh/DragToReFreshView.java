@@ -222,7 +222,9 @@ public class DragToReFreshView extends LinearLayout {
 			@Override
 			public boolean onTouch(View contentListView, MotionEvent event) {
 				MotionEventStrategy strategy = createStrategyWithMotionEvent(event);
-				strategy.handelMotionEvent(contentListView, event);
+				if (strategy != null) {
+					strategy.handelMotionEvent(contentListView, event);
+				}
 
 				return false;
 			}
