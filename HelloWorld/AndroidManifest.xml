@@ -132,6 +132,7 @@
         <activity android:name=".activity.ImageSwitcherActivity" />
         <activity android:name=".activity.AlarmActivity" />
         <activity android:name=".activity.LockScreenActivity" />
+        <activity android:name=".activity.SwipeRefreshActivity" />
         <activity android:name=".activity.DeviceInfoActivity" />
         <activity
             android:name=".activity.ScreenShotActivity"
