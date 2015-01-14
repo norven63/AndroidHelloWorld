@@ -23,7 +23,7 @@ public class DragToReFreshActivity extends Activity {
 		public MyBaseAdapter() {
 			super();
 
-			for (int i = 0; i < 15 * 3; i++) {
+			for (int i = 0; i < 9 * 3; i++) {
 				TextView textView = (TextView) getLayoutInflater().inflate(R.layout.drag_to_refresh_item, null);
 				dateSource.add(textView);
 			}
