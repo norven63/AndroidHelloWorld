@@ -370,7 +370,6 @@ public class DragToReFreshView extends LinearLayout {
 		/*
 		 * 复位相关动画
 		 */
-		contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
 		if (null != headView && null != headView.getTag(R.id.firstY)) {
 			headView.animate().setInterpolator(new LinearInterpolator()).y((Float) headView.getTag(R.id.firstY));
 		}
@@ -379,6 +378,8 @@ public class DragToReFreshView extends LinearLayout {
 			footView.animate().setInterpolator(new LinearInterpolator()).y((Float) footView.getTag(R.id.firstY));
 		}
 
+		contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
+		
 		/*
 		 * 重置各个标记位
 		 */
