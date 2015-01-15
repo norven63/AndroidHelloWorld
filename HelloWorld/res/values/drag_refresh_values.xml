@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="DragToReFreshLayout">
         <attr name="column" format="integer" />
         <attr name="divider" format="reference" />
+        <attr name="dividerHeight" format="dimension" />
     </declare-styleable>
 
     <item name="dragToReFresh_headView" type="id"/>
     <item name="dragToReFresh_footView" type="id"/>
     <item name="firstY" type="id"/>
+
 </resources>

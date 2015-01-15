@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.LinearInterpolator;
 import android.widget.AbsListView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -28,10 +29,10 @@ public class DragToReFreshView extends LinearLayout {
 	private boolean isFirstLayout = true;
 	private boolean canDrag;
 	private float currentY;
-	private float startY;
 	private View headView;
 	private View footView;
 	private BaseAdapter adapter;
+	private OnItemClickListener onItemClickListener;
 	private OnRefreshListener onRefreshListener;
 	private OnTouchListener onTouchListener;
 	private AbsListView contentListView;
@@ -100,7 +101,6 @@ public class DragToReFreshView extends LinearLayout {
 			}
 			// 缓存headView和footView的坐标值=======end========
 
-			startY = event.getY();
 			currentY = event.getY();
 		}
 	}
@@ -112,29 +112,34 @@ public class DragToReFreshView extends LinearLayout {
 		@Override
 		public void handelMotionEvent(View contentListView, MotionEvent event) {
 			// 刷新操作========start=========
-			int totalDistance = (int) (event.getY() - startY);// 计算出一共拉滑了多少距离
+			boolean hasHeadViewMoved = false;// 判断头图标是否移动了足够的距离
+			if (headView != null) {
+				float totalDistance = headView.getY() - ((Float) headView.getTag(R.id.firstY));
+				if (totalDistance >= headView.getHeight()) {
+					hasHeadViewMoved = true;
+				}
+			}
 
-			if (onRefreshListener != null && !isRefreshing && shouldRefresh && canDrag
-					&& ((headView != null && headView.getHeight() <= totalDistance / 2) || (footView != null && footView.getHeight() <= -totalDistance / 2))) {
+			boolean hasFootViewMoved = false;// 判断尾图标是否移动了足够的距离
+			if (footView != null) {
+				float totalDistance = ((Float) footView.getTag(R.id.firstY)) - footView.getY();
+				if (totalDistance >= footView.getHeight()) {
+					hasFootViewMoved = true;
+				}
+			}
 
+			if (onRefreshListener != null && !isRefreshing && shouldRefresh && canDrag && (hasHeadViewMoved || hasFootViewMoved)) {
 				isRefreshing = true;
 
-				onRefreshListener.onRefresh();
+				if (hasHeadViewMoved) {
+					onRefreshListener.onRefresh();
+				} else if (hasFootViewMoved) {
+					onRefreshListener.onRefresh();
+				}
+			} else {
+				reset();
 			}
 			// 刷新操作========end=========
-
-			// 复位相关动画
-			contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
-			if (null != headView && null != headView.getTag(R.id.firstY)) {
-				headView.animate().setInterpolator(new LinearInterpolator()).y((Float) headView.getTag(R.id.firstY));
-			}
-
-			if (null != footView && null != footView.getTag(R.id.firstY)) {
-				footView.animate().setInterpolator(new LinearInterpolator()).y((Float) footView.getTag(R.id.firstY));
-			}
-
-			// 重置标记位
-			canDrag = false;
 		}
 	}
 
@@ -144,6 +149,10 @@ public class DragToReFreshView extends LinearLayout {
 	private class MotionEventStrategyForMove implements MotionEventStrategy {
 		@Override
 		public void handelMotionEvent(View contentListView, MotionEvent event) {
+			if (isRefreshing) {
+				return;
+			}
+
 			float distanceY = event.getY() - currentY;
 			currentY = event.getY();
 
@@ -172,6 +181,7 @@ public class DragToReFreshView extends LinearLayout {
 		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DragToReFreshLayout);
 		final int numColumns = typedArray.getInt(R.styleable.DragToReFreshLayout_column, USE_LISTVIEW);
 		final int dividerId = typedArray.getResourceId(R.styleable.DragToReFreshLayout_divider, NO_DIVIDERID);
+		final float dividerHeight = typedArray.getDimension(R.styleable.DragToReFreshLayout_dividerHeight, 0);
 		typedArray.recycle();
 
 		getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -201,6 +211,8 @@ public class DragToReFreshView extends LinearLayout {
 
 						if (dividerId != NO_DIVIDERID) {
 							((DragToFreshListView) contentListView).setDivider(getResources().getDrawable(dividerId));
+						} else {
+							((DragToFreshListView) contentListView).setDivider(null);
 						}
 					} else {
 						contentListView = new DragToFreshGridView(getContext());
@@ -208,7 +220,19 @@ public class DragToReFreshView extends LinearLayout {
 					}
 
 					addView(contentListView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-					contentListView.setAdapter(adapter);
+
+					if (adapter != null) {
+						contentListView.setAdapter(adapter);
+					}
+
+					if (onItemClickListener != null) {
+						contentListView.setOnItemClickListener(onItemClickListener);
+					}
+
+					if (dividerHeight != 0 && contentListView instanceof DragToFreshListView) {
+						float scale = context.getResources().getDisplayMetrics().density;
+						((DragToFreshListView) contentListView).setDividerHeight((int) (dividerHeight * scale + 0.5f));
+					}
 
 					if (null != footView) {
 						// 将footView加回来
@@ -220,7 +244,7 @@ public class DragToReFreshView extends LinearLayout {
 
 		onTouchListener = new OnTouchListener() {
 			@Override
-			public boolean onTouch(View contentListView, MotionEvent event) {
+			public boolean onTouch(final View contentListView, final MotionEvent event) {
 				MotionEventStrategy strategy = createStrategyWithMotionEvent(event);
 				if (strategy != null) {
 					strategy.handelMotionEvent(contentListView, event);
@@ -249,20 +273,38 @@ public class DragToReFreshView extends LinearLayout {
 		}
 	}
 
+	/**
+	 * 复位操作
+	 */
+	@SuppressLint("NewApi")
+	private void reset() {
+		// contentListView.smoothScrollToPosition(0);//滚动到指定位置
+		// contentListView.setSelection(0);//跳转到指定位置(无滚动效果)
+
+		// 复位相关动画
+		contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
+		if (null != headView && null != headView.getTag(R.id.firstY)) {
+			headView.animate().setInterpolator(new LinearInterpolator()).y((Float) headView.getTag(R.id.firstY));
+		}
+
+		if (null != footView && null != footView.getTag(R.id.firstY)) {
+			footView.animate().setInterpolator(new LinearInterpolator()).y((Float) footView.getTag(R.id.firstY));
+		}
+
+		// 重置标记位
+		canDrag = false;
+	}
+
 	public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
 		this.onRefreshListener = onRefreshListener;
 	}
 
-	public void setAdapter(BaseAdapter adapter) {
-		if (adapter == null) {
-			throw new NullPointerException("入参非法：" + getClass().getSimpleName() + ".setAdapter入参不可为null！");
-		}
+	public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+		this.onItemClickListener = onItemClickListener;
+	}
 
-		if (null != contentListView) {
-			contentListView.setAdapter(adapter);
-		}
+	public void setAdapter(BaseAdapter adapter) {
 		this.adapter = adapter;
-		adapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -310,5 +352,7 @@ public class DragToReFreshView extends LinearLayout {
 	 */
 	public void taskFinished() {
 		this.isRefreshing = false;
+
+		reset();
 	}
 }
