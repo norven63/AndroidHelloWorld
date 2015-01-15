@@ -26,11 +26,19 @@
         drag4fresh:divider="@drawable/listview_line" >
 
         <TextView
+            android:id="@id/dragToReFresh_headView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="松开下拉刷新"
+            android:textSize="20sp" >
+        </TextView>
+        <TextView
             android:id="@id/dragToReFresh_footView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center"
-            android:text="开始刷新"
+            android:text="松开上拉刷新"
             android:textSize="20sp" >
         </TextView>
     </com.myAndroid.helloworld.customView.dragFresh.DragToReFreshView>

@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,11 +61,36 @@ public class DragToReFreshActivity extends Activity {
 		BaseAdapter adapter = new MyBaseAdapter();
 		dragToFreshLayout = (DragToReFreshView) findViewById(R.id.dragToFreshListView);
 		dragToFreshLayout.setAdapter(adapter);
-		dragToFreshLayout.setOnRefreshListener(new OnRefreshListener() {
+
+		/**
+		 * 下拉刷新监听
+		 */
+		dragToFreshLayout.setOnTopDragRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				Toast.makeText(DragToReFreshActivity.this, "Update!", Toast.LENGTH_LONG).show();
+				Toast.makeText(DragToReFreshActivity.this, "下拉刷新!", Toast.LENGTH_SHORT).show();
 				dragToFreshLayout.taskFinished();// 标记任务完成(一般在异步任务回调中执行此接口)
+			}
+		});
+
+		/**
+		 * 上拉刷新监听
+		 */
+		dragToFreshLayout.setOnBottomDragRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				Toast.makeText(DragToReFreshActivity.this, "上拉刷新!", Toast.LENGTH_SHORT).show();
+				dragToFreshLayout.taskFinished();// 标记任务完成(一般在异步任务回调中执行此接口)
+			}
+		});
+
+		/**
+		 * item点击事件监听
+		 */
+		dragToFreshLayout.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Toast.makeText(DragToReFreshActivity.this, position + "号位被点击,点击内容为:" + ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

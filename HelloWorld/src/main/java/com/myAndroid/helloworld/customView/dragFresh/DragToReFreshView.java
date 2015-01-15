@@ -24,16 +24,20 @@ import com.myAndroid.helloworld.R;
 public class DragToReFreshView extends LinearLayout {
 	private final int USE_LISTVIEW = 199991;
 	private final int NO_DIVIDERID = 299992;
-	private boolean isRefreshing = false;
-	private boolean shouldRefresh = true;
-	private boolean isFirstLayout = true;
-	private boolean canDrag;
-	private float currentY;
+
+	private boolean stopSubViewScroll = false;// 是否需要阻止子控件的滑动行为（拖拽时打开,手指放开时关闭）
+	private boolean isRefreshing = false;// 是否正在执行刷新操作
+	private boolean shouldRefresh = true;// 是否可以刷新
+	private boolean isFirstLayout = true;// 是否为头一次渲染至屏幕之上
+	private boolean canDrag;// 是否可以拖拽（子布局拉到最顶或者最底时打开）
+	private float currentY;// 当前手指触屏的Y坐标
+
+	private OnRefreshListener onTopDragRefreshListener;// 顶部拖拽刷新监听
+	private OnRefreshListener onBottomDragRefreshListener;// 底部拖拽刷新监听
 	private View headView;
 	private View footView;
 	private BaseAdapter adapter;
 	private OnItemClickListener onItemClickListener;
-	private OnRefreshListener onRefreshListener;
 	private OnTouchListener onTouchListener;
 	private AbsListView contentListView;
 
@@ -55,6 +59,16 @@ public class DragToReFreshView extends LinearLayout {
 		}
 
 		@Override
+		public boolean onTouchEvent(MotionEvent ev) {
+			// 判断是否需要阻止滑动
+			if (stopSubViewScroll) {
+				return false;
+			}
+
+			return super.onTouchEvent(ev);
+		}
+
+		@Override
 		protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
 			canDrag = clampedY;// 捕捉滑动到顶部或者底部的时机
 			super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
@@ -69,6 +83,16 @@ public class DragToReFreshView extends LinearLayout {
 			super(context);
 
 			this.setOnTouchListener(onTouchListener);
+		}
+
+		@Override
+		public boolean onTouchEvent(MotionEvent ev) {
+			// 判断是否需要阻止滑动
+			if (stopSubViewScroll) {
+				return false;
+			}
+
+			return super.onTouchEvent(ev);
 		}
 
 		@Override
@@ -112,7 +136,7 @@ public class DragToReFreshView extends LinearLayout {
 		@Override
 		public void handelMotionEvent(View contentListView, MotionEvent event) {
 			// 刷新操作========start=========
-			boolean hasHeadViewMoved = false;// 判断头图标是否移动了足够的距离
+			boolean hasHeadViewMoved = false;// 标记头图标是否向下移动了足够的距离
 			if (headView != null) {
 				float totalDistance = headView.getY() - ((Float) headView.getTag(R.id.firstY));
 				if (totalDistance >= headView.getHeight()) {
@@ -120,7 +144,7 @@ public class DragToReFreshView extends LinearLayout {
 				}
 			}
 
-			boolean hasFootViewMoved = false;// 判断尾图标是否移动了足够的距离
+			boolean hasFootViewMoved = false;// 标记尾图标是否向上移动了足够的距离
 			if (footView != null) {
 				float totalDistance = ((Float) footView.getTag(R.id.firstY)) - footView.getY();
 				if (totalDistance >= footView.getHeight()) {
@@ -128,16 +152,24 @@ public class DragToReFreshView extends LinearLayout {
 				}
 			}
 
-			if (onRefreshListener != null && !isRefreshing && shouldRefresh && canDrag && (hasHeadViewMoved || hasFootViewMoved)) {
-				isRefreshing = true;
+			if (!isRefreshing && shouldRefresh && canDrag && (hasHeadViewMoved || hasFootViewMoved)) {
+				isRefreshing = true;// 标记正在执行刷新操作
 
 				if (hasHeadViewMoved) {
-					onRefreshListener.onRefresh();
+					if (onTopDragRefreshListener != null) {
+						onTopDragRefreshListener.onRefresh();
+					} else {
+						taskFinished();
+					}
 				} else if (hasFootViewMoved) {
-					onRefreshListener.onRefresh();
+					if (onBottomDragRefreshListener != null) {
+						onBottomDragRefreshListener.onRefresh();
+					} else {
+						taskFinished();
+					}
 				}
-			} else {
-				reset();
+			} else if (canDrag) {
+				taskFinished();
 			}
 			// 刷新操作========end=========
 		}
@@ -158,6 +190,8 @@ public class DragToReFreshView extends LinearLayout {
 
 			// 若位移量大于2.5则进行滑动
 			if (canDrag && Math.abs(distanceY) > 2.5) {
+				stopSubViewScroll = true;// 阻止子控件继续滑动
+
 				float moveRange = 3f * (distanceY / Math.abs(distanceY));
 
 				contentListView.setY(contentListView.getY() + moveRange);
@@ -273,30 +307,12 @@ public class DragToReFreshView extends LinearLayout {
 		}
 	}
 
-	/**
-	 * 复位操作
-	 */
-	@SuppressLint("NewApi")
-	private void reset() {
-		// contentListView.smoothScrollToPosition(0);//滚动到指定位置
-		// contentListView.setSelection(0);//跳转到指定位置(无滚动效果)
-
-		// 复位相关动画
-		contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
-		if (null != headView && null != headView.getTag(R.id.firstY)) {
-			headView.animate().setInterpolator(new LinearInterpolator()).y((Float) headView.getTag(R.id.firstY));
-		}
-
-		if (null != footView && null != footView.getTag(R.id.firstY)) {
-			footView.animate().setInterpolator(new LinearInterpolator()).y((Float) footView.getTag(R.id.firstY));
-		}
-
-		// 重置标记位
-		canDrag = false;
+	public void setOnTopDragRefreshListener(OnRefreshListener onTopDragRefreshListener) {
+		this.onTopDragRefreshListener = onTopDragRefreshListener;
 	}
 
-	public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
-		this.onRefreshListener = onRefreshListener;
+	public void setOnBottomDragRefreshListener(OnRefreshListener onBottomDragRefreshListener) {
+		this.onBottomDragRefreshListener = onBottomDragRefreshListener;
 	}
 
 	public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -351,8 +367,23 @@ public class DragToReFreshView extends LinearLayout {
 	 * 任务完成
 	 */
 	public void taskFinished() {
-		this.isRefreshing = false;
+		/*
+		 * 复位相关动画
+		 */
+		contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
+		if (null != headView && null != headView.getTag(R.id.firstY)) {
+			headView.animate().setInterpolator(new LinearInterpolator()).y((Float) headView.getTag(R.id.firstY));
+		}
 
-		reset();
+		if (null != footView && null != footView.getTag(R.id.firstY)) {
+			footView.animate().setInterpolator(new LinearInterpolator()).y((Float) footView.getTag(R.id.firstY));
+		}
+
+		/*
+		 * 重置各个标记位
+		 */
+		canDrag = false;
+		isRefreshing = false;
+		stopSubViewScroll = false;
 	}
 }
