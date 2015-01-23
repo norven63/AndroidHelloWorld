@@ -24,6 +24,7 @@ import com.myAndroid.helloworld.R;
 public class DragToReFreshView extends LinearLayout {
 	private final int USE_LISTVIEW = 199991;
 	private final int NO_DIVIDERID = 299992;
+	private final float MOVE_SCALE = 0.5f;// 位移比例,用来调整下拉效果的体验度
 
 	private boolean stopSubViewScroll = false;// 是否需要阻止子控件的滑动行为（拖拽时打开,手指放开时关闭）
 	private boolean isRefreshing = false;// 是否正在执行刷新操作
@@ -125,7 +126,7 @@ public class DragToReFreshView extends LinearLayout {
 			}
 			// 缓存headView和footView的坐标值=======end========
 
-			currentY = event.getY();
+			currentY = event.getRawY();
 		}
 	}
 
@@ -181,27 +182,33 @@ public class DragToReFreshView extends LinearLayout {
 	private class MotionEventStrategyForMove implements MotionEventStrategy {
 		@Override
 		public void handelMotionEvent(View contentListView, MotionEvent event) {
-			if (isRefreshing) {
+			/*
+			 * 如果是正在执行刷新操作则直接退出,不执行位移操作
+			 */
+			if (isRefreshing || !canDrag) {
 				return;
 			}
 
-			float distanceY = event.getY() - currentY;
-			currentY = event.getY();
+			// 计算位移量
+			float distanceY = (event.getRawY() - currentY) * MOVE_SCALE;
+			currentY = event.getRawY();
 
-			// 若位移量大于2.5则进行滑动
-			if (canDrag && Math.abs(distanceY) > 2.5) {
-				stopSubViewScroll = true;// 阻止子控件继续滑动
+			/*
+			 * 只有拖拽到了ListView的极限位置(最顶或最底位置 )才允许执行位移
+			 */
+			if (canDrag) {
+				// 阻止子控件继续滑动
+				stopSubViewScroll = true;
 
-				float moveRange = 3f * (distanceY / Math.abs(distanceY));
-
-				contentListView.setY(contentListView.getY() + moveRange);
-
+				/*
+				 * 执行位移
+				 */
+				contentListView.setY(contentListView.getY() + distanceY);
 				if (null != headView) {
-					headView.setY(headView.getY() + moveRange);
+					headView.setY(headView.getY() + distanceY);
 				}
-
 				if (null != footView) {
-					footView.setY(footView.getY() + moveRange);
+					footView.setY(footView.getY() + distanceY);
 				}
 			}
 		}
@@ -267,6 +274,8 @@ public class DragToReFreshView extends LinearLayout {
 						float scale = context.getResources().getDisplayMetrics().density;
 						((DragToFreshListView) contentListView).setDividerHeight((int) (dividerHeight * scale + 0.5f));
 					}
+
+					contentListView.setVerticalScrollBarEnabled(false);
 
 					if (null != footView) {
 						// 将footView加回来
@@ -379,7 +388,7 @@ public class DragToReFreshView extends LinearLayout {
 		}
 
 		contentListView.animate().setInterpolator(new LinearInterpolator()).y(0f);
-		
+
 		/*
 		 * 重置各个标记位
 		 */
