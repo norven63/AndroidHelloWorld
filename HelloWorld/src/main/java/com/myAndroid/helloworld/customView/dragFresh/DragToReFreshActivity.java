@@ -4,6 +4,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -69,7 +71,13 @@ public class DragToReFreshActivity extends Activity {
 			@Override
 			public void onRefresh() {
 				Toast.makeText(DragToReFreshActivity.this, "下拉刷新!", Toast.LENGTH_SHORT).show();
-				dragToFreshLayout.taskFinished();// 标记任务完成(一般在异步任务回调中执行此接口)
+				new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						dragToFreshLayout.taskFinished();// 标记任务完成(一般在异步任务回调中执行此接口)
+					}
+				}, 1500);
+
 			}
 		});
 
@@ -80,7 +88,12 @@ public class DragToReFreshActivity extends Activity {
 			@Override
 			public void onRefresh() {
 				Toast.makeText(DragToReFreshActivity.this, "上拉刷新!", Toast.LENGTH_SHORT).show();
-				dragToFreshLayout.taskFinished();// 标记任务完成(一般在异步任务回调中执行此接口)
+				new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						dragToFreshLayout.taskFinished();// 标记任务完成(一般在异步任务回调中执行此接口)
+					}
+				}, 1500);
 			}
 		});
 
