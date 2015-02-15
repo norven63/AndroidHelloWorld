@@ -169,7 +169,7 @@ public class DragToReFreshView extends LinearLayout {
 						taskFinished();
 					}
 				}
-			} else if (canDrag) {
+			} else if (canDrag || !shouldRefresh) {
 				taskFinished();
 			}
 			// 刷新操作========end=========
