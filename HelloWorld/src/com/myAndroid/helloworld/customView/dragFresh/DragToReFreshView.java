@@ -182,16 +182,16 @@ public class DragToReFreshView extends LinearLayout {
 	private class MotionEventStrategyForMove implements MotionEventStrategy {
 		@Override
 		public void handelMotionEvent(View contentListView, MotionEvent event) {
+			// 计算位移量
+			float distanceY = (event.getRawY() - currentY) * MOVE_SCALE;
+			currentY = event.getRawY();
+
 			/*
-			 * 如果是正在执行刷新操作则直接退出,不执行位移操作
+			 * 如果正在执行刷新操作，或者仍未将子布局拉到最顶或者最底，则直接退出不执行位移操作
 			 */
 			if (isRefreshing || !canDrag) {
 				return;
 			}
-
-			// 计算位移量
-			float distanceY = (event.getRawY() - currentY) * MOVE_SCALE;
-			currentY = event.getRawY();
 
 			/*
 			 * 只有拖拽到了ListView的极限位置(最顶或最底位置 )才允许执行位移
