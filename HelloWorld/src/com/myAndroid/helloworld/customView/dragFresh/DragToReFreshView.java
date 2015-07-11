@@ -26,7 +26,7 @@ public class DragToReFreshView extends LinearLayout {
 	private final int NO_DIVIDERID = 299992;
 	private final float MOVE_SCALE = 0.5f;// 位移比例,用来调整下拉效果的体验度
 
-	private boolean stopSubViewScroll = false;// 是否需要阻止子控件的滑动行为（拖拽时打开,手指放开时关闭）
+	private boolean stopSubViewScroll = false;// 是否需要阻止子控件自身的滑动行为（拖拽时打开,手指放开时关闭）
 	private boolean isRefreshing = false;// 是否正在执行刷新操作
 	private boolean shouldRefresh = true;// 是否可以刷新
 	private boolean isFirstLayout = true;// 是否为头一次渲染至屏幕之上
@@ -74,12 +74,19 @@ public class DragToReFreshView extends LinearLayout {
 			canDrag = clampedY;// 捕捉滑动到顶部或者底部的时机
 			super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
 		}
-		
+
 		/**
-		 * 拦截子元素的move事件
+		 * 拦截子控件的MOVE事件，并在DOWN事件中缓存headView、footView的Y坐标
 		 */
 		@Override
 		public boolean onInterceptTouchEvent(MotionEvent ev) {
+			/*
+			 * 在这里缓存Y坐标，是因为防止子控件拦截DOWN事件
+			 */
+			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+				saveY();
+			}
+
 			if (ev.getAction() == MotionEvent.ACTION_MOVE) {
 				return true;
 			} else {
@@ -113,17 +120,37 @@ public class DragToReFreshView extends LinearLayout {
 			canDrag = clampedY;// 捕捉滑动到顶部或者底部的时机
 			super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
 		}
-		
+
 		/**
-		 * 拦截子元素的move事件
+		 * 拦截子控件的MOVE事件，并在DOWN事件中缓存headView、footView的Y坐标
 		 */
 		@Override
 		public boolean onInterceptTouchEvent(MotionEvent ev) {
+			/*
+			 * 在这里缓存Y坐标，是因为防止子控件拦截DOWN事件
+			 */
+			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+				saveY();
+			}
+
 			if (ev.getAction() == MotionEvent.ACTION_MOVE) {
 				return true;
 			} else {
 				return super.onInterceptTouchEvent(ev);
 			}
+		}
+	}
+
+	/**
+	 * 缓存headView和footView的坐标值
+	 */
+	private void saveY() {
+		if (null != headView && null == headView.getTag(R.id.firstY)) {
+			headView.setTag(R.id.firstY, headView.getY());
+		}
+
+		if (null != footView && null == footView.getTag(R.id.firstY)) {
+			footView.setTag(R.id.firstY, footView.getY());
 		}
 	}
 
