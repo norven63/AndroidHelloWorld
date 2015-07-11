@@ -74,6 +74,18 @@ public class DragToReFreshView extends LinearLayout {
 			canDrag = clampedY;// 捕捉滑动到顶部或者底部的时机
 			super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
 		}
+		
+		/**
+		 * 拦截子元素的move事件
+		 */
+		@Override
+		public boolean onInterceptTouchEvent(MotionEvent ev) {
+			if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+				return true;
+			} else {
+				return super.onInterceptTouchEvent(ev);
+			}
+		}
 	}
 
 	/**
@@ -100,6 +112,18 @@ public class DragToReFreshView extends LinearLayout {
 		protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
 			canDrag = clampedY;// 捕捉滑动到顶部或者底部的时机
 			super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
+		}
+		
+		/**
+		 * 拦截子元素的move事件
+		 */
+		@Override
+		public boolean onInterceptTouchEvent(MotionEvent ev) {
+			if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+				return true;
+			} else {
+				return super.onInterceptTouchEvent(ev);
+			}
 		}
 	}
 
