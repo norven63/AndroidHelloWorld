@@ -76,22 +76,17 @@ public class DragToReFreshView extends LinearLayout {
 		}
 
 		/**
-		 * 拦截子控件的MOVE事件，并在DOWN事件中缓存headView、footView的Y坐标
+		 * 为防止子控件拦截DOWN事件，所以在onInterceptTouchEvent中来缓存手势点击的坐标以及headView、footView的Y坐标
 		 */
 		@Override
 		public boolean onInterceptTouchEvent(MotionEvent ev) {
-			/*
-			 * 在这里缓存Y坐标，是因为防止子控件拦截DOWN事件
-			 */
 			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-				saveY();
+				new MotionEventStrategyForDown().handleMotionEvent(this, ev);
+
+				currentY = ev.getRawY();
 			}
 
-			if (ev.getAction() == MotionEvent.ACTION_MOVE) {
-				return true;
-			} else {
-				return super.onInterceptTouchEvent(ev);
-			}
+			return super.onInterceptTouchEvent(ev);
 		}
 	}
 
@@ -122,35 +117,17 @@ public class DragToReFreshView extends LinearLayout {
 		}
 
 		/**
-		 * 拦截子控件的MOVE事件，并在DOWN事件中缓存headView、footView的Y坐标
+		 * 为防止子控件拦截DOWN事件，所以在onInterceptTouchEvent中来缓存手势点击的坐标以及headView、footView的Y坐标
 		 */
 		@Override
 		public boolean onInterceptTouchEvent(MotionEvent ev) {
-			/*
-			 * 在这里缓存Y坐标，是因为防止子控件拦截DOWN事件
-			 */
 			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-				saveY();
+				new MotionEventStrategyForDown().handleMotionEvent(this, ev);
+
+				currentY = ev.getRawY();
 			}
 
-			if (ev.getAction() == MotionEvent.ACTION_MOVE) {
-				return true;
-			} else {
-				return super.onInterceptTouchEvent(ev);
-			}
-		}
-	}
-
-	/**
-	 * 缓存headView和footView的坐标值
-	 */
-	private void saveY() {
-		if (null != headView && null == headView.getTag(R.id.firstY)) {
-			headView.setTag(R.id.firstY, headView.getY());
-		}
-
-		if (null != footView && null == footView.getTag(R.id.firstY)) {
-			footView.setTag(R.id.firstY, footView.getY());
+			return super.onInterceptTouchEvent(ev);
 		}
 	}
 
@@ -158,7 +135,7 @@ public class DragToReFreshView extends LinearLayout {
 	 * MotionEvent策略接口
 	 */
 	private interface MotionEventStrategy {
-		void handelMotionEvent(View contentListView, MotionEvent event);
+		void handleMotionEvent(View contentListView, MotionEvent event);
 	}
 
 	/**
@@ -166,8 +143,7 @@ public class DragToReFreshView extends LinearLayout {
 	 */
 	private class MotionEventStrategyForDown implements MotionEventStrategy {
 		@Override
-		public void handelMotionEvent(View contentListView, MotionEvent event) {
-			// 缓存headView和footView的坐标值=======start========
+		public void handleMotionEvent(View contentListView, MotionEvent event) {
 			if (null != headView && null == headView.getTag(R.id.firstY)) {
 				headView.setTag(R.id.firstY, headView.getY());
 			}
@@ -175,7 +151,6 @@ public class DragToReFreshView extends LinearLayout {
 			if (null != footView && null == footView.getTag(R.id.firstY)) {
 				footView.setTag(R.id.firstY, footView.getY());
 			}
-			// 缓存headView和footView的坐标值=======end========
 
 			currentY = event.getRawY();
 		}
@@ -186,10 +161,10 @@ public class DragToReFreshView extends LinearLayout {
 	 */
 	private class MotionEventStrategyForUp implements MotionEventStrategy {
 		@Override
-		public void handelMotionEvent(View contentListView, MotionEvent event) {
+		public void handleMotionEvent(View contentListView, MotionEvent event) {
 			// 刷新操作========start=========
 			boolean hasHeadViewMoved = false;// 标记头图标是否向下移动了足够的距离
-			if (headView != null) {
+			if (headView != null && headView.getTag(R.id.firstY) != null) {
 				float totalDistance = headView.getY() - ((Float) headView.getTag(R.id.firstY));
 				if (totalDistance >= headView.getHeight()) {
 					hasHeadViewMoved = true;
@@ -197,7 +172,7 @@ public class DragToReFreshView extends LinearLayout {
 			}
 
 			boolean hasFootViewMoved = false;// 标记尾图标是否向上移动了足够的距离
-			if (footView != null) {
+			if (footView != null && footView.getTag(R.id.firstY) != null) {
 				float totalDistance = ((Float) footView.getTag(R.id.firstY)) - footView.getY();
 				if (totalDistance >= footView.getHeight()) {
 					hasFootViewMoved = true;
@@ -232,7 +207,7 @@ public class DragToReFreshView extends LinearLayout {
 	 */
 	private class MotionEventStrategyForMove implements MotionEventStrategy {
 		@Override
-		public void handelMotionEvent(View contentListView, MotionEvent event) {
+		public void handleMotionEvent(View contentListView, MotionEvent event) {
 			// 计算位移量
 			float distanceY = (event.getRawY() - currentY) * MOVE_SCALE;
 			currentY = event.getRawY();
@@ -254,7 +229,7 @@ public class DragToReFreshView extends LinearLayout {
 				/*
 				 * 执行位移
 				 */
-				contentListView.setY(contentListView.getY() + distanceY);
+				contentListView.setTranslationY(contentListView.getTranslationY() + distanceY);
 				if (null != headView) {
 					headView.setY(headView.getY() + distanceY);
 				}
@@ -322,8 +297,7 @@ public class DragToReFreshView extends LinearLayout {
 					}
 
 					if (dividerHeight != 0 && contentListView instanceof DragToFreshListView) {
-						float scale = context.getResources().getDisplayMetrics().density;
-						((DragToFreshListView) contentListView).setDividerHeight((int) (dividerHeight * scale + 0.5f));
+						((DragToFreshListView) contentListView).setDividerHeight((int) (dividerHeight));
 					}
 
 					contentListView.setVerticalScrollBarEnabled(false);
@@ -341,7 +315,7 @@ public class DragToReFreshView extends LinearLayout {
 			public boolean onTouch(final View contentListView, final MotionEvent event) {
 				MotionEventStrategy strategy = createStrategyWithMotionEvent(event);
 				if (strategy != null) {
-					strategy.handelMotionEvent(contentListView, event);
+					strategy.handleMotionEvent(contentListView, event);
 				}
 
 				return false;
@@ -349,22 +323,26 @@ public class DragToReFreshView extends LinearLayout {
 		};
 	}
 
+	/**
+	 * 根据MotionEvent构建对应的事件策略类
+	 */
 	private MotionEventStrategy createStrategyWithMotionEvent(MotionEvent event) {
-		MotionEventStrategy returnValue = null;
+		MotionEventStrategy motionEventStrategy = null;
 
 		switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				return new MotionEventStrategyForDown();
-
 			case MotionEvent.ACTION_MOVE:
-				return new MotionEventStrategyForMove();
+				motionEventStrategy = new MotionEventStrategyForMove();
 
+				break;
 			case MotionEvent.ACTION_UP:
-				return new MotionEventStrategyForUp();
+				motionEventStrategy = new MotionEventStrategyForUp();
 
+				break;
 			default:
-				return returnValue;
+				break;
 		}
+
+		return motionEventStrategy;
 	}
 
 	public void setOnTopDragRefreshListener(OnRefreshListener onTopDragRefreshListener) {
@@ -427,6 +405,10 @@ public class DragToReFreshView extends LinearLayout {
 	 * 任务完成
 	 */
 	public void taskFinished() {
+		if (contentListView == null) {
+			return;
+		}
+
 		/*
 		 * 复位相关动画
 		 */
